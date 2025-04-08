@@ -9,6 +9,7 @@ import Layout from "./layout/layout";
 
 const Routes = lazy(() => import("./pages/routes"));
 const Route = lazy(() => import("./pages/route"));
+const Areas = lazy(() => import("./pages/areas"));
 const Settings = lazy(() => import("./pages/settings"));
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             path="/routes/:routeId"
             element={<Route />}
           ></RouterRoute>
+          <RouterRoute path="/areas" element={<Areas />}></RouterRoute>
           <RouterRoute path="/settings" element={<Settings />}></RouterRoute>
         </RouterRoutes>
       </Layout>

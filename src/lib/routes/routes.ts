@@ -1,6 +1,8 @@
+import { getArea } from "./areas";
 import { ascentsForRoute } from "./ascents";
-import { getDB, RouteTransaction, startTransaction } from "./db";
-import { Ascent, ID, Pre, Route } from "./types";
+import { getDB, RouteTransaction } from "./db";
+import { getSector } from "./sectors";
+import { ID, Pre, Route, RouteOverview } from "./types";
 
 export async function addRoute(route: Pre<Route>) {
   const db = await getDB();
@@ -8,26 +10,32 @@ export async function addRoute(route: Pre<Route>) {
 }
 
 export async function getRoute(
-  id: ID,
-  transaction?: RouteTransaction
-): Promise<{ route: Route; ascents: Ascent[] }> {
-  transaction = transaction
-    ? transaction
-    : await startTransaction(["routes", "ascents"]);
-
+  transaction: RouteTransaction,
+  id: ID
+): Promise<RouteOverview> {
   const route = await transaction.objectStore("routes").get(id);
 
   if (!route) {
     throw new Error("Route does not exist");
   }
 
-  const ascents = await ascentsForRoute(id, transaction);
+  const [ascents, sector] = await Promise.all([
+    ascentsForRoute(id, transaction),
+    getSector(transaction, route.sectorId),
+  ]);
 
-  return { route: { ...route, id }, ascents: ascents };
+  const area = await getArea(transaction, sector.areaId);
+
+  return {
+    route: { ...route, id },
+    ascents,
+    sector,
+    area,
+  };
 }
 
 // add query or something
 export async function getRoutes(): Promise<ID[]> {
   const db = await getDB();
-  return db.getAllKeys("routes");
+  return (await db.getAllKeysFromIndex("routes", "grade")).reverse();
 }

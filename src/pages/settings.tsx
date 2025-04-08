@@ -1,12 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { addAscent, addRoute, Ascent, clear, Route } from "@/lib/routes";
+import { addArea } from "@/lib/routes/areas";
+import { addAscent } from "@/lib/routes/ascents";
+import { clear } from "@/lib/routes/db";
+import { addRoute } from "@/lib/routes/routes";
+import { addSector } from "@/lib/routes/sectors";
+import { Area, Ascent, Route, Sector } from "@/lib/routes/types";
 import { useState } from "react";
 
 type Parsed = {
   routes: Route[];
   ascents: Ascent[];
-  areas: object[];
-  sectors: object[];
+  areas: Area[];
+  sectors: Sector[];
   trips: object[];
 };
 
@@ -46,11 +51,21 @@ export default function Import() {
       )
     );
     file.ascents.forEach((ascent) => {
-      console.log(ascent.date);
       addAscent(ascent).catch(() =>
         console.log("could not import ascent", ascent)
       );
     });
+
+    file.sectors.forEach((sector) => {
+      addSector(sector).catch(() =>
+        console.log("could not import sector", sector)
+      );
+    });
+
+    file.areas.forEach((area) => {
+      addArea(area).catch(() => console.log("could not import area", area));
+    });
+
     setImporting(false);
   };
 
