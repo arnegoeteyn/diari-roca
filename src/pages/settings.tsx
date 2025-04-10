@@ -45,26 +45,30 @@ export default function Import() {
   const save = async () => {
     setImporting(true);
     await clear();
-    file.routes.forEach((route) =>
+    console.log("cleared");
+    const routes = file.routes.map((route) =>
       addRoute(route).catch(() =>
         console.log("could not import route", route.name)
       )
     );
-    file.ascents.forEach((ascent) => {
+    const ascents = file.ascents.map((ascent) => {
       addAscent(ascent).catch(() =>
         console.log("could not import ascent", ascent)
       );
     });
 
-    file.sectors.forEach((sector) => {
+    const sectors = file.sectors.map((sector) => {
       addSector(sector).catch(() =>
         console.log("could not import sector", sector)
       );
     });
 
-    file.areas.forEach((area) => {
+    const areas = file.areas.map((area) => {
       putArea(area).catch(() => console.log("could not import area", area));
     });
+
+    const actions = [...routes, ...ascents, ...sectors, ...areas];
+    await Promise.all(actions);
 
     setImporting(false);
   };
