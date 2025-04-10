@@ -6,6 +6,11 @@ export async function addArea(area: Pre<Area>) {
   db.add("areas", area);
 }
 
+export async function importArea(area: Area) {
+  const db = await getDB();
+  db.put("areas", area, area.id);
+}
+
 export async function getArea(
   transaction: RouteTransaction,
   id: ID

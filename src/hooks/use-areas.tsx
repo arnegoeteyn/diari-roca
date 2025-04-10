@@ -5,9 +5,13 @@ import { AreaOverview } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
 
 type Props = unknown;
-export default function useAreas(props?: Props): [AreaOverview[], boolean] {
+export default function useAreas(
+  props?: Props
+): [AreaOverview[], boolean, () => void] {
   const [areas, setAreas] = useState<AreaOverview[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const [shouldRefetch, refetch] = useState({});
 
   useEffect(() => {
     const fetch = async () => {
@@ -41,7 +45,7 @@ export default function useAreas(props?: Props): [AreaOverview[], boolean] {
       setLoading(false);
     };
     fetch();
-  }, [props]);
+  }, [props, shouldRefetch]);
 
-  return [areas, loading];
+  return [areas, loading, () => refetch({})];
 }
