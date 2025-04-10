@@ -13,6 +13,7 @@ import { Button, buttonVariants } from "./ui/button";
 
 type Props = {
   routes: RouteOverview[];
+  showKind?: boolean;
 };
 
 export default function RouteTable(props: Props) {
@@ -20,20 +21,22 @@ export default function RouteTable(props: Props) {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Grade</TableHead>
-          <TableHead>Name</TableHead>
-          <TableHead>Kind</TableHead>
-          <TableHead>Ascents</TableHead>
-          <TableHead>Actions</TableHead>
+          <TableHead className="text-center">Grade</TableHead>
+          <TableHead className="text-center">Name</TableHead>
+          {props.showKind && <TableHead>Kind</TableHead>}
+          <TableHead className="text-center">Ascents</TableHead>
+          <TableHead className="text-center">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {props.routes.map((route) => (
           <TableRow key={route.route.id}>
             <TableCell className="font-medium">{route.route.grade}</TableCell>
-            <TableCell>{route.route.name}</TableCell>
-            <TableCell>{route.route.kind}</TableCell>
-            <TableCell className="text-right">{route.ascents.length}</TableCell>
+            <TableCell className="text-center">{route.route.name}</TableCell>
+            {props.showKind && <TableCell>{route.route.kind}</TableCell>}
+            <TableCell className="text-center">
+              {route.ascents.length}
+            </TableCell>
             <TableCell>
               <div className="space-x-2">
                 <Button>
