@@ -37,7 +37,7 @@ export function AppSidebar() {
                 <SidebarMenuButton asChild>
                   <Link to="/areas">
                     <Earth />
-                    <span>Routes</span>
+                    <span>Areas</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

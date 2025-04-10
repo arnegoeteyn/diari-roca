@@ -2,7 +2,7 @@ import { getArea } from "./areas";
 import { ascentsForRoute } from "./ascents";
 import { getDB, RouteTransaction } from "./db";
 import { getSector } from "./sectors";
-import { ID, Pre, Route, RouteOverview } from "./types";
+import { ID, Pre, Route, RouteKind, RouteOverview } from "./types";
 
 export async function addRoute(route: Pre<Route>) {
   const db = await getDB();
@@ -35,7 +35,43 @@ export async function getRoute(
 }
 
 // add query or something
-export async function getRoutes(): Promise<ID[]> {
+export async function getRoutes(kind?: RouteKind): Promise<ID[]> {
   const db = await getDB();
-  return (await db.getAllKeysFromIndex("routes", "grade")).reverse();
+  if (!kind) {
+    return (await db.getAllKeysFromIndex("routes", "grade")).reverse();
+  }
+
+  return (
+    await db.getAllKeysFromIndex(
+      "routes",
+      "kind",
+      IDBKeyRange.bound([kind, ""], [kind, "ZZZZZZZZZ"])
+    )
+  ).reverse();
+}
+
+export async function routeIdsForSector(
+  transcation: RouteTransaction,
+  sectorId: ID
+): Promise<ID[]> {
+  const store = transcation.objectStore("routes");
+  const index = store.index("sectorId");
+
+  const keys = await index.getAllKeys(IDBKeyRange.bound(sectorId, sectorId));
+
+  return keys;
+}
+
+export async function routesForSector(
+  transcation: RouteTransaction,
+  sectorId: ID
+): Promise<RouteOverview[]> {
+  const store = transcation.objectStore("routes");
+  const index = store.index("sectorId");
+
+  const keys = await index.getAllKeys(IDBKeyRange.bound(sectorId, sectorId));
+
+  const routes = Promise.all(keys.map((key) => getRoute(transcation, key)));
+
+  return routes;
 }

@@ -9,12 +9,15 @@ export default function useAreas(props?: Props): [AreaOverview[], boolean] {
   const [areas, setAreas] = useState<AreaOverview[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // todo, query can happen here or something?
   useEffect(() => {
     const fetch = async () => {
       const areaKeys = await getAreas();
 
-      const transaction = await startTransaction(["areas", "sectors"]);
+      const transaction = await startTransaction([
+        "areas",
+        "sectors",
+        "routes",
+      ]);
 
       let areas = [];
 

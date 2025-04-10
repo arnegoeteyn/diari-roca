@@ -1,4 +1,5 @@
 import { Url } from "url";
+import { SectorWithRouteCount } from "./sectors";
 
 export type ID = number;
 
@@ -61,5 +62,5 @@ export type Area = {
 
 export type AreaOverview = {
   area: Area;
-  sectors: Sector[];
+  sectors: SectorWithRouteCount[];
 };
