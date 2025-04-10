@@ -4,7 +4,9 @@ import { AreaForm } from "../forms/area-form";
 
 type Props = {
   open: boolean;
+  initialArea?: Area;
   onSubmit: (area: Pre<Area>) => void;
+  onUpdate: (area: Area) => void;
   onCancel: () => void;
 };
 
@@ -15,7 +17,11 @@ export function AreaDialog(props: Props) {
         <DialogHeader>
           <DialogTitle>New area</DialogTitle>
         </DialogHeader>
-        <AreaForm onSubmit={props.onSubmit} />
+        <AreaForm
+          initialArea={props.initialArea}
+          onSubmit={props.onSubmit}
+          onUpdate={props.onUpdate}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { addArea, importArea } from "@/lib/routes/areas";
+import { addArea, putArea } from "@/lib/routes/areas";
 import { addAscent } from "@/lib/routes/ascents";
 import { clear } from "@/lib/routes/db";
 import { addRoute } from "@/lib/routes/routes";
@@ -63,7 +63,7 @@ export default function Import() {
     });
 
     file.areas.forEach((area) => {
-      importArea(area).catch(() => console.log("could not import area", area));
+      putArea(area).catch(() => console.log("could not import area", area));
     });
 
     setImporting(false);

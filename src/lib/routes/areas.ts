@@ -6,9 +6,9 @@ export async function addArea(area: Pre<Area>) {
   db.add("areas", area);
 }
 
-export async function importArea(area: Area) {
+export async function putArea(area: Area) {
   const db = await getDB();
-  db.put("areas", area, area.id);
+  db.put("areas", area);
 }
 
 export async function getArea(
