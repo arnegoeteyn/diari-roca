@@ -1,11 +1,12 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
-// export interface DialogForm<T> {
-//   onSubmit: (result: T) => void;
-// }
+export type DialogForm = {
+  onSubmit: () => void;
+};
 
 export type OpenDialogProps = React.PropsWithChildren<{
   title: string;
+  dialogForm: (props: DialogForm) => ReactNode;
   callback: (result: boolean) => void;
 }>;
 

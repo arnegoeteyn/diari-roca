@@ -31,14 +31,15 @@ export function ConfirmationDialogProvider(props: Props) {
 
   return (
     <EasyDialogContext.Provider value={{ openDialog }}>
-      <EasyDialog
-        open={dialogOpen}
-        title={dialogConfig.title}
-        onConfirm={onConfirm}
-        onDismiss={onDismiss}
-      >
-        {dialogConfig.children}
-      </EasyDialog>
+      {dialogOpen && (
+        <EasyDialog
+          open={dialogOpen}
+          title={dialogConfig.title}
+          onConfirm={onConfirm}
+          onDismiss={onDismiss}
+          dialogForm={dialogConfig.dialogForm}
+        />
+      )}
       {props.children}
     </EasyDialogContext.Provider>
   );
