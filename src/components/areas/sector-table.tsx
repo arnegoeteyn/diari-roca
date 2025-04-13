@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 
 type Props = {
   sectors: SectorWithRouteCount[];
+  onCreateSector: () => void;
 };
 export default function SectorTable(props: Props) {
   const sorted = props.sectors.sort((a, b) =>
@@ -18,7 +19,7 @@ export default function SectorTable(props: Props) {
   );
   return (
     <>
-      <Button>New sector</Button>
+      <Button onClick={props.onCreateSector}>New sector</Button>
       <Table>
         <TableHeader>
           <TableRow>
