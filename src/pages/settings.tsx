@@ -1,10 +1,10 @@
-import { Button } from "@/components/ui/button";
 import { addArea, putArea } from "@/lib/routes/areas";
 import { addAscent } from "@/lib/routes/ascents";
 import { clear } from "@/lib/routes/db";
 import { addRoute } from "@/lib/routes/routes";
 import { addSector } from "@/lib/routes/sectors";
 import { Area, Ascent, Route, Sector } from "@/lib/routes/types";
+import { Button } from "@mantine/core";
 import { useState } from "react";
 
 type Parsed = {
