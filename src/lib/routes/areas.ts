@@ -26,5 +26,6 @@ export async function getArea(
 
 export async function getAreas(): Promise<ID[]> {
   const db = await getDB();
-  return await db.getAllKeys("areas");
+  return await db.getAllKeysFromIndex("areas", "name");
+  // https://github.com/dexie/Dexie.js
 }
