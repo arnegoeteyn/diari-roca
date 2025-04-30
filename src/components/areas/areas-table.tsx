@@ -3,16 +3,23 @@ import { AreaOverview, ID } from "@/lib/routes/types";
 import { Button, Group, Table } from "@mantine/core";
 import SectorTable from "./sector-table";
 import { IconArrowRight, IconEdit, IconTrash } from "@tabler/icons-react";
+import { useState } from "react";
 
 type Props = {
   areas: AreaOverview[];
-  openedAreas: { [key: ID]: boolean };
 
-  onAreaSelect: (area: AreaOverview) => void;
   onAreaUpdate: (area: Area) => void;
   // onCreateSector: () => void;
 };
 export default function AreasTable(props: Props) {
+  const [openedAreas, setOpenedArea] = useState<{ [key: ID]: boolean }>({});
+
+  const onAreaSelect = (area: AreaOverview) => {
+    const id = area.area.id;
+    const current = openedAreas[id] ?? false;
+    setOpenedArea({ ...openedAreas, [id]: !current });
+  };
+
   return (
     <Table highlightOnHover>
       <Table.Thead>
@@ -26,7 +33,7 @@ export default function AreasTable(props: Props) {
       <Table.Tbody>
         {props.areas.map((overview) => (
           <>
-            <Table.Tr onClick={() => props.onAreaSelect(overview)}>
+            <Table.Tr onClick={() => onAreaSelect(overview)}>
               <Table.Td>{overview.area.name}</Table.Td>
               <Table.Td>{overview.area.country}</Table.Td>
               <Table.Td>{overview.sectors.length}</Table.Td>
@@ -50,7 +57,7 @@ export default function AreasTable(props: Props) {
               </Table.Td>
             </Table.Tr>
 
-            {props.openedAreas[overview.area.id] && (
+            {openedAreas[overview.area.id] && (
               <Table.Tr>
                 <Table.Td colSpan={3}>
                   <SectorTable

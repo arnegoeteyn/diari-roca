@@ -11,21 +11,11 @@ export default function Areas() {
   // const { easyDialog } = useConfirmationDialog();
 
   const [areas, loading, refetch] = useAreas();
-  const [openedAreas, setOpenedArea] = useState<{ [key: ID]: boolean }>({});
 
   const [modalArea, setModalArea] = useState<{ id?: ID; area?: Pre<Area> }>();
 
   const [areaModalOpen, { open: openAreaModal, close: closeAreaModal }] =
     useDisclosure(false);
-
-  const onAreaSelect = (area: AreaOverview) => {
-    if (area.sectors.length == 0) {
-      return;
-    }
-    const id = area.area.id;
-    const current = openedAreas[id] ?? false;
-    setOpenedArea({ ...openedAreas, [id]: !current });
-  };
 
   const saveArea = async (area: Pre<Area>) => {
     if (modalArea?.id) {
@@ -65,8 +55,6 @@ export default function Areas() {
       </div>
       <AreasTable
         areas={areas}
-        openedAreas={openedAreas}
-        onAreaSelect={onAreaSelect}
         onAreaUpdate={openEditAreaModal}
         // onCreateSector={() => opeEditSectorDialog()}
       />

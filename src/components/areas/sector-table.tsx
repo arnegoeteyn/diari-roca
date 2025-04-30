@@ -20,12 +20,16 @@ export default function SectorTable(props: Props) {
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
-          {sorted.map((sector) => (
-            <Table.Tr key={sector.sector.id}>
-              <Table.Td className="px-4">{sector.sector.name}</Table.Td>
-              <Table.Td>{sector.routeCount}</Table.Td>
-            </Table.Tr>
-          ))}
+          {props.sectors.length > 0 ? (
+            sorted.map((sector) => (
+              <Table.Tr key={sector.sector.id}>
+                <Table.Td className="px-4">{sector.sector.name}</Table.Td>
+                <Table.Td>{sector.routeCount}</Table.Td>
+              </Table.Tr>
+            ))
+          ) : (
+            <p>This area does not yet have any sectors</p>
+          )}
         </Table.Tbody>
       </Table>
     </>
