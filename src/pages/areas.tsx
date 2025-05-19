@@ -4,7 +4,7 @@ import { SectorForm } from "@/components/areas/sector-form";
 import useAreas from "@/hooks/use-areas";
 import { addArea, putArea } from "@/lib/routes/areas";
 import { addSector } from "@/lib/routes/sectors";
-import { Area, AreaOverview, ID, Pre, Sector } from "@/lib/routes/types";
+import { Area, ID, Pre, Sector } from "@/lib/routes/types";
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
@@ -18,7 +18,7 @@ export default function Areas() {
 
   const [modalSector, setModalSector] = useState<{
     id?: ID;
-    areaId?: ID;
+    fixedAreaId?: ID;
     sector?: Pre<Sector>;
   }>();
   const [sectorModalOpen, { open: openSectorModal, close: closeSectorModal }] =
@@ -44,18 +44,19 @@ export default function Areas() {
     openAreaModal();
   };
 
-  const saveSector = async (area: Pre<Sector>) => {
+  const saveSector = async (sector: Pre<Sector>) => {
+    console.log(sector);
     if (modalSector?.id) {
       await putSector({ ...sector, id: modalSector.id });
     } else {
-      await addSector(area);
+      await addSector(sector);
     }
     closeSectorModal();
     refetch();
   };
 
-  const openNewSectorModal = () => {
-    setModalSector({});
+  const openNewSectorModal = (areaId: number) => {
+    setModalSector({ fixedAreaId: areaId });
     openSectorModal();
   };
 
@@ -83,8 +84,9 @@ export default function Areas() {
       >
         <SectorForm
           sector={modalSector?.sector}
+          areas={areas.map((a) => a.area)}
           onSubmit={saveSector}
-          fixedAreaId={modalSector?.areaId}
+          fixedAreaId={modalSector?.fixedAreaId}
         />
       </Modal>
 

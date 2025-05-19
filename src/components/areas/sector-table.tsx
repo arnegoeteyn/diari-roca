@@ -28,7 +28,11 @@ export default function SectorTable(props: Props) {
               </Table.Tr>
             ))
           ) : (
-            <p>This area does not yet have any sectors</p>
+            <Table.Tr>
+              <Table.Td>
+                <p>This area does not yet have any sectors</p>
+              </Table.Td>
+            </Table.Tr>
           )}
         </Table.Tbody>
       </Table>
