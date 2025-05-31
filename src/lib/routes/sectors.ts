@@ -3,7 +3,6 @@ import { routeIdsForSector } from "./routes";
 import { ID, Pre, Sector } from "./types";
 
 export async function addSector(sector: Pre<Sector>) {
-  console.log("adding sector", sector);
   const db = await getDB();
   return db.add("sectors", sector);
 }
@@ -33,7 +32,6 @@ export async function sectorsForArea(
   const index = store.index("areaId");
 
   const keys = await index.getAllKeys(IDBKeyRange.bound(areaId, areaId));
-  console.log(areaId, keys);
 
   const sectors = Promise.all(
     keys.map(async (key) => {
