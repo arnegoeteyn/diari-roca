@@ -13,6 +13,7 @@ import { CollapseLayout } from "./layout/collapse-layout";
 const Routes = lazy(() => import("./pages/routes"));
 const Route = lazy(() => import("./pages/route"));
 const Areas = lazy(() => import("./pages/areas"));
+const Area = lazy(() => import("./pages/area"));
 const Settings = lazy(() => import("./pages/settings"));
 
 function App() {
@@ -28,6 +29,10 @@ function App() {
                 element={<Route />}
               ></RouterRoute>
               <RouterRoute path="/areas" element={<Areas />}></RouterRoute>
+              <RouterRoute
+                path="/areas/:areaId"
+                element={<Area />}
+              ></RouterRoute>
               <RouterRoute
                 path="/settings"
                 element={<Settings />}

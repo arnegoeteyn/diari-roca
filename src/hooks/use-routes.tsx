@@ -26,6 +26,7 @@ export default function useRoutes(props?: Props): [RouteOverview[], boolean] {
 
       let routes = [];
 
+      console.time("all" + props?.kind);
       routes = await Promise.all(
         routeKeys.map(async (key) => {
           const route = getRoute(transaction, key);
@@ -39,6 +40,7 @@ export default function useRoutes(props?: Props): [RouteOverview[], boolean] {
       }
 
       await transaction.done;
+      console.timeEnd("all" + props?.kind);
 
       setRoutes(routes);
       setLoading(false);

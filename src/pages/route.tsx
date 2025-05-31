@@ -1,4 +1,4 @@
-import { useRoute } from "@/hooks/useRoute";
+import { useRoute } from "@/hooks/use-route";
 import { Text } from "@mantine/core";
 import { useParams } from "react-router-dom";
 
