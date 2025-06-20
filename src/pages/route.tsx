@@ -1,6 +1,15 @@
+import RouteAscents from "@/components/routes/route-ascents";
+import RouteInformation from "@/components/routes/route-information";
 import { useRoute } from "@/hooks/use-route";
-import { Text } from "@mantine/core";
-import { useParams } from "react-router-dom";
+import {
+  Anchor,
+  Breadcrumbs,
+  Group,
+  SimpleGrid,
+  Text,
+  Title,
+} from "@mantine/core";
+import { Link, useParams } from "react-router-dom";
 
 export default function Route() {
   const { routeId } = useParams();
@@ -17,34 +26,29 @@ export default function Route() {
 
   return (
     <div>
-      <h1>
-        {route.route.name} ~ {route.route.grade} ({route.route.kind})
-      </h1>
-      <h2>
-        {route.sector.name} - {route.area.name}
-      </h2>
-      <p>{route.route.comment}</p>
-      {route.route.beta ? (
-        <Text>{route.route.beta}</Text>
-      ) : (
-        // <Accordion type="single" collapsible className="w-full">
-        //   <AccordionItem value="beta">
-        //     <AccordionTrigger>Route beta</AccordionTrigger>
-        //     <AccordionContent>{route.route.beta}</AccordionContent>
-        //   </AccordionItem>
-        // </Accordion>
-        <p>No beta for this route</p>
-      )}
+      <Breadcrumbs pb={4}>
+        <Anchor component={Link} to={`/areas/${route.area.id}`}>
+          {route.area.name}
+        </Anchor>
+        <Anchor component={Link} to={`/sectors/${route.sector.id}`}>
+          {route.sector.name}
+        </Anchor>
+      </Breadcrumbs>
 
-      <ul>
-        {route.ascents.map((ascent) => (
-          <div key={ascent.id}>
-            <p>
-              {ascent.date} - {ascent.kind}
-            </p>
-          </div>
-        ))}
-      </ul>
+      <Group>
+        <Title>{route.route.name}</Title>
+        <Title order={2} c="gray">
+          [{route.route.grade}/{route.route.kind}]
+        </Title>
+      </Group>
+
+      <SimpleGrid cols={{ sm: 1, lg: 2 }}>
+        <RouteInformation route={route.route} />
+        <div>
+          <RouteAscents ascents={route.ascents} />
+          <Text>hier komen later foto's</Text>
+        </div>
+      </SimpleGrid>
     </div>
   );
 }
