@@ -1,3 +1,4 @@
+import { PageTitle } from "@/components/page-title";
 import RouteAscents from "@/components/routes/route-ascents";
 import RouteInformation from "@/components/routes/route-information";
 import { useRoute } from "@/hooks/use-route";
@@ -35,12 +36,10 @@ export default function Route() {
         </Anchor>
       </Breadcrumbs>
 
-      <Group>
-        <Title>{route.route.name}</Title>
-        <Title order={2} c="gray">
-          [{route.route.grade}/{route.route.kind}]
-        </Title>
-      </Group>
+      <PageTitle
+        title={route.route.name}
+        subtitle={`${route.route.grade}/${route.route.kind}`}
+      />
 
       <SimpleGrid cols={{ sm: 1, lg: 2 }}>
         <RouteInformation route={route.route} />

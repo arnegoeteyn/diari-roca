@@ -1,5 +1,7 @@
+import { PageTitle } from "@/components/page-title";
 import useArea from "@/hooks/use-area";
 import { ID } from "@/lib/routes/types";
+import { Loader, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -8,7 +10,11 @@ function AreaContent(props: Props) {
   const { areaId } = props;
   const [area, loading, refetch] = useArea(areaId);
 
-  return loading ? <p>Loading</p> : <h1>{area.area.name}</h1>;
+  if (loading) {
+    return <Loader />;
+  }
+
+  return <PageTitle title={area.area.name} subtitle={area.area.country} />;
 }
 
 export default function Area() {
