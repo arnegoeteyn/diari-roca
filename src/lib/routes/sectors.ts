@@ -25,8 +25,8 @@ export type SectorWithRouteCount = {
   routeCount: number;
 };
 export async function sectorsForArea(
-  areaId: ID,
-  transcation: RouteTransaction
+  transcation: RouteTransaction,
+  areaId: ID
 ): Promise<SectorWithRouteCount[]> {
   const store = transcation.objectStore("sectors");
   const index = store.index("areaId");
