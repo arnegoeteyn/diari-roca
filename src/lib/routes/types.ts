@@ -1,6 +1,18 @@
 import { Url } from "url";
 import { SectorWithRouteCount } from "./sectors";
 
+export type Store = {
+  initialized: boolean;
+  data: {
+    areas: Map<ID, Area>;
+    sectors: Map<ID, Sector>;
+    routes: Map<ID, Route>;
+    ascents: Map<ID, Ascent>;
+  };
+};
+
+export type StoreData = Store["data"];
+
 export type ID = number;
 
 export type Pre<T> = Omit<T, "id">;

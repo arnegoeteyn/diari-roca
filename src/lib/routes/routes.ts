@@ -1,12 +1,26 @@
-import { getArea } from "./areas";
-import { ascentsForRoute } from "./ascents";
+import { getArea, getAreaCached } from "./areas";
+import { ascentsForRoute, ascentsForRouteCached } from "./ascents";
 import { getDB, RouteTransaction } from "./db";
-import { getSector } from "./sectors";
-import { ID, Pre, Route, RouteKind, RouteOverview } from "./types";
+import { getSector, getSectorCached } from "./sectors";
+import { ID, Pre, Route, RouteOverview, StoreData } from "./types";
 
 export async function addRoute(route: Pre<Route>) {
   const db = await getDB();
   db.add("routes", route);
+}
+
+export function getRouteCached(data: StoreData, id: ID): RouteOverview {
+  const route = data.routes.get(id);
+
+  if (!route) {
+    throw new Error("Route does not exist");
+  }
+
+  const ascents = ascentsForRouteCached(data, id);
+  const sector = getSectorCached(data, route.sectorId);
+  const area = getAreaCached(data, sector.areaId);
+
+  return { route, ascents, sector, area };
 }
 
 export async function getRoute(
@@ -35,19 +49,8 @@ export async function getRoute(
 }
 
 // add query or something
-export async function getRoutes(kind?: RouteKind): Promise<ID[]> {
-  const db = await getDB();
-  if (!kind) {
-    return (await db.getAllKeysFromIndex("routes", "grade")).reverse();
-  }
-
-  return (
-    await db.getAllKeysFromIndex(
-      "routes",
-      "kind",
-      IDBKeyRange.bound([kind, ""], [kind, "ZZZZZZZZZ"])
-    )
-  ).reverse();
+export function getRoutes(data: StoreData): RouteOverview[] {
+  return [...data.routes.keys()].map((id) => getRouteCached(data, id));
 }
 
 export async function routeIdsForSector(

@@ -1,5 +1,5 @@
 import { getDB, RouteTransaction } from "./db";
-import { Area, ID, Pre } from "./types";
+import { Area, ID, Pre, StoreData } from "./types";
 
 export async function addArea(area: Pre<Area>) {
   const db = await getDB();
@@ -22,6 +22,16 @@ export async function getArea(
   }
 
   return { ...area, id };
+}
+
+export function getAreaCached(data: StoreData, id: ID): Area {
+  const area = data.areas.get(id);
+
+  if (!area) {
+    throw new Error("Area does not exist");
+  }
+
+  return area;
 }
 
 export async function getAreas(): Promise<ID[]> {

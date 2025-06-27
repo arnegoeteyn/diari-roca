@@ -6,9 +6,11 @@ import {
   Route as RouterRoute,
   Routes as RouterRoutes,
 } from "react-router-dom";
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
 import { ConfirmationDialogProvider } from "./contexts/dialog-context-provider";
 import { CollapseLayout } from "./layout/collapse-layout";
+import { useStore } from "./hooks/use-store";
+import { load } from "./lib/routes/db";
 
 const Routes = lazy(() => import("./pages/routes"));
 const Route = lazy(() => import("./pages/route"));
@@ -17,6 +19,16 @@ const Area = lazy(() => import("./pages/area"));
 const Settings = lazy(() => import("./pages/settings"));
 
 function App() {
+  const setState = useStore((state) => state.setStore);
+
+  useEffect(() => {
+    const loadAndSet = async () => {
+      const state = await load();
+      setState(state);
+    };
+    loadAndSet();
+  }, [setState]);
+
   return (
     <MantineProvider>
       <ConfirmationDialogProvider>

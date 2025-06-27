@@ -1,5 +1,5 @@
 import { getDB, RouteTransaction } from "./db";
-import { Ascent, ID, Pre } from "./types";
+import { Ascent, ID, Pre, Store, StoreData } from "./types";
 
 export async function addAscent(ascent: Pre<Ascent>) {
   const db = await getDB();
@@ -30,4 +30,10 @@ export async function ascentsForRoute(
 
   const ascents = Promise.all(keys.map((key) => getAscent(key, transcation)));
   return ascents;
+}
+
+export function ascentsForRouteCached(data: StoreData, routeId: ID): Ascent[] {
+  return [...data.ascents.values()].filter(
+    (ascent) => ascent.routeId == routeId
+  );
 }

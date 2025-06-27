@@ -15,13 +15,13 @@ import { Link, useParams } from "react-router-dom";
 export default function Route() {
   const { routeId } = useParams();
 
-  const [route, loading] = useRoute(routeId);
+  const route = useRoute(routeId);
 
   if (Number.isNaN(routeId)) {
     return <p>Invalid routeId</p>;
   }
 
-  if (loading) {
+  if (!route) {
     return <p>loading</p>;
   }
 
