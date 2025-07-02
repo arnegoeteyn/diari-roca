@@ -3,7 +3,7 @@ import { getRoutes } from "@/lib/routes/routes";
 import { sectorsForArea } from "@/lib/routes/sectors";
 import { ID, Route, RouteKind, RouteOverview } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
-import { useStore } from "./use-store";
+import { useRoutesStore } from "./use-store";
 
 type Props = {
   sortBy?: (a: RouteOverview, b: RouteOverview) => number;
@@ -17,7 +17,7 @@ export const sortByGrade = (a: RouteOverview, b: RouteOverview) =>
 
 export default function useRoutes(props?: Props): RouteOverview[] {
   const [routes, setRoutes] = useState<RouteOverview[]>([]);
-  const store = useStore((store) => store.store);
+  const store = useRoutesStore((store) => store.store);
 
   const { sortBy, kind, filter, skip } = props || {};
 

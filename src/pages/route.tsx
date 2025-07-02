@@ -1,52 +1,46 @@
 import { PageTitle } from "@/components/page-title";
-import RouteActions, { ACTION } from "@/components/routes/route-actions";
+import RouteActions from "@/components/routes/route-actions";
 import RouteAscents from "@/components/routes/route-ascents";
+import RouteBreadcrumbs from "@/components/routes/route-breadcrumbs";
 import RouteInformation from "@/components/routes/route-information";
-import { useRoute } from "@/hooks/use-route";
-import { Anchor, Breadcrumbs, SimpleGrid, Stack, Text } from "@mantine/core";
-import { Link, useParams } from "react-router-dom";
+import {
+  RouteContextProvider,
+  useRouteContext,
+} from "@/contexts/route-context";
+import { SimpleGrid, Stack, Text } from "@mantine/core";
+import { useParams } from "react-router-dom";
 
-export default function Route() {
-  const { routeId } = useParams();
-
-  const route = useRoute(routeId);
-
-  if (Number.isNaN(routeId)) {
-    return <p>Invalid routeId</p>;
-  }
-
-  if (!route) {
-    return <p>loading</p>;
-  }
-
+export function RouteContent() {
+  const { route, ascents } = useRouteContext();
   return (
     <div>
-      <Breadcrumbs pb={4}>
-        <Anchor component={Link} to={`/areas/${route.area.id}`}>
-          {route.area.name}
-        </Anchor>
-        <Anchor component={Link} to={`/sectors/${route.sector.id}`}>
-          {route.sector.name}
-        </Anchor>
-      </Breadcrumbs>
-
-      <PageTitle
-        title={route.route.name}
-        subtitle={`${route.route.grade}/${route.route.kind}`}
-      />
+      <RouteBreadcrumbs />
+      <PageTitle title={route.name} subtitle={`${route.grade}/${route.kind}`} />
 
       <SimpleGrid cols={{ sm: 1, lg: 2 }}>
         <Stack>
-          <RouteInformation route={route.route} />
-          <RouteActions
-            shownActions={[ACTION.edit, ACTION.log, ACTION.delete]}
-          />
+          <RouteInformation route={route} />
+          <RouteActions hideVisitAction />
         </Stack>
         <div>
-          <RouteAscents ascents={route.ascents} />
+          <RouteAscents ascents={ascents} />
           <Text>hier komen later foto's</Text>
         </div>
       </SimpleGrid>
     </div>
+  );
+}
+
+export default function Route() {
+  const { routeId } = useParams();
+
+  if (!routeId) {
+    return <p>No route id</p>;
+  }
+
+  return (
+    <RouteContextProvider routeId={routeId}>
+      <RouteContent />
+    </RouteContextProvider>
   );
 }
