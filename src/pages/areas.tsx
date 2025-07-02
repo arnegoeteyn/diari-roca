@@ -10,7 +10,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 export default function Area() {
-  const [areas, loading, refetch] = useAreas();
+  const [areas, refetch] = useAreas();
 
   const [modalArea, setModalArea] = useState<{ id?: ID; area?: Pre<Area> }>();
   const [areaModalOpen, { open: openAreaModal, close: closeAreaModal }] =
@@ -64,9 +64,7 @@ export default function Area() {
     openAreaModal();
   };
 
-  return loading ? (
-    <p>loading</p>
-  ) : (
+  return (
     <>
       <Modal
         opened={!!areaModalOpen}

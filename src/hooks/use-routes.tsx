@@ -9,26 +9,11 @@ type Props = {
   sortBy?: (a: RouteOverview, b: RouteOverview) => number;
   kind?: RouteKind;
   filter?: (route: RouteOverview) => boolean;
-  skip?: boolean;
 };
 
-export function useAreaFilter(id: ID): [(route: Route) => boolean, boolean] {
-  const [filter, setFilter] = useState<(route: Route) => boolean>(() => false);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const calculate = async () => {
-      const transaction = await startTransaction(["sectors", "routes"]);
-      const sectors = await sectorsForArea(transaction, id).then((sectors) =>
-        sectors.map((sector) => sector.sector.id)
-      );
-      setFilter(() => (route: Route) => sectors.includes(route.sectorId));
-      setLoading(false);
-    };
-    calculate();
-  }, [id]);
-  return [filter, loading];
-}
+// Sort functions by comparing the grades. Sorts descending.
+export const sortByGrade = (a: RouteOverview, b: RouteOverview) =>
+  -a.route.grade.localeCompare(b.route.grade);
 
 export default function useRoutes(props?: Props): RouteOverview[] {
   const [routes, setRoutes] = useState<RouteOverview[]>([]);

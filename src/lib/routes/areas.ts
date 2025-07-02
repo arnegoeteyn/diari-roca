@@ -1,4 +1,4 @@
-import { getDB, RouteTransaction } from "./db";
+import { getDB } from "./db";
 import { Area, ID, Pre, StoreData } from "./types";
 
 export async function addArea(area: Pre<Area>) {
@@ -11,20 +11,7 @@ export async function putArea(area: Area) {
   db.put("areas", area);
 }
 
-export async function getArea(
-  transaction: RouteTransaction,
-  id: ID
-): Promise<Area> {
-  const area = await transaction.objectStore("areas").get(id);
-
-  if (!area) {
-    throw new Error("Area does not exist");
-  }
-
-  return { ...area, id };
-}
-
-export function getAreaCached(data: StoreData, id: ID): Area {
+export function getArea(data: StoreData, id: ID): Area {
   const area = data.areas.get(id);
 
   if (!area) {
@@ -34,8 +21,6 @@ export function getAreaCached(data: StoreData, id: ID): Area {
   return area;
 }
 
-export async function getAreas(): Promise<ID[]> {
-  const db = await getDB();
-  return await db.getAllKeysFromIndex("areas", "name");
-  // https://github.com/dexie/Dexie.js
+export function getAreas(data: StoreData): Area[] {
+  return [...data.areas.keys()].map((id) => getArea(data, id));
 }
