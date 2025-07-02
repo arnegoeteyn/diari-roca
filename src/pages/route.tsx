@@ -1,15 +1,9 @@
 import { PageTitle } from "@/components/page-title";
+import RouteActions, { ACTION } from "@/components/routes/route-actions";
 import RouteAscents from "@/components/routes/route-ascents";
 import RouteInformation from "@/components/routes/route-information";
 import { useRoute } from "@/hooks/use-route";
-import {
-  Anchor,
-  Breadcrumbs,
-  Group,
-  SimpleGrid,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Anchor, Breadcrumbs, SimpleGrid, Stack, Text } from "@mantine/core";
 import { Link, useParams } from "react-router-dom";
 
 export default function Route() {
@@ -42,7 +36,12 @@ export default function Route() {
       />
 
       <SimpleGrid cols={{ sm: 1, lg: 2 }}>
-        <RouteInformation route={route.route} />
+        <Stack>
+          <RouteInformation route={route.route} />
+          <RouteActions
+            shownActions={[ACTION.edit, ACTION.log, ACTION.delete]}
+          />
+        </Stack>
         <div>
           <RouteAscents ascents={route.ascents} />
           <Text>hier komen later foto's</Text>
