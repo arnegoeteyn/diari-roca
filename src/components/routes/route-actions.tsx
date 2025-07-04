@@ -4,6 +4,7 @@ import { ArrowRight, Edit, PlusCircle, Trash } from "lucide-react";
 import { ReactElement } from "react";
 import RouteForm from "./route-form";
 import { useRouteContext } from "@/contexts/route-context";
+import { useRoutesStore } from "@/hooks/use-store";
 
 type Props = {
   hideVisitAction?: boolean;
@@ -20,6 +21,7 @@ type Action = {
 export default function RouteActions(props: Props) {
   const { hideVisitAction } = props;
   const { route, updateRoute } = useRouteContext();
+  const allSectors = useRoutesStore((store) => store.store.data.sectors);
 
   const [routeOpened, { open: routeOpen, close: routeClose }] =
     useDisclosure(false);
@@ -42,6 +44,7 @@ export default function RouteActions(props: Props) {
       >
         <RouteForm
           route={route}
+          sectors={[...allSectors.values()]}
           onSubmit={(update) => {
             updateRoute({ ...update, id: route.id }).then(routeClose);
           }}
