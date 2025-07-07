@@ -2,6 +2,7 @@ import { useRoute } from "@/hooks/use-route";
 import { useRoutesStore } from "@/hooks/use-store";
 import { Route, RouteOverview } from "@/lib/routes/types";
 import { Loader } from "@mantine/core";
+import { useIsFirstRender } from "@mantine/hooks";
 import React from "react";
 
 export type RouteContextType = RouteOverview & {
@@ -23,6 +24,7 @@ export function RouteContextProvider(props: Props) {
   const updateRoute = (route: Route) => putRoute(route);
 
   if (!route) {
+    console.warn("no route");
     return <Loader />;
   }
 

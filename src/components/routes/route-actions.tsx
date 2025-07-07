@@ -1,13 +1,15 @@
 import { Button, ButtonProps, Group, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { ArrowRight, Edit, PlusCircle, Trash } from "lucide-react";
-import { ReactElement } from "react";
+import { ReactElement, useCallback } from "react";
 import RouteForm from "./route-form";
 import { useRouteContext } from "@/contexts/route-context";
 import { useRoutesStore } from "@/hooks/use-store";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   hideVisitAction?: boolean;
+  compact?: boolean;
 };
 
 type Action = {
@@ -19,18 +21,30 @@ type Action = {
 };
 
 export default function RouteActions(props: Props) {
-  const { hideVisitAction } = props;
+  const { hideVisitAction, compact } = props;
   const { route, updateRoute } = useRouteContext();
   const allSectors = useRoutesStore((store) => store.store.data.sectors);
 
   const [routeOpened, { open: routeOpen, close: routeClose }] =
     useDisclosure(false);
 
+  const navigate = useNavigate();
+
+  const visitRoute = useCallback(
+    () => navigate(`/routes/${route.id}`),
+    [route.id]
+  );
+
   const actions: Record<string, Action> = {
     edit: { icon: <Edit />, title: "Edit", action: routeOpen },
     log: { icon: <PlusCircle />, title: "Log" },
     delete: { icon: <Trash />, title: "Delete", color: "red" },
-    visit: { icon: <ArrowRight />, title: "Go", hidden: hideVisitAction },
+    visit: {
+      icon: <ArrowRight />,
+      title: "Go",
+      hidden: hideVisitAction,
+      action: visitRoute,
+    },
   };
 
   const shownActions = Object.values(actions).filter((a) => !a.hidden);
@@ -55,10 +69,10 @@ export default function RouteActions(props: Props) {
           <Button
             key={action.title}
             onClick={action.action}
-            leftSection={action.icon}
+            leftSection={compact ? null : action.icon}
             color={action.color}
           >
-            {action.title}
+            {compact ? action.icon : action.title}
           </Button>
         ))}
       </Group>
