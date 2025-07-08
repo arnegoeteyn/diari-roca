@@ -43,6 +43,20 @@ const kindToBadge = {
 };
 
 export default function RouteAscents({ ascents }: Props) {
+  if (ascents.length == 0) {
+    return (
+      <Box
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100px",
+        }}
+      >
+        <Text c="dimmed">No ascents recorded yet.</Text>
+      </Box>
+    );
+  }
   const sorted = ascents.sort((a, b) => -a.date.localeCompare(b.date));
   return (
     <Stack>
