@@ -1,4 +1,3 @@
-import { Url } from "url";
 import { SectorWithRouteCount } from "./sectors";
 
 export type Store = {
@@ -42,7 +41,7 @@ export type RouteOverview = {
 
 export type Media = {
   label?: string;
-  link: Url;
+  link: string;
 };
 
 export enum AscentKind {
