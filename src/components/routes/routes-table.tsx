@@ -53,7 +53,7 @@ export default function RouteTable(props: Props) {
               <Table.Td>{route.route.name}</Table.Td>
               {props.showKind && <Table.Td>{route.route.kind}</Table.Td>}
               <Table.Td>
-                <Group>
+                <Group wrap="nowrap">
                   <Text>{route.ascents.length}</Text>
                   {ascentBadge(route.ascents)}
                 </Group>
