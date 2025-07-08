@@ -11,7 +11,7 @@ type Props = { areaId: ID };
 function AreaContent(props: Props) {
   const { areaId } = props;
 
-  const [area, refetch] = useArea(areaId);
+  const [area] = useArea(areaId);
   console.log(area, !!area);
 
   const routes = useRoutes({

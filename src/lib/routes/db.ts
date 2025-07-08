@@ -6,7 +6,6 @@ import {
   Route,
   RouteKind,
   Sector,
-  Store,
   StoreData,
 } from "./types";
 import {

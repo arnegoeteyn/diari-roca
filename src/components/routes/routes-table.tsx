@@ -1,12 +1,9 @@
 import { Ascent, RouteOverview } from "@/lib/routes/types";
-import { Edit, Trash, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Button, Group, Pagination, Table } from "@mantine/core";
+import { Group, Pagination, Table } from "@mantine/core";
 import { useState } from "react";
 import RouteActions from "./route-actions";
 import { RouteContextProvider } from "@/contexts/route-context";
 import AscentBadge from "../ascents/ascent-badge";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { useIsMedium } from "@/hooks/use-medium";
 
 type Props = {

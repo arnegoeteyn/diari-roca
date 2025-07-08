@@ -1,6 +1,5 @@
 import { useRoute } from "@/hooks/use-route";
 import { useRoutesStore } from "@/hooks/use-store";
-import { addAscent } from "@/lib/routes/ascents";
 import {
   Ascent,
   AscentBody,

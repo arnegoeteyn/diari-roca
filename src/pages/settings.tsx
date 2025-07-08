@@ -1,4 +1,4 @@
-import { addArea, putArea } from "@/lib/routes/areas";
+import { putArea } from "@/lib/routes/areas";
 import { addAscent } from "@/lib/routes/ascents";
 import { clear } from "@/lib/routes/db";
 import { addRoute } from "@/lib/routes/routes";

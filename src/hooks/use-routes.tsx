@@ -1,7 +1,5 @@
-import { startTransaction } from "@/lib/routes/db";
 import { getRoutes } from "@/lib/routes/routes";
-import { sectorsForArea } from "@/lib/routes/sectors";
-import { ID, Route, RouteKind, RouteOverview } from "@/lib/routes/types";
+import { RouteKind, RouteOverview } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
 import { useRoutesStore } from "./use-store";
 
@@ -19,7 +17,7 @@ export default function useRoutes(props?: Props): RouteOverview[] {
   const [routes, setRoutes] = useState<RouteOverview[]>([]);
   const store = useRoutesStore((store) => store.store);
 
-  const { sortBy, kind, filter, skip } = props || {};
+  const { sortBy, kind, filter } = props || {};
 
   // todo, query can happen here or something?
   useEffect(() => {
@@ -33,7 +31,7 @@ export default function useRoutes(props?: Props): RouteOverview[] {
     const sorted = sortBy ? filtered.sort(sortBy) : filtered;
 
     setRoutes(sorted);
-  }, [filter, kind, skip, sortBy, store]);
+  }, [filter, kind, sortBy, store]);
 
   return routes;
 }

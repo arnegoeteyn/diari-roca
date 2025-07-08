@@ -1,5 +1,5 @@
 import { Route } from "@/lib/routes/types";
-import { Box, Text, Textarea } from "@mantine/core";
+import { Text } from "@mantine/core";
 
 type Props = {
   route: Route;
