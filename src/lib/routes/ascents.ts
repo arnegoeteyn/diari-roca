@@ -1,9 +1,9 @@
 import { getDB, RouteTransaction } from "./db";
-import { Ascent, ID, Pre, Store, StoreData } from "./types";
+import { Ascent, ID, Pre, StoreData } from "./types";
 
-export async function addAscent(ascent: Pre<Ascent>) {
+export async function addAscent(ascent: Pre<Ascent>): Promise<ID> {
   const db = await getDB();
-  db.add("ascents", ascent);
+  return db.add("ascents", ascent);
 }
 
 export async function getAscent(
