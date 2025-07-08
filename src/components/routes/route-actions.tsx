@@ -7,6 +7,8 @@ import { useRouteContext } from "@/contexts/route-context";
 import { useRoutesStore } from "@/hooks/use-store";
 import { useNavigate } from "react-router-dom";
 import AscentForm from "../ascents/ascent-form";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useIsSmall } from "@/hooks/use-small";
 
 type Props = {
   hideVisitAction?: boolean;
@@ -25,6 +27,8 @@ export default function RouteActions(props: Props) {
   const { hideVisitAction, compact } = props;
   const { route, updateRoute, logAscent } = useRouteContext();
   const allSectors = useRoutesStore((store) => store.store.data.sectors);
+
+  const isMobile = useIsSmall();
 
   const [routeOpened, { open: routeOpen, close: routeClose }] =
     useDisclosure(false);
@@ -77,9 +81,11 @@ export default function RouteActions(props: Props) {
           }}
         />
       </Modal>
-      <Group>
+      <Group gap="xs">
         {shownActions.map((action) => (
           <Button
+            variant="subtle"
+            size={isMobile ? "xs" : "md"}
             key={action.title}
             onClick={action.action}
             leftSection={compact ? null : action.icon}
