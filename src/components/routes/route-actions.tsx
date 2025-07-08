@@ -6,6 +6,7 @@ import RouteForm from "./route-form";
 import { useRouteContext } from "@/contexts/route-context";
 import { useRoutesStore } from "@/hooks/use-store";
 import { useNavigate } from "react-router-dom";
+import AscentForm from "../ascents/ascent-form";
 
 type Props = {
   hideVisitAction?: boolean;
@@ -27,6 +28,7 @@ export default function RouteActions(props: Props) {
 
   const [routeOpened, { open: routeOpen, close: routeClose }] =
     useDisclosure(false);
+  const [logOpened, { open: logOpen, close: logClose }] = useDisclosure(false);
 
   const navigate = useNavigate();
 
@@ -37,7 +39,7 @@ export default function RouteActions(props: Props) {
 
   const actions: Record<string, Action> = {
     edit: { icon: <Edit />, title: "Edit", action: routeOpen },
-    log: { icon: <PlusCircle />, title: "Log" },
+    log: { icon: <PlusCircle />, title: "Log", action: logOpen },
     delete: { icon: <Trash />, title: "Delete", color: "red" },
     visit: {
       icon: <ArrowRight />,
@@ -61,6 +63,19 @@ export default function RouteActions(props: Props) {
           sectors={[...allSectors.values()]}
           onSubmit={(update) => {
             updateRoute({ ...update, id: route.id }).then(routeClose);
+          }}
+        />
+      </Modal>
+      <Modal
+        opened={logOpened}
+        onClose={() => logClose()}
+        title={`Log "${route.name}"`}
+      >
+        <AscentForm
+          routeId={route.id}
+          onSubmit={(update) => {
+            console.log(update);
+            // update({ ...update, id: route.id }).then(routeClose);
           }}
         />
       </Modal>
