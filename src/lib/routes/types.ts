@@ -47,6 +47,7 @@ export type Media = {
 
 export enum AscentKind {
   Onsight = "onsight",
+  Flash = "flash",
   Repeat = "repeat",
   SecondGo = "secondgo",
   Redpoint = "redpoint",
