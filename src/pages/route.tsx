@@ -1,6 +1,6 @@
 import { PageTitle } from "@/components/page-title";
 import RouteActions from "@/components/routes/route-actions";
-import RouteAscents from "@/components/routes/route-ascents";
+import AscentsList from "@/components/ascents/ascents-list";
 import RouteBreadcrumbs from "@/components/routes/route-breadcrumbs";
 import RouteInformation from "@/components/routes/route-information";
 import {
@@ -24,7 +24,7 @@ export function RouteContent() {
           <Text>hier komen later foto's</Text>
         </Stack>
         <div>
-          <RouteAscents ascents={ascents} />
+          <AscentsList ascents={ascents} />
         </div>
       </SimpleGrid>
     </div>
