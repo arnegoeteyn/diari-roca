@@ -1,5 +1,5 @@
 import { Ascent, RouteOverview } from "@/lib/routes/types";
-import { Group, Pagination, Table } from "@mantine/core";
+import { Group, Pagination, Table, Text } from "@mantine/core";
 import { useState } from "react";
 import RouteActions from "./route-actions";
 import { RouteContextProvider } from "@/contexts/route-context";
@@ -48,13 +48,13 @@ export default function RouteTable(props: Props) {
           {shownRoutes().map((route) => (
             <Table.Tr key={route.route.id}>
               <Table.Td align="left" className="font-medium">
-                {route.route.grade}
+                <Text>{route.route.grade}</Text>
               </Table.Td>
               <Table.Td>{route.route.name}</Table.Td>
               {props.showKind && <Table.Td>{route.route.kind}</Table.Td>}
               <Table.Td>
                 <Group>
-                  {route.ascents.length}
+                  <Text>{route.ascents.length}</Text>
                   {ascentBadge(route.ascents)}
                 </Group>
               </Table.Td>
