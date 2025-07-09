@@ -3,7 +3,6 @@ import { Pagination, Stack, Table, Text } from "@mantine/core";
 import { useState } from "react";
 import AscentBadge from "../ascents/ascent-badge";
 import RouteBreadcrumbs from "../routes/route-breadcrumbs";
-import { RouteContextProvider } from "@/contexts/route-context";
 
 type Props = {
   ascents: AscentOverview[];
