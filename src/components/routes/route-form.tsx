@@ -1,19 +1,43 @@
-import { Pre, Route, Sector } from "@/lib/routes/types";
+import { Pre, Route, RouteKind, Sector, ID } from "@/lib/routes/types";
 import { Button, Group, Select, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
 type Props = {
-  route: Pre<Route>;
+  route?: Pre<Route>;
   sectors: Sector[];
   onSubmit: (route: Pre<Route>) => void;
 };
 
+type FormRoute = Required<Omit<Pre<Route>, "sectorId"> & { sectorId: string }>;
+
+const initialValuesFromRoute = (
+  defaultSectorId: ID,
+  route?: Pre<Route>
+): FormRoute => {
+  const safeRoute: Pre<Route> = route
+    ? route
+    : {
+        name: "",
+        grade: "",
+        kind: RouteKind.Sport,
+        media: [],
+        sectorId: defaultSectorId,
+      };
+
+  return {
+    ...safeRoute,
+    comment: "",
+    beta: "",
+    sectorId: safeRoute.sectorId.toString(),
+  };
+};
+
 export default function RouteForm(props: Props) {
-  const { route } = props;
+  const { route, sectors } = props;
 
   const form = useForm({
     mode: "controlled",
-    initialValues: { ...route, sectorId: route.sectorId.toString() },
+    initialValues: initialValuesFromRoute(sectors[0].id, route),
     validate: {
       name: (value) => (value.length > 0 ? null : "Name can not be empty"),
     },

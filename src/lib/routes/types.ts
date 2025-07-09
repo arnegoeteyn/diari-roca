@@ -21,15 +21,18 @@ export enum RouteKind {
   Boulder = "boulder",
 }
 
-export type Route = {
-  id: ID;
-  sectorId: ID;
+export type RouteBody = {
   name: string;
   grade: string;
   comment?: string;
   beta?: string;
   media: Media[];
   kind: RouteKind;
+};
+
+export type Route = RouteBody & {
+  id: ID;
+  sectorId: ID;
 };
 
 export type RouteOverview = {
@@ -74,6 +77,12 @@ export type Sector = {
   id: ID;
   areaId: ID;
   name: string;
+};
+
+export type SectorOverview = {
+  routes: Route[];
+  sector: Sector;
+  area: Area;
 };
 
 export type Area = {
