@@ -1,38 +1,28 @@
-import { getDB, RouteTransaction } from "./db";
-import { Ascent, ID, Pre, StoreData } from "./types";
+import { getDB } from "./db";
+import { getRoute } from "./routes";
+import { Ascent, AscentOverview, ID, Pre, StoreData } from "./types";
 
 export async function addAscent(ascent: Pre<Ascent>): Promise<ID> {
   const db = await getDB();
   return db.add("ascents", ascent);
 }
+export function getAscents(data: StoreData): AscentOverview[] {
+  return [...data.ascents.keys()].map((id) => getAscent(data, id));
+}
 
-export async function getAscent(
-  id: ID,
-  transaction: RouteTransaction
-): Promise<Ascent> {
-  const ascent = await transaction.objectStore("ascents").get(id);
+export function getAscent(data: StoreData, id: ID): AscentOverview {
+  const ascent = data.ascents.get(id);
 
   if (!ascent) {
-    throw new Error("Route does not exist");
+    throw new Error("Ascent does not exist");
   }
 
-  return { ...ascent, id };
+  const routeOverview = getRoute(data, ascent.routeId);
+
+  return { ascent, ...routeOverview };
 }
 
-export async function ascentsForRoute(
-  routeId: ID,
-  transcation: RouteTransaction
-): Promise<Ascent[]> {
-  const store = transcation.objectStore("ascents");
-  const index = store.index("routeId");
-
-  const keys = await index.getAllKeys(IDBKeyRange.bound(routeId, routeId));
-
-  const ascents = Promise.all(keys.map((key) => getAscent(key, transcation)));
-  return ascents;
-}
-
-export function ascentsForRouteCached(data: StoreData, routeId: ID): Ascent[] {
+export function ascentsForRoute(data: StoreData, routeId: ID): Ascent[] {
   return [...data.ascents.values()].filter(
     (ascent) => ascent.routeId == routeId
   );
