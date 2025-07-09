@@ -50,6 +50,10 @@ export function RouteContextProvider(props: Props) {
   );
 }
 
+export function useOptionalRouteContext(): RouteContextType | undefined {
+  return React.useContext(RouteContext);
+}
+
 export function useRouteContext(): RouteContextType {
   const context = React.useContext(RouteContext);
   if (context === undefined) {
