@@ -20,8 +20,6 @@ export default function AscentsOverviewTable(props: Props) {
       (page + 1) * ASCENTS_PER_PAGE
     );
   };
-  console.log(props.ascents);
-  console.log(shownAscents());
 
   return (
     <Stack>
