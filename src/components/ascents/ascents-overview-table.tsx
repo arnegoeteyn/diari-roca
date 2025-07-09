@@ -9,15 +9,15 @@ type Props = {
   ascents: AscentOverview[];
 };
 
-const ROUTES_PER_PAGE = 25;
+const ASCENTS_PER_PAGE = 25;
 
 export default function AscentsOverviewTable(props: Props) {
   const [page, setPage] = useState<number>(0);
 
   const shownAscents = () => {
     return props.ascents.slice(
-      page * ROUTES_PER_PAGE,
-      (page + 1) * ROUTES_PER_PAGE
+      page * ASCENTS_PER_PAGE,
+      (page + 1) * ASCENTS_PER_PAGE
     );
   };
   console.log(props.ascents);
@@ -58,7 +58,7 @@ export default function AscentsOverviewTable(props: Props) {
       <Pagination
         value={page + 1}
         onChange={(p) => setPage(p - 1)}
-        total={Math.ceil(props.ascents.length / ROUTES_PER_PAGE)}
+        total={Math.ceil(props.ascents.length / ASCENTS_PER_PAGE)}
       />
     </Stack>
   );
