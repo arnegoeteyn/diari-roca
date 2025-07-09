@@ -1,6 +1,7 @@
 import { AppShell, Burger, Group, NavLink } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowUp, IconSettings, IconWorld } from "@tabler/icons-react";
+import { ArrowUp, Globe, Settings, Zap } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export function CollapseLayout({ children }: { children: React.ReactNode }) {
@@ -43,21 +44,28 @@ export function CollapseLayout({ children }: { children: React.ReactNode }) {
           component={Link}
           to="routes"
           label="Routes"
-          leftSection={<IconArrowUp />}
+          leftSection={<ArrowUp />}
           active={isActive("routes")}
+        />
+        <NavLink
+          component={Link}
+          to="ascents"
+          label="Ascents"
+          leftSection={<Zap />}
+          active={isActive("ascents")}
         />
         <NavLink
           component={Link}
           to="areas"
           label="Areas"
-          leftSection={<IconWorld />}
+          leftSection={<Globe />}
           active={isActive("areas")}
         />
         <NavLink
           component={Link}
           to="settings"
           label="Settings"
-          leftSection={<IconSettings />}
+          leftSection={<Settings />}
           active={isActive("settings")}
         />
       </AppShell.Navbar>
