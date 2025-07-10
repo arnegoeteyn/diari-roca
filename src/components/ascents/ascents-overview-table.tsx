@@ -1,5 +1,13 @@
-import { AscentOverview } from "@/lib/routes/types";
-import { Anchor, Pagination, Stack, Table, Text } from "@mantine/core";
+import { Ascent, AscentOverview, ID, Trip } from "@/lib/routes/types";
+import {
+  Anchor,
+  DefaultMantineColor,
+  Pagination,
+  Stack,
+  StyleProp,
+  Table,
+  Text,
+} from "@mantine/core";
 import { useState } from "react";
 import AscentBadge from "../ascents/ascent-badge";
 import RouteBreadcrumbs from "../routes/route-breadcrumbs";
@@ -7,12 +15,42 @@ import { Link } from "react-router-dom";
 
 type Props = {
   ascents: AscentOverview[];
+  trips: Trip[];
 };
 
 const ASCENTS_PER_PAGE = 25;
 
+const TRIP_COLORS: StyleProp<DefaultMantineColor>[] = [
+  "yellow",
+  "blue",
+  "cyan",
+  "grape",
+  "pink",
+];
+
+const colorForTrip = (trip?: Trip) =>
+  trip ? TRIP_COLORS[trip.id % TRIP_COLORS.length] : undefined;
+
+const tripForAscent = (trips: Trip[], ascent: Ascent): Trip | undefined => {
+  for (const trip of trips) {
+    if (trip.from <= ascent.date && trip.to >= ascent.date) {
+      return trip;
+    }
+  }
+  return;
+};
+
 export default function AscentsOverviewTable(props: Props) {
   const [page, setPage] = useState<number>(0);
+
+  if (props.ascents.length > 0) {
+    console.log(props.ascents[0]);
+    console.log(props.ascents);
+    const a = props.ascents[0];
+
+    console.log(a);
+    console.log(tripForAscent(props.trips, a.ascent));
+  }
 
   const shownAscents = () => {
     return props.ascents.slice(
@@ -36,7 +74,11 @@ export default function AscentsOverviewTable(props: Props) {
           {shownAscents().map((ascent) => (
             <Table.Tr key={ascent.ascent.id}>
               <Table.Td align="left" className="font-medium">
-                <Text>{ascent.ascent.date}</Text>
+                <Text
+                  c={colorForTrip(tripForAscent(props.trips, ascent.ascent))}
+                >
+                  {ascent.ascent.date}
+                </Text>
               </Table.Td>
               <Table.Td>
                 <Anchor component={Link} to={`/routes/${ascent.route.id}`}>
