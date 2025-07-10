@@ -49,6 +49,11 @@ export default function RouteForm(props: Props) {
     label: sector.name,
   }));
 
+  const routeKindOptions = Object.values(RouteKind).map((kind) => ({
+    value: kind,
+    label: kind.charAt(0).toUpperCase() + kind.slice(1), // Capitalize the first letter
+  }));
+
   const onSubmit = (
     route: Omit<Pre<Route>, "sectorId"> & { sectorId: string }
   ) => {
@@ -69,6 +74,12 @@ export default function RouteForm(props: Props) {
         label="Grade"
         key={form.key("grade")}
         {...form.getInputProps("grade")}
+      />
+      <Select
+        label="Kind"
+        placeholder="Pick one"
+        data={routeKindOptions}
+        {...form.getInputProps("kind")}
       />
       <Textarea
         autosize
