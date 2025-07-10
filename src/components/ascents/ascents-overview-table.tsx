@@ -1,8 +1,9 @@
 import { AscentOverview } from "@/lib/routes/types";
-import { Pagination, Stack, Table, Text } from "@mantine/core";
+import { Anchor, Pagination, Stack, Table, Text } from "@mantine/core";
 import { useState } from "react";
 import AscentBadge from "../ascents/ascent-badge";
 import RouteBreadcrumbs from "../routes/route-breadcrumbs";
+import { Link } from "react-router-dom";
 
 type Props = {
   ascents: AscentOverview[];
@@ -38,7 +39,9 @@ export default function AscentsOverviewTable(props: Props) {
                 <Text>{ascent.ascent.date}</Text>
               </Table.Td>
               <Table.Td>
-                <Text>{`${ascent.route.name} (${ascent.route.grade})`}</Text>
+                <Anchor component={Link} to={`/routes/${ascent.route.id}`}>
+                  {`${ascent.route.name} (${ascent.route.grade})`}
+                </Anchor>
               </Table.Td>
               <Table.Td>
                 <RouteBreadcrumbs area={ascent.area} sector={ascent.sector} />
