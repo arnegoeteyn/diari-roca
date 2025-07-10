@@ -7,6 +7,7 @@ import {
   RouteKind,
   Sector,
   StoreData,
+  Trip,
 } from "./types";
 import {
   DBSchema,
@@ -41,6 +42,10 @@ interface RoutesDB extends DBSchema {
     value: Pre<Area>;
     indexes: { name: string };
   };
+  trips: {
+    key: ID;
+    value: Pre<Trip>;
+  };
 }
 
 export type RouteTransaction = IDBPTransaction<
@@ -49,7 +54,7 @@ export type RouteTransaction = IDBPTransaction<
 >;
 
 export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
-  const db = await openDB<RoutesDB>("routes", 10, {
+  const db = await openDB<RoutesDB>("routes", 11, {
     upgrade(db, _oldVersion, _newVersion, transaction) {
       const stores = db.objectStoreNames;
       if (!stores.contains("routes")) {
@@ -107,12 +112,18 @@ export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
       if (!areasStore.indexNames.contains("name")) {
         areasStore.createIndex("name", "name");
       }
+
+      if (!stores.contains("trips")) {
+        db.createObjectStore("trips", {
+          keyPath: "id",
+          autoIncrement: true,
+        });
+      }
     },
   });
   return db;
 }
 
-// getAll<Name extends StoreNames<DBTypes>>(storeName: Name, query?: StoreKey<DBTypes, Name> | IDBKeyRange | null, count?: number): Promise<StoreValue<DBTypes, Name>[]>;
 async function loadSet<Name extends StoreNames<RoutesDB>>(
   db: IDBPDatabase<RoutesDB>,
   name: Name
@@ -144,6 +155,7 @@ export async function load(): Promise<StoreData> {
   const sectors = await loadSet(db, "sectors");
   const routes = await loadSet(db, "routes");
   const ascents = await loadSet(db, "ascents");
+  const trips = await loadSet(db, "trips");
 
   console.timeEnd("load db");
   return {
@@ -151,6 +163,7 @@ export async function load(): Promise<StoreData> {
     sectors,
     routes,
     ascents,
+    trips,
   };
 }
 
@@ -167,4 +180,5 @@ export async function clear(): Promise<void> {
   db.clear("ascents");
   db.clear("areas");
   db.clear("sectors");
+  db.clear("trips");
 }
