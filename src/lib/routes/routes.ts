@@ -6,7 +6,7 @@ import { ID, Pre, Route, RouteOverview, StoreData } from "./types";
 
 export async function addRoute(route: Pre<Route>) {
   const db = await getDB();
-  db.add("routes", route);
+  return db.add("routes", route);
 }
 
 export async function putRoute(route: Route) {
