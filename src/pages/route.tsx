@@ -1,10 +1,5 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { useRoute } from "@/hooks/useRoute";
+import { Text } from "@mantine/core";
 import { useParams } from "react-router-dom";
 
 export default function Route() {
@@ -30,13 +25,14 @@ export default function Route() {
       </h2>
       <p>{route.route.comment}</p>
       {route.route.beta ? (
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="beta">
-            <AccordionTrigger>Route beta</AccordionTrigger>
-            <AccordionContent>{route.route.beta}</AccordionContent>
-          </AccordionItem>
-        </Accordion>
+        <Text>{route.route.beta}</Text>
       ) : (
+        // <Accordion type="single" collapsible className="w-full">
+        //   <AccordionItem value="beta">
+        //     <AccordionTrigger>Route beta</AccordionTrigger>
+        //     <AccordionContent>{route.route.beta}</AccordionContent>
+        //   </AccordionItem>
+        // </Accordion>
         <p>No beta for this route</p>
       )}
 

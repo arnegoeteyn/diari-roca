@@ -1,8 +1,7 @@
 import RouteTable from "@/components/routes-table";
-import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import useRoutes from "@/hooks/use-routes";
-import { TabsList } from "@radix-ui/react-tabs";
 import { RouteKind } from "@/lib/routes/types";
+import { Tabs } from "@mantine/core";
 
 const routesParam = { kind: RouteKind.Sport };
 const boulderParams = { kind: RouteKind.Boulder };
@@ -14,16 +13,16 @@ export default function Routes() {
   return (
     <div>
       <Tabs defaultValue="sport">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="sport">Routes</TabsTrigger>
-          <TabsTrigger value="boulder">Boulders</TabsTrigger>
-        </TabsList>
-        <TabsContent value="sport">
+        <Tabs.List>
+          <Tabs.Tab value="sport">Routes</Tabs.Tab>
+          <Tabs.Tab value="boulder">Boulders</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="sport">
           <RouteTable routes={routes} />
-        </TabsContent>
-        <TabsContent value="boulder">
+        </Tabs.Panel>
+        <Tabs.Panel value="boulder">
           <RouteTable routes={boulders} />
-        </TabsContent>
+        </Tabs.Panel>
       </Tabs>
     </div>
   );

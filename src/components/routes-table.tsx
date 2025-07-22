@@ -1,15 +1,7 @@
 import { RouteOverview } from "@/lib/routes/types";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "./ui/table";
 import { Edit, Trash, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Button, buttonVariants } from "./ui/button";
+import { Button, Group, Table } from "@mantine/core";
 
 type Props = {
   routes: RouteOverview[];
@@ -18,44 +10,43 @@ type Props = {
 
 export default function RouteTable(props: Props) {
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="text-center">Grade</TableHead>
-          <TableHead className="text-center">Name</TableHead>
-          {props.showKind && <TableHead>Kind</TableHead>}
-          <TableHead className="text-center">Ascents</TableHead>
-          <TableHead className="text-center">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
+    <Table stickyHeader stickyHeaderOffset={60} striped>
+      <Table.Thead>
+        <Table.Tr>
+          <Table.Th>Grade</Table.Th>
+          <Table.Th>Name</Table.Th>
+          {props.showKind && <Table.Th>Kind</Table.Th>}
+          <Table.Th>Ascents</Table.Th>
+          <Table.Th>Actions</Table.Th>
+        </Table.Tr>
+      </Table.Thead>
+      <Table.Tbody>
         {props.routes.map((route) => (
-          <TableRow key={route.route.id}>
-            <TableCell className="font-medium">{route.route.grade}</TableCell>
-            <TableCell className="text-center">{route.route.name}</TableCell>
-            {props.showKind && <TableCell>{route.route.kind}</TableCell>}
-            <TableCell className="text-center">
-              {route.ascents.length}
-            </TableCell>
-            <TableCell>
-              <div className="space-x-2">
+          <Table.Tr key={route.route.id}>
+            <Table.Td align="left" className="font-medium">
+              {route.route.grade}
+            </Table.Td>
+            <Table.Td>{route.route.name}</Table.Td>
+            {props.showKind && <Table.Td>{route.route.kind}</Table.Td>}
+            <Table.Td>{route.ascents.length}</Table.Td>
+            <Table.Td>
+              <Group gap={"md"}>
                 <Button>
                   <Edit />
                 </Button>
                 <Button>
                   <Trash />
                 </Button>
-                <Link
-                  to={`/routes/${route.route.id}`}
-                  className={buttonVariants()}
-                >
-                  <ArrowRight></ArrowRight>
+                <Link to={`/routes/${route.route.id}`}>
+                  <Button>
+                    <ArrowRight />
+                  </Button>
                 </Link>
-              </div>
-            </TableCell>
-          </TableRow>
+              </Group>
+            </Table.Td>
+          </Table.Tr>
         ))}
-      </TableBody>
+      </Table.Tbody>
     </Table>
   );
 }
