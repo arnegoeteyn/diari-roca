@@ -1,0 +1,31 @@
+import {
+  BrowserRouter,
+  Route as RouterRoute,
+  Routes as RouterRoutes,
+} from "react-router-dom";
+import "./App.css";
+import { lazy } from "react";
+import Layout from "./layout/layout";
+
+const Routes = lazy(() => import("./pages/routes"));
+const Route = lazy(() => import("./pages/route"));
+const Settings = lazy(() => import("./pages/settings"));
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Layout>
+        <RouterRoutes>
+          <RouterRoute path="/routes" element={<Routes />}></RouterRoute>
+          <RouterRoute
+            path="/routes/:routeId"
+            element={<Route />}
+          ></RouterRoute>
+          <RouterRoute path="/settings" element={<Settings />}></RouterRoute>
+        </RouterRoutes>
+      </Layout>
+    </BrowserRouter>
+  );
+}
+
+export default App;
