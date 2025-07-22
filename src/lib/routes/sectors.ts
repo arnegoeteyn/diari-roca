@@ -1,5 +1,5 @@
 import { getDB, RouteTransaction } from "./db";
-import { routeIdsForSector, routesForSector } from "./routes";
+import { routesForSector } from "./routes";
 import { ID, Pre, Sector, StoreData } from "./types";
 
 export async function addSector(sector: Pre<Sector>) {

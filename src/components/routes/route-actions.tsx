@@ -7,7 +7,6 @@ import { useRouteContext } from "@/contexts/route-context";
 import { useRoutesStore } from "@/hooks/use-store";
 import { useNavigate } from "react-router-dom";
 import AscentForm from "../ascents/ascent-form";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { useIsSmall } from "@/hooks/use-small";
 
 type Props = {

@@ -9,7 +9,7 @@ import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
-export default function Area() {
+export default function AreaPage() {
   const [areas, refetch] = useAreas();
 
   const [modalArea, setModalArea] = useState<{ id?: ID; area?: Pre<Area> }>();
@@ -46,7 +46,7 @@ export default function Area() {
 
   const saveSector = async (sector: Pre<Sector>) => {
     if (modalSector?.id) {
-      await putSector({ ...sector, id: modalSector.id });
+      // await putSector({ ...sector, id: modalSector.id });
     } else {
       await addSector(sector);
     }
@@ -59,10 +59,10 @@ export default function Area() {
     openSectorModal();
   };
 
-  const openEditSectorModal = (sector: Sector) => {
-    setModalSector({ id: sector.id, sector });
-    openAreaModal();
-  };
+  // const openEditSectorModal = (sector: Sector) => {
+  //   setModalSector({ id: sector.id, sector });
+  //   openAreaModal();
+  // };
 
   return (
     <>
