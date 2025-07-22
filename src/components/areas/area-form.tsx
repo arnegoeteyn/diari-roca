@@ -1,4 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "@mantine/form";
 
 import { Area, Pre } from "@/lib/routes/types";

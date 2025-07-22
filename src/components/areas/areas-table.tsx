@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { AreaOverview, ID } from "@/lib/routes/types";
+import { Area, AreaOverview, ID } from "@/lib/routes/types";
 import { Button, Group, Table } from "@mantine/core";
 import SectorTable from "./sector-table";
 import { IconArrowRight, IconEdit, IconTrash } from "@tabler/icons-react";
@@ -9,7 +9,7 @@ type Props = {
   areas: AreaOverview[];
 
   onAreaUpdate: (area: Area) => void;
-  onCreateSector: () => void;
+  onCreateSector: (areaId: number) => void;
 };
 export default function AreasTable(props: Props) {
   const [openedAreas, setOpenedArea] = useState<{ [key: ID]: boolean }>({});
@@ -62,7 +62,9 @@ export default function AreasTable(props: Props) {
                 <Table.Td colSpan={3}>
                   <SectorTable
                     sectors={overview.sectors}
-                    onCreateSector={props.onCreateSector}
+                    onCreateSector={() =>
+                      props.onCreateSector(overview.area.id)
+                    }
                   />
                 </Table.Td>
               </Table.Tr>
