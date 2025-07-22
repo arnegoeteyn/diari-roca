@@ -3,14 +3,20 @@ import { ID } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-export default function Areas() {
+type Props = { areaId: ID };
+function AreaContent(props: Props) {
+  const { areaId } = props;
+  const [area, loading, refetch] = useArea(areaId);
+
+  return loading ? <p>Loading</p> : <h1>{area.area.name}</h1>;
+}
+
+export default function Area() {
   const { areaId } = useParams();
   const [parsedAreaId, setParsedAreaId] = useState<{ id: ID; valid: boolean }>({
     id: -1,
     valid: false,
   });
-
-  const [area, loading, refetch] = useArea(parsedAreaId.id);
 
   useEffect(() => {
     const parsed = Number(areaId);
@@ -21,11 +27,13 @@ export default function Areas() {
     setParsedAreaId({ id: parsed, valid: true });
   }, [areaId]);
 
-  return loading ? (
-    <p>loading</p>
-  ) : (
-    <>
-      <h1>{area.area.name}</h1>
-    </>
-  );
+  const renderState = () => {
+    if (!parsedAreaId.valid) {
+      return <p>invalid area id</p>;
+    }
+
+    return <AreaContent areaId={parsedAreaId.id} />;
+  };
+
+  return renderState();
 }

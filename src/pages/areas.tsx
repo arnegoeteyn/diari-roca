@@ -45,7 +45,6 @@ export default function Area() {
   };
 
   const saveSector = async (sector: Pre<Sector>) => {
-    console.log(sector);
     if (modalSector?.id) {
       await putSector({ ...sector, id: modalSector.id });
     } else {
