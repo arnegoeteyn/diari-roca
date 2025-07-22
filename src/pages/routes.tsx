@@ -1,4 +1,4 @@
-import RouteTable from "@/components/routes-table";
+import RouteTable from "@/components/routes/routes-table";
 import useRoutes from "@/hooks/use-routes";
 import { RouteKind, RouteOverview } from "@/lib/routes/types";
 import { Tabs } from "@mantine/core";

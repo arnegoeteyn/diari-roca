@@ -1,5 +1,5 @@
 import { PageTitle } from "@/components/page-title";
-import RouteTable from "@/components/routes-table";
+import RouteTable from "@/components/routes/routes-table";
 import useArea from "@/hooks/use-area";
 import useRoutes, { sortByGrade } from "@/hooks/use-routes";
 import { ID, RouteOverview } from "@/lib/routes/types";
