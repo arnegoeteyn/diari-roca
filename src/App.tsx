@@ -4,6 +4,7 @@ import { MantineProvider } from "@mantine/core";
 
 import {
   BrowserRouter,
+  Navigate,
   Route as RouterRoute,
   Routes as RouterRoutes,
 } from "react-router-dom";
@@ -34,6 +35,7 @@ function App() {
       <BrowserRouter>
         <CollapseLayout>
           <RouterRoutes>
+            <RouterRoute path="/" element={<Navigate to="/routes" replace />} />
             <RouterRoute path="/routes" element={<Routes />}></RouterRoute>
             <RouterRoute
               path="/routes/:routeId"
