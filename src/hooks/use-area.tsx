@@ -1,7 +1,7 @@
 import { getArea } from "@/lib/routes/areas";
 import { AreaOverview, ID } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
-import { useStore } from "./use-store";
+import { useRoutesStore } from "./use-store";
 import { sectorsForArea } from "@/lib/routes/sectors";
 
 export default function useArea(
@@ -9,7 +9,7 @@ export default function useArea(
 ): [AreaOverview | undefined, () => void] {
   const [area, setArea] = useState<AreaOverview>();
   const [shouldRefetch, refetch] = useState(0);
-  const store = useStore((store) => store.store);
+  const store = useRoutesStore((store) => store.store);
 
   useEffect(() => {
     console.log(shouldRefetch);

@@ -1,11 +1,11 @@
-import { getRouteCached } from "@/lib/routes/routes";
+import { getRoute } from "@/lib/routes/routes";
 import { RouteOverview } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
-import { useStore } from "./use-store";
+import { useRoutesStore } from "./use-store";
 
 export function useRoute(routeId?: string): RouteOverview | undefined {
   const [route, setRoute] = useState<RouteOverview>();
-  const store = useStore((store) => store.store);
+  const store = useRoutesStore((store) => store.store);
 
   // todo, query can happen here or something?
   useEffect(() => {
@@ -17,7 +17,7 @@ export function useRoute(routeId?: string): RouteOverview | undefined {
       throw new Error(`Invalid routeId requested: ${routeId}`);
     }
 
-    const route = getRouteCached(store.data, parsed);
+    const route = getRoute(store.data, parsed);
 
     setRoute(route);
   }, [store, routeId]);

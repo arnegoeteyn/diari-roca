@@ -2,13 +2,13 @@ import { getAreas } from "@/lib/routes/areas";
 import { sectorsForArea } from "@/lib/routes/sectors";
 import { AreaOverview } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
-import { useStore } from "./use-store";
+import { useRoutesStore } from "./use-store";
 
 type Props = unknown;
 export default function useAreas(props?: Props): [AreaOverview[], () => void] {
   const [areas, setAreas] = useState<AreaOverview[]>([]);
   const [shouldRefetch, refetch] = useState({});
-  const store = useStore((store) => store.store);
+  const store = useRoutesStore((store) => store.store);
 
   useEffect(() => {
     const areas = getAreas(store.data);

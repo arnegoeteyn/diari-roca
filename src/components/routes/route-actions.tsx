@@ -1,36 +1,64 @@
-import { Button, ButtonProps, ButtonVariant, Group } from "@mantine/core";
+import { Button, ButtonProps, Group, Modal } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { ArrowRight, Edit, PlusCircle, Trash } from "lucide-react";
 import { ReactElement } from "react";
+import RouteForm from "./route-form";
+import { useRouteContext } from "@/contexts/route-context";
 
 type Props = {
-  shownActions?: Action[];
+  hideVisitAction?: boolean;
 };
 
 type Action = {
   title: string;
   icon: ReactElement;
   color?: ButtonProps["color"];
+  action?: () => void;
+  hidden?: boolean;
 };
-
-export const ACTION: Record<string, Action> = {
-  edit: { icon: <Edit />, title: "Edit" },
-  delete: { icon: <Trash />, title: "Delete", color: "red" },
-  log: { icon: <PlusCircle />, title: "Log" },
-  visit: { icon: <ArrowRight />, title: "Go" },
-};
-
-const actions = Object.values(ACTION);
 
 export default function RouteActions(props: Props) {
-  const shownActions = props.shownActions || actions;
+  const { hideVisitAction } = props;
+  const { route, updateRoute } = useRouteContext();
+
+  const [routeOpened, { open: routeOpen, close: routeClose }] =
+    useDisclosure(false);
+
+  const actions: Record<string, Action> = {
+    edit: { icon: <Edit />, title: "Edit", action: routeOpen },
+    log: { icon: <PlusCircle />, title: "Log" },
+    delete: { icon: <Trash />, title: "Delete", color: "red" },
+    visit: { icon: <ArrowRight />, title: "Go", hidden: hideVisitAction },
+  };
+
+  const shownActions = Object.values(actions).filter((a) => !a.hidden);
 
   return (
-    <Group>
-      {shownActions.map((action) => (
-        <Button leftSection={action.icon} color={action.color}>
-          {action.title}
-        </Button>
-      ))}
-    </Group>
+    <>
+      <Modal
+        opened={routeOpened}
+        onClose={() => routeClose()}
+        title={`Edit "${route.name}"`}
+      >
+        <RouteForm
+          route={route}
+          onSubmit={(update) => {
+            updateRoute({ ...update, id: route.id }).then(routeClose);
+          }}
+        />
+      </Modal>
+      <Group>
+        {shownActions.map((action) => (
+          <Button
+            key={action.title}
+            onClick={action.action}
+            leftSection={action.icon}
+            color={action.color}
+          >
+            {action.title}
+          </Button>
+        ))}
+      </Group>
+    </>
   );
 }
