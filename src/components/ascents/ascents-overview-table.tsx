@@ -42,9 +42,7 @@ export default function AscentsOverviewTable(props: Props) {
                 <Text>{`${ascent.route.name} (${ascent.route.grade})`}</Text>
               </Table.Td>
               <Table.Td>
-                <RouteContextProvider routeId={ascent.route.id.toString()}>
-                  <RouteBreadcrumbs />
-                </RouteContextProvider>
+                <RouteBreadcrumbs area={ascent.area} sector={ascent.sector} />
               </Table.Td>
               <Table.Td>
                 <AscentBadge ascent={ascent.ascent} />
