@@ -80,7 +80,7 @@ export default function RouteActions(props: Props) {
           }}
         />
       </Modal>
-      <Group gap="xs">
+      <Group wrap="nowrap" gap="xs">
         {shownActions.map((action) => (
           <Button
             variant="subtle"
