@@ -5,17 +5,13 @@ import useAreas from "@/hooks/use-areas";
 import useConfirmationDialog from "@/hooks/use-dialog";
 import { addArea, putArea } from "@/lib/routes/areas";
 import { Area, AreaOverview, ID, Pre } from "@/lib/routes/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Areas() {
   const { easyDialog } = useConfirmationDialog();
 
   const [areas, loading, refetch] = useAreas();
   const [openedAreas, setOpenedArea] = useState<{ [key: ID]: boolean }>({});
-
-  const [areaToUpdate, setUpdatedArea] = useState<Pre<Area>>({} as Area);
-
-  useEffect(() => console.log(areaToUpdate), [areaToUpdate]);
 
   const onAreaSelect = (area: AreaOverview) => {
     if (area.sectors.length == 0) {
@@ -29,30 +25,30 @@ export default function Areas() {
   const openEditAreaDialog = async (area?: Area) => {
     const update = !!area;
 
-    if (update) {
-      setUpdatedArea({ ...area });
-    } else {
-      setUpdatedArea({} as Area);
-    }
+    const initialArea = update ? { ...area } : ({} as Pre<Area>);
 
-    // let result: Pre<Area> = {} as Pre<Area>;
-    // const onSubmit = (area: Pre<Area>) => (result = area);
+    let result: Pre<Area> = {} as Pre<Area>;
+    const resultStore = (area: Pre<Area>) => (result = area);
 
     const title = update ? "Update area" : "New Area";
     const success = await easyDialog({
       title,
       dialogForm: ({ onSubmit }) => (
-        <AreaForm area={areaToUpdate} onSubmit={onSubmit} />
+        <AreaForm
+          area={initialArea}
+          onSubmit={(area: Pre<Area>) => {
+            resultStore(area);
+            onSubmit();
+          }}
+        />
       ),
     });
 
-    console.log("success", success);
-
     if (success) {
       if (update) {
-        putArea({ ...areaToUpdate, id: area.id }).then(refetch);
+        putArea({ ...result, id: area.id }).then(refetch);
       } else {
-        addArea(areaToUpdate).then(refetch);
+        addArea(result).then(refetch);
       }
     }
   };
