@@ -1,16 +1,8 @@
-import { Edit, Trash, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Button, buttonVariants } from "../ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/table";
+import { AreaOverview, ID } from "@/lib/routes/types";
+import { Button, Group, Table } from "@mantine/core";
 import SectorTable from "./sector-table";
-import { Area, AreaOverview, ID } from "@/lib/routes/types";
+import { IconArrowRight, IconEdit, IconTrash } from "@tabler/icons-react";
 
 type Props = {
   areas: AreaOverview[];
@@ -18,58 +10,59 @@ type Props = {
 
   onAreaSelect: (area: AreaOverview) => void;
   onAreaUpdate: (area: Area) => void;
-  onCreateSector: () => void;
+  // onCreateSector: () => void;
 };
 export default function AreasTable(props: Props) {
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead className="text-center">Country</TableHead>
-          <TableHead className="text-right"># sectors</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
+    <Table highlightOnHover>
+      <Table.Thead>
+        <Table.Tr>
+          <Table.Th>Name</Table.Th>
+          <Table.Th>Country</Table.Th>
+          <Table.Th># sectors</Table.Th>
+          <Table.Th>Actions</Table.Th>
+        </Table.Tr>
+      </Table.Thead>
+      <Table.Tbody>
         {props.areas.map((overview) => (
           <>
-            <TableRow onClick={() => props.onAreaSelect(overview)}>
-              <TableCell className="text-left">{overview.area.name}</TableCell>
-              <TableCell>{overview.area.country}</TableCell>
-              <TableCell>{overview.sectors.length}</TableCell>
+            <Table.Tr onClick={() => props.onAreaSelect(overview)}>
+              <Table.Td>{overview.area.name}</Table.Td>
+              <Table.Td>{overview.area.country}</Table.Td>
+              <Table.Td>{overview.sectors.length}</Table.Td>
 
-              <TableCell>
+              <Table.Td>
                 <div className="space-x-2">
-                  <Button onClick={() => props.onAreaUpdate(overview.area)}>
-                    <Edit />
-                  </Button>
-                  <Button>
-                    <Trash />
-                  </Button>
-                  <Link
-                    to={`/areas/${overview.area.id}`}
-                    className={buttonVariants()}
-                  >
-                    <ArrowRight />
-                  </Link>
+                  <Group gap={"md"}>
+                    <Button onClick={() => props.onAreaUpdate(overview.area)}>
+                      <IconEdit />
+                    </Button>
+                    <Button>
+                      <IconTrash />
+                    </Button>
+                    <Link to={`/areas/${overview.area.id}`}>
+                      <Button>
+                        <IconArrowRight />
+                      </Button>
+                    </Link>
+                  </Group>
                 </div>
-              </TableCell>
-            </TableRow>
+              </Table.Td>
+            </Table.Tr>
 
             {props.openedAreas[overview.area.id] && (
-              <TableRow>
-                <TableCell colSpan={3}>
+              <Table.Tr>
+                <Table.Td colSpan={3}>
                   <SectorTable
                     sectors={overview.sectors}
                     onCreateSector={props.onCreateSector}
                   />
-                </TableCell>
-              </TableRow>
+                </Table.Td>
+              </Table.Tr>
             )}
           </>
         ))}
-      </TableBody>
+      </Table.Tbody>
     </Table>
   );
 }

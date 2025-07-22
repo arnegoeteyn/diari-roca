@@ -1,19 +1,22 @@
+import { AreaForm } from "@/components/areas/area-form";
 import AreasTable from "@/components/areas/areas-table";
-import { AreaForm } from "@/components/forms/area-form";
-import { SectorForm } from "@/components/forms/sector-form";
-import { Button } from "@/components/ui/button";
 import useAreas from "@/hooks/use-areas";
-import useConfirmationDialog from "@/hooks/use-dialog";
 import { addArea, putArea } from "@/lib/routes/areas";
-import { addSector } from "@/lib/routes/sectors";
-import { Area, AreaOverview, ID, Pre, Sector } from "@/lib/routes/types";
+import { Area, AreaOverview, ID, Pre } from "@/lib/routes/types";
+import { Button, Modal } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 export default function Areas() {
-  const { easyDialog } = useConfirmationDialog();
+  // const { easyDialog } = useConfirmationDialog();
 
   const [areas, loading, refetch] = useAreas();
   const [openedAreas, setOpenedArea] = useState<{ [key: ID]: boolean }>({});
+
+  const [modalArea, setModalArea] = useState<{ id?: ID; area?: Pre<Area> }>();
+
+  const [areaModalOpen, { open: openAreaModal, close: closeAreaModal }] =
+    useDisclosure(false);
 
   const onAreaSelect = (area: AreaOverview) => {
     if (area.sectors.length == 0) {
@@ -24,84 +27,49 @@ export default function Areas() {
     setOpenedArea({ ...openedAreas, [id]: !current });
   };
 
-  const openEditAreaDialog = async (area?: Area) => {
-    const update = !!area;
-
-    const initialArea = update ? { ...area } : ({} as Pre<Area>);
-
-    let result: Pre<Area> = {} as Pre<Area>;
-    const resultStore = (area: Pre<Area>) => (result = area);
-
-    const title = update ? "Update area" : "New Area";
-    const success = await easyDialog({
-      title,
-      dialogForm: ({ onSubmit }) => (
-        <AreaForm
-          area={initialArea}
-          onSubmit={(area: Pre<Area>) => {
-            resultStore(area);
-            onSubmit();
-          }}
-        />
-      ),
-    });
-
-    if (success) {
-      if (update) {
-        putArea({ ...result, id: area.id }).then(refetch);
-      } else {
-        addArea(result).then(refetch);
-      }
+  const saveArea = async (area: Pre<Area>) => {
+    if (modalArea?.id) {
+      await putArea({ ...area, id: modalArea.id });
+    } else {
+      await addArea(area);
     }
+    closeAreaModal();
+    refetch();
   };
 
-  const openEditSectorDialog = async (sector?: Sector) => {
-    const update = !!sector;
+  const openNewAreaModal = () => {
+    setModalArea({});
+    openAreaModal();
+  };
 
-    const initialSector = update ? { ...sector } : ({} as Pre<Sector>);
-
-    let result: Pre<Sector> = {} as Pre<Sector>;
-    const resultStore = (sector: Pre<Sector>) => (result = sector);
-
-    const title = update ? "Update Sector" : "New Sector";
-    const success = await easyDialog({
-      title,
-      dialogForm: ({ onSubmit }) => (
-        <SectorForm
-          sector={initialSector}
-          onSubmit={(sector: Pre<Sector>) => {
-            resultStore(sector);
-            onSubmit();
-          }}
-        />
-      ),
-    });
-
-    if (success) {
-      if (update) {
-        console.log("sector", sector);
-        // putSector({ ...result, id: area.id }).then(refetch);
-      } else {
-        addSector(result).then(refetch);
-      }
-    }
+  const openEditAreaModal = (area: Area) => {
+    setModalArea({ id: area.id, area: area });
+    openAreaModal();
   };
 
   return loading ? (
     <p>loading</p>
   ) : (
-    <div>
+    <>
+      <Modal
+        opened={!!areaModalOpen}
+        onClose={closeAreaModal}
+        title={modalArea?.id ? "Edit area" : "New area"}
+      >
+        <AreaForm area={modalArea?.area} onSubmit={saveArea} />
+      </Modal>
+
       <div className="flex [&>*]:mx-4">
         <h2>{areas.length} areas</h2>
-        <Button onClick={() => openEditAreaDialog()}>Add new</Button>
+        <Button onClick={openNewAreaModal}>Add new</Button>
       </div>
       <AreasTable
         areas={areas}
         openedAreas={openedAreas}
         onAreaSelect={onAreaSelect}
-        onAreaUpdate={(area: Area) => openEditAreaDialog(area)}
-        onCreateSector={() => openEditSectorDialog()}
+        onAreaUpdate={openEditAreaModal}
+        // onCreateSector={() => opeEditSectorDialog()}
       />
-    </div>
+    </>
   );
 }

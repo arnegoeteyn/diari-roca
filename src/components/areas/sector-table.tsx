@@ -1,13 +1,5 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/table";
 import { SectorWithRouteCount } from "@/lib/routes/sectors";
-import { Button } from "../ui/button";
+import { Button, Table } from "@mantine/core";
 
 type Props = {
   sectors: SectorWithRouteCount[];
@@ -21,20 +13,20 @@ export default function SectorTable(props: Props) {
     <>
       <Button onClick={props.onCreateSector}>New sector</Button>
       <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Sector name</TableHead>
-            <TableHead># routes</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>Sector name</Table.Th>
+            <Table.Th># routes</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
           {sorted.map((sector) => (
-            <TableRow key={sector.sector.id}>
-              <TableCell className="px-4">{sector.sector.name}</TableCell>
-              <TableCell>{sector.routeCount}</TableCell>
-            </TableRow>
+            <Table.Tr key={sector.sector.id}>
+              <Table.Td className="px-4">{sector.sector.name}</Table.Td>
+              <Table.Td>{sector.routeCount}</Table.Td>
+            </Table.Tr>
           ))}
-        </TableBody>
+        </Table.Tbody>
       </Table>
     </>
   );

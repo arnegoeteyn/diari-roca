@@ -1,6 +1,6 @@
 import { AppShell, Burger, Group, NavLink } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconArrowUp, IconSettings } from "@tabler/icons-react";
+import { IconArrowUp, IconSettings, IconWorld } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
 export function CollapseLayout({ children }: { children: React.ReactNode }) {
@@ -39,6 +39,12 @@ export function CollapseLayout({ children }: { children: React.ReactNode }) {
           to="routes"
           label="Routes"
           leftSection={<IconArrowUp />}
+        />
+        <NavLink
+          component={Link}
+          to={"areas"}
+          label="Areas"
+          leftSection={<IconWorld />}
         />
         <NavLink
           component={Link}

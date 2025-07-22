@@ -30,6 +30,7 @@ interface RoutesDB extends DBSchema {
   areas: {
     key: ID;
     value: Pre<Area>;
+    indexes: { name: string };
   };
 }
 
@@ -39,8 +40,8 @@ export type RouteTransaction = IDBPTransaction<
 >;
 
 export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
-  const db = await openDB<RoutesDB>("routes", 9, {
-    upgrade(db, oldVersion, newVersion, transaction) {
+  const db = await openDB<RoutesDB>("routes", 10, {
+    upgrade(db, _oldVersion, _newVersion, transaction) {
       const stores = db.objectStoreNames;
       if (!stores.contains("routes")) {
         db.createObjectStore("routes", {
@@ -91,6 +92,11 @@ export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
           keyPath: "id",
           autoIncrement: true,
         });
+      }
+
+      const areasStore = transaction.objectStore("areas");
+      if (!areasStore.indexNames.contains("name")) {
+        areasStore.createIndex("name", "name");
       }
     },
   });
