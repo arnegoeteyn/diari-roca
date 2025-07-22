@@ -1,48 +1,13 @@
-import { Ascent, AscentKind } from "@/lib/routes/types";
+import { Ascent } from "@/lib/routes/types";
 import { Text, Group, Badge, Box, Stack, Button } from "@mantine/core";
-import {
-  ArrowUp,
-  CornerRightUp,
-  Edit,
-  Eye,
-  Repeat,
-  Trash2,
-  Zap,
-} from "lucide-react";
+import { Edit, Trash2 } from "lucide-react";
+import AscentBadge from "./ascent-badge";
 
 type Props = {
   ascents: Ascent[];
 };
 
-const kindToBadge = {
-  [AscentKind.Onsight]: {
-    color: "green",
-    icon: <Eye size="1rem" />,
-    label: "Onsight",
-  },
-  [AscentKind.Flash]: {
-    color: "yellow",
-    icon: <Zap size="1rem" />,
-    label: "Onsight",
-  },
-  [AscentKind.Repeat]: {
-    color: "blue",
-    icon: <Repeat size="1rem" />,
-    label: "Repeat",
-  },
-  [AscentKind.SecondGo]: {
-    color: "cyan",
-    icon: <CornerRightUp size="1rem" />,
-    label: "Second Go",
-  },
-  [AscentKind.Redpoint]: {
-    color: "red",
-    icon: <ArrowUp size="1rem" />,
-    label: "Redpoint",
-  },
-};
-
-export default function RouteAscents({ ascents }: Props) {
+export default function AscentsList({ ascents }: Props) {
   if (ascents.length == 0) {
     return (
       <Box
@@ -65,13 +30,7 @@ export default function RouteAscents({ ascents }: Props) {
           <Group>
             <Group style={{ width: "300px" }}>
               <Text>{ascent.date}</Text>
-              <Badge
-                leftSection={kindToBadge[ascent.kind].icon}
-                color={kindToBadge[ascent.kind].color}
-                variant="light"
-              >
-                {kindToBadge[ascent.kind].label}
-              </Badge>
+              <AscentBadge ascent={ascent} />
             </Group>
             <Group justify="start" gap={"xs"}>
               <Button
