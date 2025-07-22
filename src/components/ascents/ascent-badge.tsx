@@ -11,7 +11,7 @@ const kindToBadge = {
   [AscentKind.Flash]: {
     color: "yellow",
     icon: <Zap size="1rem" />,
-    label: "Onsight",
+    label: "Flash",
   },
   [AscentKind.Repeat]: {
     color: "blue",
