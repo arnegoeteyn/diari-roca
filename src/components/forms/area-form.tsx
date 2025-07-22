@@ -16,8 +16,11 @@ import { Input } from "../ui/input";
 import { Area, Pre } from "@/lib/routes/types";
 
 type Props = {
-  initialArea?: Area;
-  onUpdate: (area: Area) => void;
+  // initialArea?: Area;
+  // onUpdate?: (area: Area) => void;
+  // onSubmit: (area: Pre<Area>) => void;
+
+  area: Pre<Area>;
   onSubmit: (area: Pre<Area>) => void;
 };
 
@@ -29,20 +32,13 @@ const formSchema = z.object({
 export function AreaForm(props: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: props.initialArea,
+    defaultValues: props.area,
   });
-
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    if (props.initialArea?.id) {
-      props.onUpdate({ ...values, id: props.initialArea.id });
-    } else {
-      props.onSubmit(values);
-    }
-  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(props.onSubmit)} className="space-y-8">
+        {/* <form className="space-y-8"> */}
         <FormField
           control={form.control}
           name="name"
