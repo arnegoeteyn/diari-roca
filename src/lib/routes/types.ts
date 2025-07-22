@@ -20,9 +20,11 @@ export type Route = {
   kind: RouteKind;
 };
 
-export type RouteWithAscents = {
+export type RouteOverview = {
   route: Route;
   ascents: Ascent[];
+  sector: Sector;
+  area: Area;
 };
 
 export type Media = {
@@ -43,4 +45,21 @@ export type Ascent = {
   comment?: string;
   date: string; // Date object does not seem to play well with indexdb
   kind: AscentKind;
+};
+
+export type Sector = {
+  id: ID;
+  areaId: ID;
+  name: string;
+};
+
+export type Area = {
+  id: ID;
+  name: string;
+  country: string;
+};
+
+export type AreaOverview = {
+  area: Area;
+  sectors: Sector[];
 };

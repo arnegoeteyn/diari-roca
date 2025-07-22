@@ -1,9 +1,10 @@
+import { startTransaction } from "@/lib/routes/db";
 import { getRoute } from "@/lib/routes/routes";
-import { RouteWithAscents } from "@/lib/routes/types";
+import { RouteOverview } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
 
-export function useRoute(routeId?: string): [RouteWithAscents, boolean] {
-  const [route, setRoute] = useState<RouteWithAscents>({} as RouteWithAscents);
+export function useRoute(routeId?: string): [RouteOverview, boolean] {
+  const [route, setRoute] = useState<RouteOverview>({} as RouteOverview);
   const [loading, setLoading] = useState<boolean>(true);
 
   // todo, query can happen here or something?
@@ -14,7 +15,16 @@ export function useRoute(routeId?: string): [RouteWithAscents, boolean] {
     }
     const fetch = async () => {
       setLoading(true);
-      const route = await getRoute(parsed);
+
+      const transaction = await startTransaction([
+        "routes",
+        "ascents",
+        "areas",
+        "sectors",
+      ]);
+      const route = await getRoute(transaction, parsed);
+      await transaction.done;
+
       setRoute(route);
       setLoading(false);
     };

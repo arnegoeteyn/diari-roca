@@ -25,7 +25,9 @@ export default function Route() {
       <h1>
         {route.route.name} ~ {route.route.grade} ({route.route.kind})
       </h1>
-      <h2>sectorname</h2>
+      <h2>
+        {route.sector.name} - {route.area.name}
+      </h2>
       <p>{route.route.comment}</p>
       {route.route.beta ? (
         <Accordion type="single" collapsible className="w-full">

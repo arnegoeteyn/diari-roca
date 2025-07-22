@@ -22,7 +22,6 @@ export default function Routes() {
       <h2>Loading: {loading ? "loading" : "not loading"}</h2>
 
       <Table>
-        <TableCaption>An overview of your routes</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Grade</TableHead>
@@ -60,19 +59,7 @@ export default function Routes() {
             </TableRow>
           ))}
         </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-          </TableRow>
-        </TableFooter>
       </Table>
-
-      <ul>
-        {routes.map((route) => (
-          <li key={route.route.id}>{route.route.name}</li>
-        ))}
-      </ul>
     </div>
   );
 }
