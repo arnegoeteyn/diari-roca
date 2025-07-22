@@ -21,7 +21,7 @@ export default function useArea(
       ]);
 
       const area = await getArea(transaction, areaId);
-      const sectors = await sectorsForArea(areaId, transaction);
+      const sectors = await sectorsForArea(transaction, areaId);
 
       setArea({ area, sectors });
       setLoading(false);

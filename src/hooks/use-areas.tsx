@@ -34,7 +34,7 @@ export default function useAreas(
 
       const overviews = await Promise.all(
         areas.map(async (area) => {
-          const sectors = await sectorsForArea(area.id, transaction);
+          const sectors = await sectorsForArea(transaction, area.id);
           return { area, sectors };
         })
       );
