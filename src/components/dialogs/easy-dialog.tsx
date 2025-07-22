@@ -1,20 +1,27 @@
+import { DialogForm } from "@/contexts/dialog-context";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { ReactNode } from "react";
 
-type Props<T> = React.PropsWithChildren<{
+type Props = {
   title: string;
   open: boolean;
-  onConfirm: (result: T) => void;
+  dialogForm: (props: DialogForm) => ReactNode;
+  onConfirm: () => void;
   onDismiss: () => void;
-}>;
+};
 
-export function EasyDialog<T>(props: Props<T>) {
+export function EasyDialog(props: Props) {
+  const onSubmit = () => {
+    props.onConfirm();
+  };
+
   return (
     <Dialog open={props.open} onOpenChange={props.onDismiss}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{props.title}</DialogTitle>
         </DialogHeader>
-        {props.children}
+        <props.dialogForm onSubmit={onSubmit} />
       </DialogContent>
     </Dialog>
   );

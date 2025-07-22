@@ -16,10 +16,6 @@ import { Input } from "../ui/input";
 import { Area, Pre } from "@/lib/routes/types";
 
 type Props = {
-  // initialArea?: Area;
-  // onUpdate?: (area: Area) => void;
-  // onSubmit: (area: Pre<Area>) => void;
-
   area: Pre<Area>;
   onSubmit: (area: Pre<Area>) => void;
 };
@@ -38,7 +34,6 @@ export function AreaForm(props: Props) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(props.onSubmit)} className="space-y-8">
-        {/* <form className="space-y-8"> */}
         <FormField
           control={form.control}
           name="name"

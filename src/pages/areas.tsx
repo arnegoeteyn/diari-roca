@@ -30,7 +30,7 @@ export default function Areas() {
     const update = !!area;
 
     if (update) {
-      setUpdatedArea(area);
+      setUpdatedArea({ ...area });
     } else {
       setUpdatedArea({} as Area);
     }
@@ -41,18 +41,20 @@ export default function Areas() {
     const title = update ? "Update area" : "New Area";
     const success = await easyDialog({
       title,
-      children: <AreaForm area={areaToUpdate} onSubmit={console.log} />,
+      dialogForm: ({ onSubmit }) => (
+        <AreaForm area={areaToUpdate} onSubmit={onSubmit} />
+      ),
     });
 
-    console.log(success);
+    console.log("success", success);
 
-    // if (result) {
-    //   if (update) {
-    //     putArea({ ...result, id: area.id }).then(refetch);
-    //   } else {
-    //     addArea(result).then(refetch);
-    //   }
-    // }
+    if (success) {
+      if (update) {
+        putArea({ ...areaToUpdate, id: area.id }).then(refetch);
+      } else {
+        addArea(areaToUpdate).then(refetch);
+      }
+    }
   };
 
   return loading ? (
