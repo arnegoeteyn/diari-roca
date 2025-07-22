@@ -13,7 +13,6 @@ import { useState } from "react";
 import AscentBadge from "../ascents/ascent-badge";
 import RouteBreadcrumbs from "../routes/route-breadcrumbs";
 import { Link } from "react-router-dom";
-import "./ascents-overview-table.css";
 
 type Props = {
   ascents: AscentOverview[];
