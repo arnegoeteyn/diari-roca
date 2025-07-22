@@ -3,7 +3,8 @@ import { addAscent } from "@/lib/routes/ascents";
 import { clear } from "@/lib/routes/db";
 import { addRoute } from "@/lib/routes/routes";
 import { addSector } from "@/lib/routes/sectors";
-import { Area, Ascent, Route, Sector } from "@/lib/routes/types";
+import { putTrip } from "@/lib/routes/trips";
+import { Area, Ascent, Route, Sector, Trip } from "@/lib/routes/types";
 import { Button } from "@mantine/core";
 import { useState } from "react";
 
@@ -12,7 +13,7 @@ type Parsed = {
   ascents: Ascent[];
   areas: Area[];
   sectors: Sector[];
-  trips: object[];
+  trips: Trip[];
 };
 
 export default function Import() {
@@ -67,7 +68,11 @@ export default function Import() {
       putArea(area).catch(() => console.log("could not import area", area));
     });
 
-    const actions = [...routes, ...ascents, ...sectors, ...areas];
+    const trips = file.trips.map((trip) => {
+      putTrip(trip).catch(() => console.log("could not import trip", trip));
+    });
+
+    const actions = [...routes, ...ascents, ...sectors, ...areas, ...trips];
     await Promise.all(actions);
 
     setImporting(false);
