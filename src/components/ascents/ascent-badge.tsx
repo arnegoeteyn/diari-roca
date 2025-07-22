@@ -32,16 +32,17 @@ const kindToBadge = {
 
 type Props = {
   ascent: AscentBody;
+  compact?: boolean;
 };
 export default function AscentBadge(props: Props) {
-  const { ascent } = props;
+  const { ascent, compact } = props;
   return (
     <Badge
       leftSection={kindToBadge[ascent.kind].icon}
       color={kindToBadge[ascent.kind].color}
       variant="light"
     >
-      {kindToBadge[ascent.kind].label}
+      {compact ? <></> : kindToBadge[ascent.kind].label}
     </Badge>
   );
 }
