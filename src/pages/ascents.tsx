@@ -1,3 +1,6 @@
+import useAscents from "@/hooks/use-ascents";
+
 export default function AscentsPage() {
-  return <>ascents</>;
+  const ascents = useAscents();
+  return JSON.stringify(ascents);
 }

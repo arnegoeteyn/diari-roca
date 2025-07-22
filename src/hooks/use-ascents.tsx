@@ -5,7 +5,7 @@ import { getAscents } from "@/lib/routes/ascents";
 
 type Props = {};
 
-export default function useAscents(_props: Props): AscentOverview[] {
+export default function useAscents(_props?: Props): AscentOverview[] {
   const [ascents, setAscents] = useState<AscentOverview[]>([]);
   const store = useRoutesStore((store) => store.store);
 
