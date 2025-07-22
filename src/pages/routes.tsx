@@ -1,14 +1,22 @@
 import RouteTable from "@/components/routes-table";
 import useRoutes from "@/hooks/use-routes";
-import { RouteKind } from "@/lib/routes/types";
+import { RouteKind, RouteOverview } from "@/lib/routes/types";
 import { Tabs } from "@mantine/core";
 
-const routesParam = { kind: RouteKind.Sport };
-const boulderParams = { kind: RouteKind.Boulder };
+const routesParam = {
+  filter: (route: RouteOverview) => route.route.kind == RouteKind.Sport,
+  sortBy: (a: RouteOverview, b: RouteOverview) =>
+    -a.route.grade.localeCompare(b.route.grade),
+};
+const boulderParams = {
+  filter: (route: RouteOverview) => route.route.kind == RouteKind.Boulder,
+  sortBy: (a: RouteOverview, b: RouteOverview) =>
+    -a.route.grade.localeCompare(b.route.grade),
+};
 
 export default function Routes() {
-  const [routes] = useRoutes(routesParam);
-  const [boulders] = useRoutes(boulderParams);
+  const routes = useRoutes(routesParam);
+  const boulders = useRoutes(boulderParams);
 
   return (
     <div>

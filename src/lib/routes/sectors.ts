@@ -1,10 +1,20 @@
 import { getDB, RouteTransaction } from "./db";
 import { routeIdsForSector } from "./routes";
-import { ID, Pre, Sector } from "./types";
+import { ID, Pre, Sector, StoreData } from "./types";
 
 export async function addSector(sector: Pre<Sector>) {
   const db = await getDB();
   return db.add("sectors", sector);
+}
+
+export function getSectorCached(data: StoreData, id: ID): Sector {
+  const sector = data.sectors.get(id);
+
+  if (!sector) {
+    throw new Error("Sector does not exist");
+  }
+
+  return sector;
 }
 
 export async function getSector(

@@ -1,4 +1,14 @@
-import { Area, Ascent, ID, Pre, Route, RouteKind, Sector } from "./types";
+import {
+  Area,
+  Ascent,
+  ID,
+  Pre,
+  Route,
+  RouteKind,
+  Sector,
+  Store,
+  StoreData,
+} from "./types";
 import {
   DBSchema,
   IDBPDatabase,
@@ -101,6 +111,48 @@ export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
     },
   });
   return db;
+}
+
+// getAll<Name extends StoreNames<DBTypes>>(storeName: Name, query?: StoreKey<DBTypes, Name> | IDBKeyRange | null, count?: number): Promise<StoreValue<DBTypes, Name>[]>;
+async function loadSet<Name extends StoreNames<RoutesDB>>(
+  db: IDBPDatabase<RoutesDB>,
+  name: Name
+): Promise<Map<ID, RoutesDB[Name]["value"] & { id: RoutesDB[Name]["key"] }>> {
+  const transaction = db.transaction(name);
+  const store = transaction.objectStore(name);
+  return await store
+    .getAllKeys()
+    .then((keys) =>
+      Promise.all(
+        keys.map((key) => store.get(key).then((item) => ({ item, key })))
+      )
+    )
+    .then((items) =>
+      items.reduce((map, { item, key }) => {
+        if (item) {
+          map.set(key, { ...item, id: key });
+        }
+        return map;
+      }, new Map<ID, RoutesDB[Name]["value"] & { id: RoutesDB[Name]["key"] }>())
+    );
+}
+
+export async function load(): Promise<StoreData> {
+  console.time("load db");
+  const db = await getDB();
+
+  const areas = await loadSet(db, "areas");
+  const sectors = await loadSet(db, "sectors");
+  const routes = await loadSet(db, "routes");
+  const ascents = await loadSet(db, "ascents");
+
+  console.timeEnd("load db");
+  return {
+    areas,
+    sectors,
+    routes,
+    ascents,
+  };
 }
 
 export async function startTransaction(

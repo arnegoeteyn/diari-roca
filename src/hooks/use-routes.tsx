@@ -1,13 +1,14 @@
 import { startTransaction } from "@/lib/routes/db";
-import { getRoutes, getRoute } from "@/lib/routes/routes";
+import { getRoutes } from "@/lib/routes/routes";
 import { sectorsForArea } from "@/lib/routes/sectors";
 import { ID, Route, RouteKind, RouteOverview } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
+import { useStore } from "./use-store";
 
 type Props = {
-  sortBy?: keyof Route;
+  sortBy?: (a: RouteOverview, b: RouteOverview) => number;
   kind?: RouteKind;
-  filter?: (route: Route) => boolean;
+  filter?: (route: RouteOverview) => boolean;
   skip?: boolean;
 };
 
@@ -29,50 +30,25 @@ export function useAreaFilter(id: ID): [(route: Route) => boolean, boolean] {
   return [filter, loading];
 }
 
-export default function useRoutes(props?: Props): [RouteOverview[], boolean] {
+export default function useRoutes(props?: Props): RouteOverview[] {
   const [routes, setRoutes] = useState<RouteOverview[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const store = useStore((store) => store.store);
 
   const { sortBy, kind, filter, skip } = props || {};
 
   // todo, query can happen here or something?
   useEffect(() => {
-    const fetch = async () => {
-      if (skip) {
-        return;
-      }
-      console.log("props changed");
-      const routeKeys = await getRoutes(kind);
+    if (!store.initialized) {
+      return;
+    }
 
-      const transaction = await startTransaction([
-        "ascents",
-        "routes",
-        "sectors",
-        "areas",
-      ]);
+    const routes = getRoutes(store.data);
 
-      let routes = [];
+    const filtered = filter ? routes.filter(filter) : routes;
+    const sorted = sortBy ? filtered.sort(sortBy) : filtered;
 
-      console.time("all" + kind);
-      routes = await Promise.all(
-        routeKeys.map(async (key) => {
-          const route = getRoute(transaction, key);
-          return route;
-        })
-      );
+    setRoutes(sorted);
+  }, [filter, kind, skip, sortBy, store]);
 
-      if (filter) {
-        routes = routes.filter((r) => filter(r.route));
-      }
-
-      await transaction.done;
-      console.timeEnd("all" + kind);
-
-      setRoutes(routes);
-      setLoading(false);
-    };
-    fetch();
-  }, [filter, kind, skip]);
-
-  return [routes, loading];
+  return routes;
 }
