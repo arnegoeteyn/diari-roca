@@ -29,7 +29,7 @@ export default function RouteForm(props: Props) {
       <Textarea
         autosize
         maxRows={7}
-        minRows={2}
+        minRows={1}
         label="Comment"
         key={form.key("comment")}
         {...form.getInputProps("comment")}
