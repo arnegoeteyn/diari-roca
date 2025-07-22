@@ -7,8 +7,9 @@ import {
   RouteContextProvider,
   useRouteContext,
 } from "@/contexts/route-context";
-import { SimpleGrid, Stack, Text } from "@mantine/core";
+import { SimpleGrid, Stack } from "@mantine/core";
 import { useParams } from "react-router-dom";
+import RouteMedia from "@/components/routes/route-media";
 
 export function RouteContent() {
   const { route, ascents } = useRouteContext();
@@ -21,7 +22,7 @@ export function RouteContent() {
         <Stack>
           <RouteInformation route={route} />
           <RouteActions hideVisitAction />
-          <Text>hier komen later foto's</Text>
+          <RouteMedia />
         </Stack>
         <div>
           <AscentsList ascents={ascents} />
