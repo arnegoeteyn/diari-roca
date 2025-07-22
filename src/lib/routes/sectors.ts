@@ -1,6 +1,7 @@
-import { getDB, RouteTransaction } from "./db";
+import { getArea } from "./areas";
+import { getDB } from "./db";
 import { routesForSector } from "./routes";
-import { ID, Pre, Sector, StoreData } from "./types";
+import { ID, Pre, Sector, SectorOverview, StoreData } from "./types";
 
 export async function addSector(sector: Pre<Sector>) {
   const db = await getDB();
@@ -17,17 +18,23 @@ export function getSectorCached(data: StoreData, id: ID): Sector {
   return sector;
 }
 
-export async function getSector(
-  transaction: RouteTransaction,
-  id: ID
-): Promise<Sector> {
-  const sector = await transaction.objectStore("sectors").get(id);
+export function getSectors(data: StoreData): SectorOverview[] {
+  return [...data.sectors.keys()].map((id) => getSector(data, id));
+}
+
+export function getSector(data: StoreData, id: ID): SectorOverview {
+  const sector = data.sectors.get(id);
 
   if (!sector) {
     throw new Error("Sector does not exist");
   }
 
-  return { ...sector, id };
+  const area = getArea(data, sector.areaId);
+  const routes = [...data.routes.values()].filter(
+    (route) => route.sectorId == id
+  );
+
+  return { sector, area, routes };
 }
 
 export type SectorWithRouteCount = {
