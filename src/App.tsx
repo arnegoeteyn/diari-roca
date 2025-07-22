@@ -18,6 +18,7 @@ const Route = lazy(() => import("./pages/route"));
 const Areas = lazy(() => import("./pages/areas"));
 const Area = lazy(() => import("./pages/area"));
 const Settings = lazy(() => import("./pages/settings"));
+const Ascents = lazy(() => import("./pages/ascents"));
 
 function App() {
   const setState = useRoutesStore((state) => state.setStore);
@@ -41,6 +42,7 @@ function App() {
               path="/routes/:routeId"
               element={<Route />}
             ></RouterRoute>
+            <RouterRoute path="/ascents" element={<Ascents />}></RouterRoute>
             <RouterRoute path="/areas" element={<Areas />}></RouterRoute>
             <RouterRoute path="/areas/:areaId" element={<Area />}></RouterRoute>
             <RouterRoute path="/settings" element={<Settings />}></RouterRoute>
