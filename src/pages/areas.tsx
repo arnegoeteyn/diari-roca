@@ -1,10 +1,12 @@
 import AreasTable from "@/components/areas/areas-table";
 import { AreaForm } from "@/components/forms/area-form";
+import { SectorForm } from "@/components/forms/sector-form";
 import { Button } from "@/components/ui/button";
 import useAreas from "@/hooks/use-areas";
 import useConfirmationDialog from "@/hooks/use-dialog";
 import { addArea, putArea } from "@/lib/routes/areas";
-import { Area, AreaOverview, ID, Pre } from "@/lib/routes/types";
+import { addSector } from "@/lib/routes/sectors";
+import { Area, AreaOverview, ID, Pre, Sector } from "@/lib/routes/types";
 import { useState } from "react";
 
 export default function Areas() {
@@ -53,6 +55,38 @@ export default function Areas() {
     }
   };
 
+  const openEditSectorDialog = async (sector?: Sector) => {
+    const update = !!sector;
+
+    const initialSector = update ? { ...sector } : ({} as Pre<Sector>);
+
+    let result: Pre<Sector> = {} as Pre<Sector>;
+    const resultStore = (sector: Pre<Sector>) => (result = sector);
+
+    const title = update ? "Update Sector" : "New Sector";
+    const success = await easyDialog({
+      title,
+      dialogForm: ({ onSubmit }) => (
+        <SectorForm
+          sector={initialSector}
+          onSubmit={(sector: Pre<Sector>) => {
+            resultStore(sector);
+            onSubmit();
+          }}
+        />
+      ),
+    });
+
+    if (success) {
+      if (update) {
+        console.log("sector", sector);
+        // putSector({ ...result, id: area.id }).then(refetch);
+      } else {
+        addSector(result).then(refetch);
+      }
+    }
+  };
+
   return loading ? (
     <p>loading</p>
   ) : (
@@ -66,6 +100,7 @@ export default function Areas() {
         openedAreas={openedAreas}
         onAreaSelect={onAreaSelect}
         onAreaUpdate={(area: Area) => openEditAreaDialog(area)}
+        onCreateSector={() => openEditSectorDialog()}
       />
     </div>
   );

@@ -18,6 +18,7 @@ type Props = {
 
   onAreaSelect: (area: AreaOverview) => void;
   onAreaUpdate: (area: Area) => void;
+  onCreateSector: () => void;
 };
 export default function AreasTable(props: Props) {
   return (
@@ -59,7 +60,10 @@ export default function AreasTable(props: Props) {
             {props.openedAreas[overview.area.id] && (
               <TableRow>
                 <TableCell colSpan={3}>
-                  <SectorTable sectors={overview.sectors} />
+                  <SectorTable
+                    sectors={overview.sectors}
+                    onCreateSector={props.onCreateSector}
+                  />
                 </TableCell>
               </TableRow>
             )}
