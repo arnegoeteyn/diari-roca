@@ -1,6 +1,6 @@
 import { AreaDialog } from "@/components/dialogs/area-dialog";
 import SectorRows from "@/components/sector-rows";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -10,9 +10,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useAreas from "@/hooks/use-areas";
-import { addArea } from "@/lib/routes/areas";
-import { Area, ID, Pre } from "@/lib/routes/types";
+import { addArea, putArea } from "@/lib/routes/areas";
+import { Area, AreaOverview, ID, Pre } from "@/lib/routes/types";
+import { ArrowRight, Edit, Trash } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Areas() {
   const [areas, loading, refetch] = useAreas();
@@ -20,15 +22,36 @@ export default function Areas() {
 
   const [openAreaDialog, setOpenedAreaDialog] = useState(false);
 
-  const onAreaClick = (id: ID) => {
+  const [areaToUpdate, setAreaToUpdate] = useState<Area | undefined>();
+
+  const onAreaSelect = (area: AreaOverview) => {
+    if (area.sectors.length == 0) {
+      return;
+    }
+    const id = area.area.id;
     const current = openedArea[id] ?? false;
     setOpenedArea({ ...openedArea, [id]: !current });
   };
 
-  const onSubmitArea = (area: Pre<Area>) => {
+  const onAreaUpdate = (area: Area) => {
+    setAreaToUpdate(area);
+    setOpenedAreaDialog(true);
+  };
+
+  const onCreateArea = (area: Pre<Area>) => {
     addArea(area)
       .then(refetch)
       .then(() => setOpenedAreaDialog(false));
+  };
+
+  const onUpdateArea = (area: Area) => {
+    console.log(area);
+    putArea(area)
+      .then(refetch)
+      .then(() => {
+        setOpenedAreaDialog(false);
+        setAreaToUpdate(undefined);
+      });
   };
 
   return loading ? (
@@ -41,7 +64,9 @@ export default function Areas() {
       </div>
       <AreaDialog
         open={openAreaDialog}
-        onSubmit={onSubmitArea}
+        initialArea={areaToUpdate}
+        onSubmit={onCreateArea}
+        onUpdate={onUpdateArea}
         onCancel={() => setOpenedAreaDialog(false)}
       />
       <Table>
@@ -50,17 +75,35 @@ export default function Areas() {
             <TableHead>Name</TableHead>
             <TableHead className="text-center">Country</TableHead>
             <TableHead className="text-right"># sectors</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {areas.map((overview) => (
             <>
-              <TableRow onClick={() => onAreaClick(overview.area.id)}>
+              <TableRow onClick={() => onAreaSelect(overview)}>
                 <TableCell className="text-left">
                   {overview.area.name}
                 </TableCell>
                 <TableCell>{overview.area.country}</TableCell>
                 <TableCell>{overview.sectors.length}</TableCell>
+
+                <TableCell>
+                  <div className="space-x-2">
+                    <Button onClick={() => onAreaUpdate(overview.area)}>
+                      <Edit />
+                    </Button>
+                    <Button>
+                      <Trash />
+                    </Button>
+                    <Link
+                      to={`/areas/${overview.area.id}`}
+                      className={buttonVariants()}
+                    >
+                      <ArrowRight />
+                    </Link>
+                  </div>
+                </TableCell>
               </TableRow>
               {openedArea[overview.area.id] && (
                 <SectorRows sectors={overview.sectors} />

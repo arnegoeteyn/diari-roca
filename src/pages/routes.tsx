@@ -1,4 +1,4 @@
-import RouteTable from "@/components/route-tables";
+import RouteTable from "@/components/routes-table";
 import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import useRoutes from "@/hooks/use-routes";
 import { TabsList } from "@radix-ui/react-tabs";
