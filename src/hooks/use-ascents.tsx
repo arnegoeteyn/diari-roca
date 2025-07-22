@@ -18,7 +18,7 @@ export default function useAscents(_props?: Props): AscentOverview[] {
     const ascents = getAscents(store.data);
 
     setAscents(ascents);
-  }, []);
+  }, [store]);
 
   return ascents;
 }
