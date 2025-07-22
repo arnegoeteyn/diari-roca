@@ -1,10 +1,11 @@
 import { startTransaction } from "@/lib/routes/db";
 import { getRoutes, getRoute } from "@/lib/routes/routes";
-import { Route, RouteOverview } from "@/lib/routes/types";
+import { Route, RouteKind, RouteOverview } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
 
 type Props = {
   sortBy?: keyof Route;
+  kind?: RouteKind;
   filter?: (route: Route) => boolean;
 };
 export default function useRoutes(props?: Props): [RouteOverview[], boolean] {
@@ -14,7 +15,7 @@ export default function useRoutes(props?: Props): [RouteOverview[], boolean] {
   // todo, query can happen here or something?
   useEffect(() => {
     const fetch = async () => {
-      const routeKeys = await getRoutes();
+      const routeKeys = await getRoutes(props?.kind);
 
       const transaction = await startTransaction([
         "ascents",

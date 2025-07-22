@@ -1,65 +1,30 @@
-import { Button, buttonVariants } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import useRoutes from "@/hooks/useRoutes";
-import { ArrowRight, Edit, Trash } from "lucide-react";
-import { Link } from "react-router-dom";
+import RouteTable from "@/components/route-tables";
+import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
+import useRoutes from "@/hooks/use-routes";
+import { TabsList } from "@radix-ui/react-tabs";
+import { RouteKind } from "@/lib/routes/types";
+
+const routesParam = { kind: RouteKind.Sport };
+const boulderParams = { kind: RouteKind.Boulder };
 
 export default function Routes() {
-  const [routes, loading] = useRoutes();
+  const [routes] = useRoutes(routesParam);
+  const [boulders] = useRoutes(boulderParams);
 
   return (
     <div>
-      <h1>Welcome to your routes</h1>
-      <h2>Loading: {loading ? "loading" : "not loading"}</h2>
-
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Grade</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Kind</TableHead>
-            <TableHead>Ascents</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {routes.map((route) => (
-            <TableRow key={route.route.id}>
-              <TableCell className="font-medium">{route.route.grade}</TableCell>
-              <TableCell>{route.route.name}</TableCell>
-              <TableCell>{route.route.kind}</TableCell>
-              <TableCell className="text-right">
-                {route.ascents.length}
-              </TableCell>
-              <TableCell>
-                <div className="space-x-2">
-                  <Button>
-                    <Edit />
-                  </Button>
-                  <Button>
-                    <Trash />
-                  </Button>
-                  <Link
-                    to={`/routes/${route.route.id}`}
-                    className={buttonVariants()}
-                  >
-                    <ArrowRight></ArrowRight>
-                  </Link>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Tabs defaultValue="sport">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="sport">Routes</TabsTrigger>
+          <TabsTrigger value="boulder">Boulders</TabsTrigger>
+        </TabsList>
+        <TabsContent value="sport">
+          <RouteTable routes={routes} />
+        </TabsContent>
+        <TabsContent value="boulder">
+          <RouteTable routes={boulders} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

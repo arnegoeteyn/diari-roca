@@ -1,4 +1,4 @@
-import { Area, Ascent, ID, Pre, Route, Sector } from "./types";
+import { Area, Ascent, ID, Pre, Route, RouteKind, Sector } from "./types";
 import {
   DBSchema,
   IDBPDatabase,
@@ -13,6 +13,7 @@ interface RoutesDB extends DBSchema {
     value: Pre<Route>;
     indexes: {
       grade: string;
+      kind: [RouteKind, string]; // kind, grade
       sectorId: ID;
     };
   };
@@ -38,7 +39,7 @@ export type RouteTransaction = IDBPTransaction<
 >;
 
 export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
-  const db = await openDB<RoutesDB>("routes", 8, {
+  const db = await openDB<RoutesDB>("routes", 9, {
     upgrade(db, oldVersion, newVersion, transaction) {
       const stores = db.objectStoreNames;
       if (!stores.contains("routes")) {
@@ -55,6 +56,10 @@ export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
 
       if (!routesStore.indexNames.contains("sectorId")) {
         routesStore.createIndex("sectorId", "sectorId");
+      }
+
+      if (!routesStore.indexNames.contains("kind")) {
+        routesStore.createIndex("kind", ["kind", "grade"]);
       }
 
       if (!stores.contains("ascents")) {

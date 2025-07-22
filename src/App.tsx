@@ -13,6 +13,7 @@ const Areas = lazy(() => import("./pages/areas"));
 const Settings = lazy(() => import("./pages/settings"));
 
 function App() {
+  console.log("reload app");
   return (
     <BrowserRouter>
       <Layout>
