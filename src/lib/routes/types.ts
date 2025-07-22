@@ -7,12 +7,15 @@ export type Store = {
     sectors: Map<ID, Sector>;
     routes: Map<ID, Route>;
     ascents: Map<ID, Ascent>;
+    trips: Map<ID, Trip>;
   };
 };
 
 export type StoreData = Store["data"];
 
 export type ID = number;
+
+export type AppDate = string; // custom 'date' type since indexedDB has some difficulties with real date objects
 
 export type Pre<T> = Omit<T, "id">;
 
@@ -57,7 +60,7 @@ export enum AscentKind {
 
 export type AscentBody = {
   comment?: string;
-  date: string; // Date object does not seem to play well with indexdb
+  date: AppDate;
   kind: AscentKind;
 };
 
@@ -94,4 +97,10 @@ export type Area = {
 export type AreaOverview = {
   area: Area;
   sectors: SectorWithRouteCount[];
+};
+
+export type Trip = {
+  id: ID;
+  from: AppDate;
+  to: AppDate;
 };
