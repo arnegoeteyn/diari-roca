@@ -1,4 +1,6 @@
-import { AppShell, Burger, Group, NavLink } from "@mantine/core";
+import Actions from "@/components/actions/actions";
+import { isActive } from "@/util";
+import { AppShell, Burger, Group, NavLink, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { ArrowUp, Globe, Settings, Zap } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
@@ -7,10 +9,6 @@ export function CollapseLayout({ children }: { children: React.ReactNode }) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const location = useLocation();
-
-  const isActive = (base: string) =>
-    location.pathname === `/${base}` ||
-    location.pathname.startsWith(`/${base}/`);
 
   return (
     <AppShell
@@ -39,34 +37,41 @@ export function CollapseLayout({ children }: { children: React.ReactNode }) {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        <NavLink
-          component={Link}
-          to="routes"
-          label="Routes"
-          leftSection={<ArrowUp />}
-          active={isActive("routes")}
-        />
-        <NavLink
-          component={Link}
-          to="ascents"
-          label="Ascents"
-          leftSection={<Zap />}
-          active={isActive("ascents")}
-        />
-        <NavLink
-          component={Link}
-          to="areas"
-          label="Areas"
-          leftSection={<Globe />}
-          active={isActive("areas")}
-        />
-        <NavLink
-          component={Link}
-          to="settings"
-          label="Settings"
-          leftSection={<Settings />}
-          active={isActive("settings")}
-        />
+        <AppShell.Section>
+          <Title order={4}>Navigation</Title>
+          <NavLink
+            component={Link}
+            to="routes"
+            label="Routes"
+            leftSection={<ArrowUp />}
+            active={isActive(location.pathname, "routes")}
+          />
+          <NavLink
+            component={Link}
+            to="ascents"
+            label="Ascents"
+            leftSection={<Zap />}
+            active={isActive(location.pathname, "ascents")}
+          />
+          <NavLink
+            component={Link}
+            to="areas"
+            label="Areas"
+            leftSection={<Globe />}
+            active={isActive(location.pathname, "areas")}
+          />
+          <NavLink
+            component={Link}
+            to="settings"
+            label="Settings"
+            leftSection={<Settings />}
+            active={isActive(location.pathname, "settings")}
+          />
+        </AppShell.Section>
+        <AppShell.Section>
+          <Title order={4}>Actions</Title>
+          <Actions location={location.pathname} />
+        </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>{children}</AppShell.Main>
     </AppShell>
