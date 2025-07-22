@@ -1,6 +1,5 @@
 import { AppShell, Burger, Group, NavLink } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconArrowUp, IconSettings, IconWorld } from "@tabler/icons-react";
 import { ArrowUp, Globe, Settings, Zap } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
