@@ -9,7 +9,7 @@ import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
-export default function Areas() {
+export default function Area() {
   const [areas, loading, refetch] = useAreas();
 
   const [modalArea, setModalArea] = useState<{ id?: ID; area?: Pre<Area> }>();
