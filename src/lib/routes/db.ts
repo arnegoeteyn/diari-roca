@@ -108,4 +108,6 @@ export async function clear(): Promise<void> {
   const db = await getDB();
   db.clear("routes");
   db.clear("ascents");
+  db.clear("areas");
+  db.clear("sectors");
 }
