@@ -9,7 +9,7 @@ type Props = {
   areas: AreaOverview[];
 
   onAreaUpdate: (area: Area) => void;
-  // onCreateSector: () => void;
+  onCreateSector: () => void;
 };
 export default function AreasTable(props: Props) {
   const [openedAreas, setOpenedArea] = useState<{ [key: ID]: boolean }>({});

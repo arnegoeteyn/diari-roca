@@ -1,20 +1,27 @@
 import { AreaForm } from "@/components/areas/area-form";
 import AreasTable from "@/components/areas/areas-table";
+import { SectorForm } from "@/components/areas/sector-form";
 import useAreas from "@/hooks/use-areas";
 import { addArea, putArea } from "@/lib/routes/areas";
-import { Area, AreaOverview, ID, Pre } from "@/lib/routes/types";
+import { addSector } from "@/lib/routes/sectors";
+import { Area, AreaOverview, ID, Pre, Sector } from "@/lib/routes/types";
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 export default function Areas() {
-  // const { easyDialog } = useConfirmationDialog();
-
   const [areas, loading, refetch] = useAreas();
 
   const [modalArea, setModalArea] = useState<{ id?: ID; area?: Pre<Area> }>();
-
   const [areaModalOpen, { open: openAreaModal, close: closeAreaModal }] =
+    useDisclosure(false);
+
+  const [modalSector, setModalSector] = useState<{
+    id?: ID;
+    areaId?: ID;
+    sector?: Pre<Sector>;
+  }>();
+  const [sectorModalOpen, { open: openSectorModal, close: closeSectorModal }] =
     useDisclosure(false);
 
   const saveArea = async (area: Pre<Area>) => {
@@ -37,6 +44,26 @@ export default function Areas() {
     openAreaModal();
   };
 
+  const saveSector = async (area: Pre<Sector>) => {
+    if (modalSector?.id) {
+      await putSector({ ...sector, id: modalSector.id });
+    } else {
+      await addSector(area);
+    }
+    closeSectorModal();
+    refetch();
+  };
+
+  const openNewSectorModal = () => {
+    setModalSector({});
+    openSectorModal();
+  };
+
+  const openEditSectorModal = (sector: Sector) => {
+    setModalSector({ id: sector.id, sector });
+    openAreaModal();
+  };
+
   return loading ? (
     <p>loading</p>
   ) : (
@@ -49,6 +76,18 @@ export default function Areas() {
         <AreaForm area={modalArea?.area} onSubmit={saveArea} />
       </Modal>
 
+      <Modal
+        opened={!!sectorModalOpen}
+        onClose={closeSectorModal}
+        title={modalArea?.id ? "Edit sector" : "New sector"}
+      >
+        <SectorForm
+          sector={modalSector?.sector}
+          onSubmit={saveSector}
+          fixedAreaId={modalSector?.areaId}
+        />
+      </Modal>
+
       <div className="flex [&>*]:mx-4">
         <h2>{areas.length} areas</h2>
         <Button onClick={openNewAreaModal}>Add new</Button>
@@ -56,7 +95,7 @@ export default function Areas() {
       <AreasTable
         areas={areas}
         onAreaUpdate={openEditAreaModal}
-        // onCreateSector={() => opeEditSectorDialog()}
+        onCreateSector={openNewSectorModal}
       />
     </>
   );
