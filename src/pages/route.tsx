@@ -21,10 +21,10 @@ export function RouteContent() {
         <Stack>
           <RouteInformation route={route} />
           <RouteActions hideVisitAction />
+          <Text>hier komen later foto's</Text>
         </Stack>
         <div>
           <RouteAscents ascents={ascents} />
-          <Text>hier komen later foto's</Text>
         </div>
       </SimpleGrid>
     </div>
