@@ -1,26 +1,28 @@
 import { PageTitle } from "@/components/page-title";
 import RouteTable from "@/components/routes-table";
 import useArea from "@/hooks/use-area";
-import useRoutes, { useAreaFilter } from "@/hooks/use-routes";
-import { ID } from "@/lib/routes/types";
+import useRoutes, { sortByGrade } from "@/hooks/use-routes";
+import { ID, RouteOverview } from "@/lib/routes/types";
 import { Loader } from "@mantine/core";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 type Props = { areaId: ID };
 function AreaContent(props: Props) {
   const { areaId } = props;
 
-  const [filter, filterLoading] = useAreaFilter(areaId);
-  const [area, areaLoading, refetch] = useArea(areaId);
+  const [area, refetch] = useArea(areaId);
+  console.log(area, !!area);
 
-  const [routes, routesLoading, routesRefetch] = useRoutes({
-    sortBy: "grade",
-    filter,
-    skip: filterLoading,
+  const routes = useRoutes({
+    sortBy: sortByGrade,
+    filter: useCallback(
+      (route: RouteOverview) => route.area.id == areaId,
+      [areaId]
+    ),
   });
 
-  if (areaLoading || routesLoading) {
+  if (!area) {
     return <Loader />;
   }
 
@@ -38,8 +40,6 @@ export default function Area() {
     id: -1,
     valid: false,
   });
-
-  console.log("realod page");
 
   useEffect(() => {
     const parsed = Number(areaId);

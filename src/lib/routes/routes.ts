@@ -1,8 +1,8 @@
-import { getArea, getAreaCached } from "./areas";
+import { getArea } from "./areas";
 import { ascentsForRoute, ascentsForRouteCached } from "./ascents";
 import { getDB, RouteTransaction } from "./db";
 import { getSector, getSectorCached } from "./sectors";
-import { ID, Pre, Route, RouteOverview, StoreData } from "./types";
+import { ID, Pre, Route, RouteOverview, Store, StoreData } from "./types";
 
 export async function addRoute(route: Pre<Route>) {
   const db = await getDB();
@@ -18,7 +18,7 @@ export function getRouteCached(data: StoreData, id: ID): RouteOverview {
 
   const ascents = ascentsForRouteCached(data, id);
   const sector = getSectorCached(data, route.sectorId);
-  const area = getAreaCached(data, sector.areaId);
+  const area = getArea(data, sector.areaId);
 
   return { route, ascents, sector, area };
 }
@@ -65,16 +65,11 @@ export async function routeIdsForSector(
   return keys;
 }
 
-export async function routesForSector(
-  transcation: RouteTransaction,
+export function routesForSector(
+  data: StoreData,
   sectorId: ID
-): Promise<RouteOverview[]> {
-  const store = transcation.objectStore("routes");
-  const index = store.index("sectorId");
-
-  const keys = await index.getAllKeys(IDBKeyRange.bound(sectorId, sectorId));
-
-  const routes = Promise.all(keys.map((key) => getRoute(transcation, key)));
-
-  return routes;
+): RouteOverview[] {
+  return [...data.routes.values()]
+    .filter((route) => route.sectorId == sectorId)
+    .map((route) => getRouteCached(data, route.id));
 }

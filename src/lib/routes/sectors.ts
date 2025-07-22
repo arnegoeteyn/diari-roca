@@ -1,5 +1,5 @@
 import { getDB, RouteTransaction } from "./db";
-import { routeIdsForSector } from "./routes";
+import { routeIdsForSector, routesForSector } from "./routes";
 import { ID, Pre, Sector, StoreData } from "./types";
 
 export async function addSector(sector: Pre<Sector>) {
@@ -34,22 +34,14 @@ export type SectorWithRouteCount = {
   sector: Sector;
   routeCount: number;
 };
-export async function sectorsForArea(
-  transcation: RouteTransaction,
+export function sectorsForArea(
+  data: StoreData,
   areaId: ID
-): Promise<SectorWithRouteCount[]> {
-  const store = transcation.objectStore("sectors");
-  const index = store.index("areaId");
-
-  const keys = await index.getAllKeys(IDBKeyRange.bound(areaId, areaId));
-
-  const sectors = Promise.all(
-    keys.map(async (key) => {
-      const sector = await getSector(transcation, key);
-      const routes = await routeIdsForSector(transcation, key);
-      return { sector, routeCount: routes.length };
-    })
-  );
-
-  return sectors;
+): SectorWithRouteCount[] {
+  return [...data.sectors.values()]
+    .filter((sector) => sector.areaId == areaId)
+    .map((sector) => ({
+      sector,
+      routeCount: routesForSector(data, sector.id).length,
+    }));
 }
