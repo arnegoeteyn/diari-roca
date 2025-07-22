@@ -28,7 +28,7 @@ export default function AddRouteButton(props: Props) {
           }}
         />
       </Modal>
-      <Button onClick={routeOpen}>New route</Button>;
+      <Button onClick={routeOpen}>New route</Button>
     </>
   );
 }
