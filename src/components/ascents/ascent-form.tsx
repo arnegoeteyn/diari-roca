@@ -1,21 +1,16 @@
-import { Ascent, AscentKind, ID, Pre } from "@/lib/routes/types";
+import { Ascent, AscentBody, AscentKind, ID, Pre } from "@/lib/routes/types";
 import { formattedDate } from "@/util";
 import { Button, Group, Select, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 
-type AscentWithoutRoute = Omit<Ascent, "routeId">;
-
 type Props = {
-  routeId: ID;
-  ascent?: Pre<AscentWithoutRoute>;
-  onSubmit: (ascent: Pre<Ascent>) => void;
+  ascent?: AscentBody;
+  onSubmit: (ascent: AscentBody) => void;
 };
 
-const initialValuesFromAscent = (
-  ascent?: Pre<AscentWithoutRoute>
-): Required<Pre<AscentWithoutRoute>> => {
-  const safeAscent: Pre<AscentWithoutRoute> = ascent
+const initialValuesFromAscent = (ascent?: AscentBody): Required<AscentBody> => {
+  const safeAscent: AscentBody = ascent
     ? ascent
     : {
         date: formattedDate(),
@@ -25,13 +20,8 @@ const initialValuesFromAscent = (
   return { ...safeAscent, comment: "" };
 };
 
-const newAscent = (): Pre<Omit<Ascent, "routeId">> => ({
-  date: formattedDate(),
-  kind: AscentKind.Redpoint,
-});
-
 export default function LogForm(props: Props) {
-  const { ascent, routeId, onSubmit } = props;
+  const { ascent, onSubmit } = props;
 
   const form = useForm({
     mode: "controlled",
@@ -42,11 +32,10 @@ export default function LogForm(props: Props) {
     },
   });
 
-  const onSubmitHandler = (ascent: Omit<Pre<Ascent>, "routeId">) => {
+  const onSubmitHandler = (ascent: AscentBody) => {
     onSubmit({
       ...ascent,
       comment: ascent.comment ? ascent.comment : undefined,
-      routeId,
     });
   };
 

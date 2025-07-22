@@ -23,7 +23,7 @@ type Action = {
 
 export default function RouteActions(props: Props) {
   const { hideVisitAction, compact } = props;
-  const { route, updateRoute } = useRouteContext();
+  const { route, updateRoute, logAscent } = useRouteContext();
   const allSectors = useRoutesStore((store) => store.store.data.sectors);
 
   const [routeOpened, { open: routeOpen, close: routeClose }] =
@@ -72,10 +72,8 @@ export default function RouteActions(props: Props) {
         title={`Log "${route.name}"`}
       >
         <AscentForm
-          routeId={route.id}
           onSubmit={(update) => {
-            console.log(update);
-            // update({ ...update, id: route.id }).then(routeClose);
+            logAscent(update).then(logClose);
           }}
         />
       </Modal>

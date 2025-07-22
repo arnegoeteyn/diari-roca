@@ -52,12 +52,15 @@ export enum AscentKind {
   Redpoint = "redpoint",
 }
 
-export type Ascent = {
-  id: ID;
-  routeId: ID;
+export type AscentBody = {
   comment?: string;
   date: string; // Date object does not seem to play well with indexdb
   kind: AscentKind;
+};
+
+export type Ascent = AscentBody & {
+  id: ID;
+  routeId: ID;
 };
 
 export type Sector = {
