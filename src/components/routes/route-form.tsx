@@ -40,6 +40,7 @@ export default function RouteForm(props: Props) {
     initialValues: initialValuesFromRoute(sectors[0].id, route),
     validate: {
       name: (value) => (value.length > 0 ? null : "Name can not be empty"),
+      grade: (value) => (value ? null : "Grade is required"),
     },
   });
 
@@ -62,6 +63,12 @@ export default function RouteForm(props: Props) {
         label="Name"
         key={form.key("name")}
         {...form.getInputProps("name")}
+      />
+      <TextInput
+        withAsterisk
+        label="Grade"
+        key={form.key("grade")}
+        {...form.getInputProps("grade")}
       />
       <Textarea
         autosize

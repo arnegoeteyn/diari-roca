@@ -1,11 +1,12 @@
 import { create } from "zustand";
-import { Ascent, Pre, Route, Store, StoreData } from "@/lib/routes/types";
-import { putRoute } from "@/lib/routes/routes";
+import { Ascent, ID, Pre, Route, Store, StoreData } from "@/lib/routes/types";
+import { addRoute, putRoute } from "@/lib/routes/routes";
 import { addAscent } from "@/lib/routes/ascents";
 
 export const useRoutesStore = create<{
   store: Store;
   setStore: (data: StoreData) => void;
+  addRoute: (route: Pre<Route>) => Promise<ID>;
   putRoute: (route: Route) => Promise<void>;
   addAscent: (ascent: Pre<Ascent>) => Promise<void>;
 }>((set) => ({
@@ -32,6 +33,20 @@ export const useRoutesStore = create<{
         },
       };
     });
+  },
+  addRoute: async (route: Pre<Route>) => {
+    const newRouteId = await addRoute(route);
+    set((state) => {
+      const updatedRoutes = new Map(state.store.data.routes);
+      updatedRoutes.set(newRouteId, { ...route, id: newRouteId });
+      return {
+        store: {
+          ...state.store,
+          data: { ...state.store.data, routes: updatedRoutes },
+        },
+      };
+    });
+    return newRouteId;
   },
   putRoute: async (route: Route) => {
     set((state) => {
