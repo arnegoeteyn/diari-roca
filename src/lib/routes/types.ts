@@ -63,6 +63,13 @@ export type Ascent = AscentBody & {
   routeId: ID;
 };
 
+export type AscentOverview = {
+  ascent: Ascent;
+  route: Route;
+  sector: Sector;
+  area: Area;
+};
+
 export type Sector = {
   id: ID;
   areaId: ID;

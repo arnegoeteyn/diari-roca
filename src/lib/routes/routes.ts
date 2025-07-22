@@ -1,5 +1,5 @@
 import { getArea } from "./areas";
-import { ascentsForRouteCached } from "./ascents";
+import { ascentsForRoute } from "./ascents";
 import { getDB, RouteTransaction } from "./db";
 import { getSectorCached } from "./sectors";
 import { ID, Pre, Route, RouteOverview, StoreData } from "./types";
@@ -21,7 +21,7 @@ export function getRoute(data: StoreData, id: ID): RouteOverview {
     throw new Error("Route does not exist");
   }
 
-  const ascents = ascentsForRouteCached(data, id);
+  const ascents = ascentsForRoute(data, id);
   const sector = getSectorCached(data, route.sectorId);
   const area = getArea(data, sector.areaId);
 
