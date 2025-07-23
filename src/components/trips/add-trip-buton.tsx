@@ -3,7 +3,7 @@ import TripForm from "./trip-form";
 import { useDisclosure } from "@mantine/hooks";
 
 type Props = {};
-export default function AddTripButton(props: Props) {
+export default function AddTripButton(_props: Props) {
   const [tripOpened, { open: tripOpen, close: tripClose }] =
     useDisclosure(false);
   return (
