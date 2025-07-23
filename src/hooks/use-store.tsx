@@ -27,6 +27,7 @@ export const useRoutesStore = create<{
       sectors: new Map(),
       routes: new Map(),
       ascents: new Map(),
+      trips: new Map(),
     },
   },
   setStore: (data: StoreData) =>
