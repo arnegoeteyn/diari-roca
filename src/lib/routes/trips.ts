@@ -1,14 +1,14 @@
 import { getDB } from "./db";
 import { ID, Pre, StoreData, Trip } from "./types";
 
-export async function addTrip(trip: Pre<Trip>) {
+export async function addTrip(trip: Pre<Trip>): Promise<ID> {
   const db = await getDB();
-  db.add("trips", trip);
+  return db.add("trips", trip);
 }
 
-export async function putTrip(trip: Trip) {
+export async function putTrip(trip: Trip): Promise<ID> {
   const db = await getDB();
-  db.put("trips", trip);
+  return db.put("trips", trip);
 }
 
 export function getTrip(data: StoreData, id: ID): Trip {
