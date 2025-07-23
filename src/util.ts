@@ -6,3 +6,6 @@ export function formattedDate(date?: Date) {
 
   return `${year}-${month}-${day}`;
 }
+
+export const isActive = (location: string, base: string) =>
+  location === `/${base}` || location.startsWith(`/${base}/`);

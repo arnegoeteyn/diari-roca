@@ -1,7 +1,16 @@
 import { create } from "zustand";
-import { Ascent, ID, Pre, Route, Store, StoreData } from "@/lib/routes/types";
+import {
+  Ascent,
+  ID,
+  Pre,
+  Route,
+  Store,
+  StoreData,
+  Trip,
+} from "@/lib/routes/types";
 import { addRoute, putRoute } from "@/lib/routes/routes";
 import { addAscent } from "@/lib/routes/ascents";
+import { addTrip } from "@/lib/routes/trips";
 
 export const useRoutesStore = create<{
   store: Store;
@@ -9,6 +18,7 @@ export const useRoutesStore = create<{
   addRoute: (route: Pre<Route>) => Promise<ID>;
   putRoute: (route: Route) => Promise<void>;
   addAscent: (ascent: Pre<Ascent>) => Promise<void>;
+  addTrip: (trip: Pre<Trip>) => Promise<ID>;
 }>((set) => ({
   store: {
     initialized: false,
@@ -17,6 +27,7 @@ export const useRoutesStore = create<{
       sectors: new Map(),
       routes: new Map(),
       ascents: new Map(),
+      trips: new Map(),
     },
   },
   setStore: (data: StoreData) =>
@@ -60,5 +71,19 @@ export const useRoutesStore = create<{
       };
     });
     return putRoute(route);
+  },
+  addTrip: async (trip: Pre<Trip>) => {
+    const newTripId = await addTrip(trip);
+    set((state) => {
+      const updatedTrips = new Map(state.store.data.trips);
+      updatedTrips.set(newTripId, { ...trip, id: newTripId });
+      return {
+        store: {
+          ...state.store,
+          data: { ...state.store.data, trips: updatedTrips },
+        },
+      };
+    });
+    return newTripId;
   },
 }));
