@@ -1,8 +1,5 @@
-import AddRouteButton from "@/components/routes/add-route-button";
 import RouteTable from "@/components/routes/routes-table";
 import useRoutes from "@/hooks/use-routes";
-import useSectors from "@/hooks/use-sectors";
-import { useRoutesStore } from "@/hooks/use-store";
 import { RouteKind, RouteOverview } from "@/lib/routes/types";
 import { Group, Tabs } from "@mantine/core";
 
@@ -20,11 +17,6 @@ const boulderParams = {
 export default function Routes() {
   const routes = useRoutes(routesParam);
   const boulders = useRoutes(boulderParams);
-
-  const sectors = useSectors();
-
-  const addRoute = useRoutesStore((store) => store.addRoute);
-
   return (
     <Tabs defaultValue="sport">
       <Group justify="space-between" pr={128}>
@@ -32,10 +24,6 @@ export default function Routes() {
           <Tabs.Tab value="sport">Routes</Tabs.Tab>
           <Tabs.Tab value="boulder">Boulders</Tabs.Tab>
         </Tabs.List>
-        <AddRouteButton
-          sectors={sectors}
-          onRouteCreated={(r) => addRoute(r).then()}
-        />
       </Group>
       <Tabs.Panel value="sport">
         <RouteTable routes={routes} />

@@ -1,5 +1,6 @@
 import { isActive } from "@/util";
 import AscentsActions from "./ascents-actions";
+import RoutesActions from "./routes-actions";
 
 type Props = {
   location: string;
@@ -7,5 +8,9 @@ type Props = {
 export default function Actions(props: Props) {
   if (isActive(props.location, "ascents")) {
     return <AscentsActions />;
+  }
+
+  if (isActive(props.location, "routes")) {
+    return <RoutesActions />;
   }
 }

@@ -2,12 +2,12 @@ import { Button, ButtonProps, Group, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { ArrowRight, Edit, PlusCircle, Trash } from "lucide-react";
 import { ReactElement, useCallback } from "react";
-import RouteForm from "./route-form";
+import RouteForm from "./route-form.tsx";
 import { useRouteContext } from "@/contexts/route-context";
-import { useRoutesStore } from "@/hooks/use-store";
 import { useNavigate } from "react-router-dom";
 import AscentForm from "../ascents/ascent-form";
 import { useIsSmall } from "@/hooks/use-small";
+import useSectors from "@/hooks/use-sectors.tsx";
 
 type Props = {
   hideVisitAction?: boolean;
@@ -25,7 +25,7 @@ type Action = {
 export default function RouteActions(props: Props) {
   const { hideVisitAction, compact } = props;
   const { route, updateRoute, logAscent } = useRouteContext();
-  const allSectors = useRoutesStore((store) => store.store.data.sectors);
+  const sectors = useSectors();
 
   const isMobile = useIsSmall();
 
@@ -63,7 +63,7 @@ export default function RouteActions(props: Props) {
       >
         <RouteForm
           route={route}
-          sectors={[...allSectors.values()]}
+          sectors={sectors}
           onSubmit={(update) => {
             updateRoute({ ...update, id: route.id }).then(routeClose);
           }}
