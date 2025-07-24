@@ -1,10 +1,11 @@
-import { Pre, Route, RouteKind, Sector, ID } from "@/lib/routes/types";
+import { Pre, Route, RouteKind, ID, SectorOverview } from "@/lib/routes/types";
 import { Button, Group, Select, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { sectorGroups } from "./route-form";
 
 type Props = {
   route?: Pre<Route>;
-  sectors: Sector[];
+  sectors: SectorOverview[];
   onSubmit: (route: Pre<Route>) => void;
 };
 
@@ -37,17 +38,12 @@ export default function RouteForm(props: Props) {
 
   const form = useForm({
     mode: "controlled",
-    initialValues: initialValuesFromRoute(sectors[0].id, route),
+    initialValues: initialValuesFromRoute(sectors[0].sector.id, route),
     validate: {
       name: (value) => (value.length > 0 ? null : "Name can not be empty"),
       grade: (value) => (value ? null : "Grade is required"),
     },
   });
-
-  const sectorData = props.sectors.map((sector) => ({
-    value: sector.id.toString(),
-    label: sector.name,
-  }));
 
   const routeKindOptions = Object.values(RouteKind).map((kind) => ({
     value: kind,
@@ -99,7 +95,7 @@ export default function RouteForm(props: Props) {
       />
       <Select
         label="Sector"
-        data={sectorData}
+        data={sectorGroups(props.sectors)}
         key={form.key("sectorId")}
         {...form.getInputProps("sectorId")}
       />

@@ -1,7 +1,7 @@
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import RouteForm from "./route-form";
 import { Pre, Route, SectorOverview } from "@/lib/routes/types";
+import RouteForm from "./route-form.tsx";
 
 type Props = {
   sectors: SectorOverview[];
@@ -22,7 +22,7 @@ export default function AddRouteButton(props: Props) {
         title="New route"
       >
         <RouteForm
-          sectors={sectors.map((sector) => sector.sector)}
+          sectors={sectors}
           onSubmit={(r) => onRouteCreated(r).then(routeClose)}
         />
       </Modal>
