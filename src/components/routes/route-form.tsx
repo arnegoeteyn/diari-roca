@@ -94,6 +94,7 @@ export default function RouteForm(props: Props) {
         {...form.getInputProps("beta")}
       />
       <Select
+        searchable
         label="Sector"
         data={sectorGroups(props.sectors)}
         key={form.key("sectorId")}
