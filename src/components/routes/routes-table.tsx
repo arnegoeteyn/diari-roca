@@ -20,7 +20,7 @@ export default function RouteTable(props: Props) {
   const shownRoutes = () => {
     return props.routes.slice(
       page * ROUTES_PER_PAGE,
-      (page + 1) * ROUTES_PER_PAGE
+      (page + 1) * ROUTES_PER_PAGE,
     );
   };
 

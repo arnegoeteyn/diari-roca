@@ -13,7 +13,7 @@ type FormRoute = Required<Omit<Pre<Route>, "sectorId"> & { sectorId: string }>;
 
 const initialValuesFromRoute = (
   defaultSectorId: ID,
-  route?: Pre<Route>
+  route?: Pre<Route>,
 ): FormRoute => {
   const safeRoute: Pre<Route> = route
     ? route
@@ -51,7 +51,7 @@ export default function RouteForm(props: Props) {
   }));
 
   const onSubmit = (
-    route: Omit<Pre<Route>, "sectorId"> & { sectorId: string }
+    route: Omit<Pre<Route>, "sectorId"> & { sectorId: string },
   ) => {
     const parsedId = Number(route.sectorId);
     props.onSubmit({ ...route, sectorId: parsedId });

@@ -5,7 +5,7 @@ import { useRoutesStore } from "./use-store";
 import { sectorsForArea } from "@/lib/routes/sectors";
 
 export default function useArea(
-  areaId: ID
+  areaId: ID,
 ): [AreaOverview | undefined, () => void] {
   const [area, setArea] = useState<AreaOverview>();
   const [shouldRefetch, refetch] = useState(0);

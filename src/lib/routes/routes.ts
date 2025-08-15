@@ -35,7 +35,7 @@ export function getRoutes(data: StoreData): RouteOverview[] {
 
 export async function routeIdsForSector(
   transcation: RouteTransaction,
-  sectorId: ID
+  sectorId: ID,
 ): Promise<ID[]> {
   const store = transcation.objectStore("routes");
   const index = store.index("sectorId");
@@ -47,7 +47,7 @@ export async function routeIdsForSector(
 
 export function routesForSector(
   data: StoreData,
-  sectorId: ID
+  sectorId: ID,
 ): RouteOverview[] {
   return [...data.routes.values()]
     .filter((route) => route.sectorId == sectorId)

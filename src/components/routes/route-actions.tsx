@@ -37,7 +37,7 @@ export default function RouteActions(props: Props) {
 
   const visitRoute = useCallback(
     () => navigate(`/routes/${route.id}`),
-    [route.id]
+    [route.id],
   );
 
   const actions: Record<string, Action> = {

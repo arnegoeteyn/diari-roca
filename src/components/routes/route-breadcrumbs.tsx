@@ -14,7 +14,7 @@ export default function RouteBreadcrumbs(props: Props) {
 
   if (!sector || !area) {
     throw new Error(
-      "RouteBreadcrumbs must receive either props or be use with RouteContextProvider"
+      "RouteBreadcrumbs must receive either props or be use with RouteContextProvider",
     );
   }
 

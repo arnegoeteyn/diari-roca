@@ -14,7 +14,7 @@ export default function useTrips(props?: Props): Trip[] {
     }
     const trips = getTrips(store.data);
     setTrips(trips);
-  }, [props, store.data]);
+  }, [props, store.data, store.initialized]);
 
   return trips;
 }

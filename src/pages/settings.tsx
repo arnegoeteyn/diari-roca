@@ -49,18 +49,18 @@ export default function Import() {
     console.log("cleared");
     const routes = file.routes.map((route) =>
       addRoute(route).catch(() =>
-        console.log("could not import route", route.name)
-      )
+        console.log("could not import route", route.name),
+      ),
     );
     const ascents = file.ascents.map((ascent) => {
       addAscent(ascent).catch(() =>
-        console.log("could not import ascent", ascent)
+        console.log("could not import ascent", ascent),
       );
     });
 
     const sectors = file.sectors.map((sector) => {
       addSector(sector).catch(() =>
-        console.log("could not import sector", sector)
+        console.log("could not import sector", sector),
       );
     });
 

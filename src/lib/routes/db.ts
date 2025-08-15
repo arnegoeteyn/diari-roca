@@ -126,7 +126,7 @@ export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
 
 async function loadSet<Name extends StoreNames<RoutesDB>>(
   db: IDBPDatabase<RoutesDB>,
-  name: Name
+  name: Name,
 ): Promise<Map<ID, RoutesDB[Name]["value"] & { id: RoutesDB[Name]["key"] }>> {
   const transaction = db.transaction(name);
   const store = transaction.objectStore(name);
@@ -134,8 +134,8 @@ async function loadSet<Name extends StoreNames<RoutesDB>>(
     .getAllKeys()
     .then((keys) =>
       Promise.all(
-        keys.map((key) => store.get(key).then((item) => ({ item, key })))
-      )
+        keys.map((key) => store.get(key).then((item) => ({ item, key }))),
+      ),
     )
     .then((items) =>
       items.reduce((map, { item, key }) => {
@@ -143,7 +143,7 @@ async function loadSet<Name extends StoreNames<RoutesDB>>(
           map.set(key, { ...item, id: key });
         }
         return map;
-      }, new Map<ID, RoutesDB[Name]["value"] & { id: RoutesDB[Name]["key"] }>())
+      }, new Map<ID, RoutesDB[Name]["value"] & { id: RoutesDB[Name]["key"] }>()),
     );
 }
 
@@ -168,7 +168,7 @@ export async function load(): Promise<StoreData> {
 }
 
 export async function startTransaction(
-  storeNames: ArrayLike<StoreNames<RoutesDB>>
+  storeNames: ArrayLike<StoreNames<RoutesDB>>,
 ): Promise<RouteTransaction> {
   const db = await getDB();
   return db.transaction(storeNames, "readonly");

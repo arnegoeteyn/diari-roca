@@ -24,6 +24,6 @@ export function getAscent(data: StoreData, id: ID): AscentOverview {
 
 export function ascentsForRoute(data: StoreData, routeId: ID): Ascent[] {
   return [...data.ascents.values()].filter(
-    (ascent) => ascent.routeId == routeId
+    (ascent) => ascent.routeId == routeId,
   );
 }

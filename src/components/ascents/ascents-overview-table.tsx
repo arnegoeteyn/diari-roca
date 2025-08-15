@@ -33,7 +33,7 @@ const styleForAscent = (
   trips: Trip[],
   ascent: Ascent,
   first?: boolean,
-  last?: boolean
+  last?: boolean,
 ): MantineStyleProp => {
   const trip = tripForAscent(trips, ascent);
   if (!trip) {
@@ -114,7 +114,7 @@ export default function AscentsOverviewTable(props: Props) {
   const shownAscents = () => {
     return props.ascents.slice(
       page * ASCENTS_PER_PAGE,
-      (page + 1) * ASCENTS_PER_PAGE
+      (page + 1) * ASCENTS_PER_PAGE,
     );
   };
 

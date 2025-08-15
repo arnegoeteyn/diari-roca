@@ -31,7 +31,7 @@ export function getSector(data: StoreData, id: ID): SectorOverview {
 
   const area = getArea(data, sector.areaId);
   const routes = [...data.routes.values()].filter(
-    (route) => route.sectorId == id
+    (route) => route.sectorId == id,
   );
 
   return { sector, area, routes };
@@ -43,7 +43,7 @@ export type SectorWithRouteCount = {
 };
 export function sectorsForArea(
   data: StoreData,
-  areaId: ID
+  areaId: ID,
 ): SectorWithRouteCount[] {
   return [...data.sectors.values()]
     .filter((sector) => sector.areaId == areaId)

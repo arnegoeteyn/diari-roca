@@ -4,7 +4,7 @@ const MEDIUM_BREAKPOINT = 1200;
 
 export function useIsMedium() {
   const [isMedium, setIsMedium] = React.useState<boolean | undefined>(
-    undefined
+    undefined,
   );
 
   React.useEffect(() => {

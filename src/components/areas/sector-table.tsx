@@ -7,7 +7,7 @@ type Props = {
 };
 export default function SectorTable(props: Props) {
   const sorted = props.sectors.sort((a, b) =>
-    a.sector.name < b.sector.name ? -1 : 1
+    a.sector.name < b.sector.name ? -1 : 1,
   );
   return (
     <>

@@ -18,7 +18,7 @@ function AreaContent(props: Props) {
     sortBy: sortByGrade,
     filter: useCallback(
       (route: RouteOverview) => route.area.id == areaId,
-      [areaId]
+      [areaId],
     ),
   });
 

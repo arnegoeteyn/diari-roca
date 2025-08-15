@@ -16,7 +16,7 @@ export type RouteContextType = RouteOverview & {
 };
 
 export const RouteContext = React.createContext<RouteContextType | undefined>(
-  undefined
+  undefined,
 );
 
 type Props = React.PropsWithChildren<{
@@ -58,7 +58,7 @@ export function useRouteContext(): RouteContextType {
   const context = React.useContext(RouteContext);
   if (context === undefined) {
     throw new Error(
-      "useRouteContext must be used within a RouteContextProvider"
+      "useRouteContext must be used within a RouteContextProvider",
     );
   }
   return context;
