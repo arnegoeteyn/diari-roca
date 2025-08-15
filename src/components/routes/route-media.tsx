@@ -1,7 +1,7 @@
-import { useRouteContext } from "@/contexts/route-context";
 import { Box, Button, Group, Stack, Text } from "@mantine/core";
 import MediaEmbed from "../media-embed";
 import { Edit, Trash2 } from "lucide-react";
+import { useRouteContext } from "@/contexts/route-context-util";
 
 export default function RouteMedia() {
   const { route } = useRouteContext();

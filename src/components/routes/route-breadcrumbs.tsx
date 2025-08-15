@@ -1,7 +1,5 @@
-import {
-  RouteContextType,
-  useOptionalRouteContext,
-} from "@/contexts/route-context";
+import { RouteContextType } from "@/contexts/route-context";
+import { useOptionalRouteContext } from "@/contexts/route-context-util";
 import { Anchor, Breadcrumbs } from "@mantine/core";
 import { Link } from "react-router-dom";
 

@@ -2,9 +2,9 @@ import { Ascent, RouteOverview } from "@/lib/routes/types";
 import { Group, Pagination, Table, Text } from "@mantine/core";
 import { useState } from "react";
 import RouteActions from "./route-actions";
-import { RouteContextProvider } from "@/contexts/route-context";
 import AscentBadge from "../ascents/ascent-badge";
 import { useIsMedium } from "@/hooks/use-medium";
+import { RouteContextProvider } from "@/contexts/route-context-provider";
 
 type Props = {
   routes: RouteOverview[];

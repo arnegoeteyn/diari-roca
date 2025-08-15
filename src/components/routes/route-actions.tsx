@@ -3,11 +3,11 @@ import { useDisclosure } from "@mantine/hooks";
 import { ArrowRight, Edit, PlusCircle, Trash } from "lucide-react";
 import { ReactElement, useCallback } from "react";
 import RouteForm from "./route-form.tsx";
-import { useRouteContext } from "@/contexts/route-context";
 import { useNavigate } from "react-router-dom";
 import AscentForm from "../ascents/ascent-form";
 import { useIsSmall } from "@/hooks/use-small";
 import useSectors from "@/hooks/use-sectors.tsx";
+import { useRouteContext } from "@/contexts/route-context-util.ts";
 
 type Props = {
   hideVisitAction?: boolean;
@@ -37,7 +37,7 @@ export default function RouteActions(props: Props) {
 
   const visitRoute = useCallback(
     () => navigate(`/routes/${route.id}`),
-    [route.id],
+    [route.id, navigate],
   );
 
   const actions: Record<string, Action> = {
