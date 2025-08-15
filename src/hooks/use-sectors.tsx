@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import { useRoutesStore } from "./use-store";
 import { getSectors } from "@/lib/routes/sectors";
 
-type Props = {};
-
-export default function useSectors(_props?: Props): SectorOverview[] {
+export default function useSectors(): SectorOverview[] {
   const [sectors, setSectors] = useState<SectorOverview[]>([]);
   const store = useRoutesStore((store) => store.store);
 

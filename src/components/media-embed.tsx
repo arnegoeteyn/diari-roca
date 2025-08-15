@@ -23,7 +23,7 @@ export default function MediaEmbed(props: Props) {
 
   console.log(youtube);
 
-  if (!!youtube) {
+  if (youtube) {
     return <YouTube videoId={youtube} />;
   }
   return (
