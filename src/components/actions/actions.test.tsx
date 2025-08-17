@@ -5,16 +5,14 @@ import Actions from "./actions";
 import { render } from "@/test-render";
 import RoutesActions from "./routes-actions";
 import AscentsActions from "./ascents-actions";
+import SectorsActions from "./sectors-actions";
 
-vi.mock("./routes-actions", () => ({
-  default: vi.fn(() => <div data-testid="mock-routes-actions"></div>),
-}));
-
-vi.mock("./ascents-actions", () => ({
-  default: vi.fn(() => <div data-testid="mock-ascents-actions"></div>),
-}));
+vi.mock("./routes-actions");
+vi.mock("./ascents-actions");
+vi.mock("@/components/actions/sectors-actions");
 
 const MockRoutesActions = vi.mocked(RoutesActions);
+const MockSectorsActions = vi.mocked(SectorsActions);
 const MockAscentsActions = vi.mocked(AscentsActions);
 
 describe("<Actions/>", () => {
@@ -41,10 +39,10 @@ describe("<Actions/>", () => {
     expect(MockRoutesActions).toHaveBeenCalled();
   });
 
-  test("loads routesactions on /routes/123", async () => {
-    render(<Actions location="/routes" />);
+  test("loads sector-actions on /sectors/123", async () => {
+    render(<Actions location="/sectors/123" />);
 
-    expect(MockRoutesActions).toHaveBeenCalled();
+    expect(MockSectorsActions).toHaveBeenCalled();
   });
 
   test("loads ascents-actions on /ascents", async () => {
