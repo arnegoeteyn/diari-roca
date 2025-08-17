@@ -4,7 +4,6 @@ import { MantineProvider } from "@mantine/core";
 
 import { BrowserRouter } from "react-router-dom";
 import { useEffect } from "react";
-import { CollapseLayout } from "./layout/collapse-layout";
 import { useRoutesStore } from "./hooks/use-store";
 import { load } from "./lib/routes/db";
 import DiariRocaRouter from "./router";
@@ -23,9 +22,7 @@ function App() {
   return (
     <MantineProvider>
       <BrowserRouter>
-        <CollapseLayout>
-          <DiariRocaRouter />
-        </CollapseLayout>
+        <DiariRocaRouter />
       </BrowserRouter>
     </MantineProvider>
   );
