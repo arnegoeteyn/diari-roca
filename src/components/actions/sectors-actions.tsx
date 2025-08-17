@@ -1,15 +1,31 @@
 import { Stack } from "@mantine/core";
 import { useRoutesStore } from "@/hooks/use-store";
-import useSectors from "@/hooks/use-sectors";
 import AddRouteButton from "../routes/add-route-button";
+import { ID, Route } from "@/lib/routes/types";
+import useSector from "@/hooks/use-sector";
+import { Loader } from "lucide-react";
 
-export default function SectorsActions() {
+type Props = {
+  sectorId: ID;
+};
+
+export default function SectorsActions(props: Props) {
   const addRoute = useRoutesStore((store) => store.addRoute);
-  const sectors = useSectors();
+  const [sector] = useSector(props.sectorId);
+
+  if (!sector) {
+    return <Loader />;
+  }
+
+  const initialRoute = {
+    sectorId: props.sectorId,
+  } as Route;
+
   return (
     <Stack p={"16px"}>
       <AddRouteButton
-        sectors={sectors}
+        initialRoute={initialRoute}
+        sectors={[sector]}
         onRouteCreated={(r) => addRoute(r).then()}
       />
     </Stack>

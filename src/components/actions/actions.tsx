@@ -1,12 +1,15 @@
 import { isActive } from "@/util";
+import SectorsActions from "@/components/actions/sectors-actions";
 import AscentsActions from "./ascents-actions";
 import RoutesActions from "./routes-actions";
-import SectorsActions from "./sectors-actions";
+import { useParams } from "react-router-dom";
 
 type Props = {
   location: string;
 };
 export default function Actions(props: Props) {
+  const { sectorId } = useParams();
+
   if (isActive(props.location, "ascents")) {
     return <AscentsActions />;
   }
@@ -16,7 +19,8 @@ export default function Actions(props: Props) {
   }
 
   if (isActive(props.location, "sectors")) {
-    return <SectorsActions />;
+    const sectorIdNumber = Number(sectorId);
+    return <SectorsActions sectorId={sectorIdNumber} />;
   }
 
   return <div data-testid="no-actions"></div>;

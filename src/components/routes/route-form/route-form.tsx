@@ -1,7 +1,7 @@
 import { Pre, Route, RouteKind, ID, SectorOverview } from "@/lib/routes/types";
 import { Button, Group, Select, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { sectorGroups } from "./route-form";
+import SelectSector from "./select-sector";
 
 type Props = {
   route?: Pre<Route>;
@@ -9,7 +9,9 @@ type Props = {
   onSubmit: (route: Pre<Route>) => void;
 };
 
-type FormRoute = Required<Omit<Pre<Route>, "sectorId"> & { sectorId: string }>;
+export type FormRoute = Required<
+  Omit<Pre<Route>, "sectorId"> & { sectorId: string }
+>;
 
 const initialValuesFromRoute = (
   defaultSectorId: ID,
@@ -93,13 +95,7 @@ export default function RouteForm(props: Props) {
         key={form.key("beta")}
         {...form.getInputProps("beta")}
       />
-      <Select
-        searchable
-        label="Sector"
-        data={sectorGroups(props.sectors)}
-        key={form.key("sectorId")}
-        {...form.getInputProps("sectorId")}
-      />
+      <SelectSector sectors={sectors} form={form} />
       <Group justify="flex-end" mt="md">
         <Button type="submit">Submit</Button>
       </Group>

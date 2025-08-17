@@ -5,7 +5,8 @@ import Actions from "./actions";
 import { render } from "@/test-render";
 import RoutesActions from "./routes-actions";
 import AscentsActions from "./ascents-actions";
-import SectorsActions from "./sectors-actions";
+import SectorsActions from "@/components/actions/sectors-actions";
+import { MemoryRouter, Routes, Route } from "react-router-dom";
 
 vi.mock("./routes-actions");
 vi.mock("./ascents-actions");
@@ -40,9 +41,21 @@ describe("<Actions/>", () => {
   });
 
   test("loads sector-actions on /sectors/123", async () => {
-    render(<Actions location="/sectors/123" />);
+    render(
+      <MemoryRouter initialEntries={["/sectors/123"]}>
+        <Routes>
+          <Route
+            path="/sectors/:sectorId"
+            element={<Actions location="/sectors/123" />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
 
-    expect(MockSectorsActions).toHaveBeenCalled();
+    expect(MockSectorsActions).toHaveBeenCalledExactlyOnceWith(
+      { sectorId: 123 },
+      undefined,
+    );
   });
 
   test("loads ascents-actions on /ascents", async () => {
