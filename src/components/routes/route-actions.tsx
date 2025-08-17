@@ -2,7 +2,7 @@ import { Button, ButtonProps, Group, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { ArrowRight, Edit, PlusCircle, Trash } from "lucide-react";
 import { ReactElement, useCallback } from "react";
-import RouteForm from "./route-form.tsx";
+import RouteForm from "./route-form/route-form.tsx";
 import { useNavigate } from "react-router-dom";
 import AscentForm from "../ascents/ascent-form";
 import { useIsSmall } from "@/hooks/use-small";
