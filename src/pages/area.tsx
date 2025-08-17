@@ -1,4 +1,4 @@
-import { PageTitle } from "@/components/page-title";
+import PageTitle from "@/components/page-title";
 import RouteTable from "@/components/routes/routes-table";
 import useArea from "@/hooks/use-area";
 import useRoutes, { sortByGrade } from "@/hooks/use-routes";
@@ -12,7 +12,6 @@ function AreaContent(props: Props) {
   const { areaId } = props;
 
   const [area] = useArea(areaId);
-  console.log(area, !!area);
 
   const routes = useRoutes({
     sortBy: sortByGrade,

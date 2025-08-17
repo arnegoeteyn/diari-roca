@@ -4,7 +4,7 @@ type Props = {
   title: string;
   subtitle?: string;
 };
-export function PageTitle(props: Props) {
+export default function PageTitle(props: Props) {
   return (
     <Group justify={"start"} align={"center"} mb={32}>
       <Title>{props.title}</Title>

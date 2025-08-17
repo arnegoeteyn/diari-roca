@@ -2,23 +2,12 @@ import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import { MantineProvider } from "@mantine/core";
 
-import {
-  BrowserRouter,
-  Navigate,
-  Route as RouterRoute,
-  Routes as RouterRoutes,
-} from "react-router-dom";
-import { lazy, useEffect } from "react";
+import { BrowserRouter } from "react-router-dom";
+import { useEffect } from "react";
 import { CollapseLayout } from "./layout/collapse-layout";
 import { useRoutesStore } from "./hooks/use-store";
 import { load } from "./lib/routes/db";
-
-const Routes = lazy(() => import("./pages/routes"));
-const Route = lazy(() => import("./pages/route"));
-const Areas = lazy(() => import("./pages/areas"));
-const Area = lazy(() => import("./pages/area"));
-const Settings = lazy(() => import("./pages/settings"));
-const Ascents = lazy(() => import("./pages/ascents"));
+import DiariRocaRouter from "./router";
 
 function App() {
   const setState = useRoutesStore((state) => state.setStore);
@@ -35,18 +24,7 @@ function App() {
     <MantineProvider>
       <BrowserRouter>
         <CollapseLayout>
-          <RouterRoutes>
-            <RouterRoute path="/" element={<Navigate to="/routes" replace />} />
-            <RouterRoute path="/routes" element={<Routes />}></RouterRoute>
-            <RouterRoute
-              path="/routes/:routeId"
-              element={<Route />}
-            ></RouterRoute>
-            <RouterRoute path="/ascents" element={<Ascents />}></RouterRoute>
-            <RouterRoute path="/areas" element={<Areas />}></RouterRoute>
-            <RouterRoute path="/areas/:areaId" element={<Area />}></RouterRoute>
-            <RouterRoute path="/settings" element={<Settings />}></RouterRoute>
-          </RouterRoutes>
+          <DiariRocaRouter />
         </CollapseLayout>
       </BrowserRouter>
     </MantineProvider>

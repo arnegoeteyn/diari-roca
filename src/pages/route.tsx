@@ -1,4 +1,4 @@
-import { PageTitle } from "@/components/page-title";
+import PageTitle from "@/components/page-title";
 import RouteActions from "@/components/routes/route-actions";
 import AscentsList from "@/components/ascents/ascents-list";
 import RouteBreadcrumbs from "@/components/routes/route-breadcrumbs";
