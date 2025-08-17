@@ -4,9 +4,11 @@ import SectorContent from "./sector-content";
 export default function Route() {
   const { sectorId } = useParams();
 
-  if (!sectorId || isNaN(Number(sectorId))) {
-    return <p>Woops, go a bad id: {sectorId}</p>;
+  const numericSectorId = Number(sectorId);
+
+  if (isNaN(numericSectorId)) {
+    return <p>Woops, got a bad id: {sectorId}</p>;
   }
 
-  return <SectorContent />;
+  return <SectorContent sectorId={numericSectorId} />;
 }

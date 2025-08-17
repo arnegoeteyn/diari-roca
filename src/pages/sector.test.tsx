@@ -38,6 +38,20 @@ describe("pages/sector", () => {
     expect(MockSectorContent).toHaveBeenCalledTimes(1);
   });
 
+  test("shows content with the correct id", async () => {
+    render(
+      <MemoryRouter initialEntries={["/sector/7575"]}>
+        <Routes>
+          <Route path="/sector/:sectorId" element={<SectorPage />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(MockSectorContent).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({ sectorId: 7575 }),
+      undefined,
+    );
+  });
+
   test("does not show content when id is not numeric", async () => {
     render(
       <MemoryRouter initialEntries={["/sector/abc"]}>
