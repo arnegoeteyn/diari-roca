@@ -9,6 +9,7 @@ import {
 import { lazy, useEffect } from "react";
 import { useRoutesStore } from "./hooks/use-store";
 import { load } from "./lib/routes/db";
+import { CollapseLayout } from "./layout/collapse-layout";
 
 const Routes = lazy(() => import("./pages/routes"));
 const Route = lazy(() => import("./pages/route"));
@@ -31,14 +32,19 @@ function DiariRocaRouter() {
 
   return (
     <RouterRoutes>
-      <RouterRoute path="/" element={<Navigate to="/routes" replace />} />
-      <RouterRoute path="/routes" element={<Routes />}></RouterRoute>
-      <RouterRoute path="/routes/:routeId" element={<Route />}></RouterRoute>
-      <RouterRoute path="/ascents" element={<Ascents />}></RouterRoute>
-      <RouterRoute path="/areas" element={<Areas />}></RouterRoute>
-      <RouterRoute path="/areas/:areaId" element={<Area />}></RouterRoute>
-      <RouterRoute path="/sectors/:sectorId" element={<Sector />}></RouterRoute>
-      <RouterRoute path="/settings" element={<Settings />}></RouterRoute>
+      <RouterRoute element={<CollapseLayout />}>
+        <RouterRoute path="/" element={<Navigate to="/routes" replace />} />
+        <RouterRoute path="/routes" element={<Routes />}></RouterRoute>
+        <RouterRoute path="/routes/:routeId" element={<Route />}></RouterRoute>
+        <RouterRoute path="/ascents" element={<Ascents />}></RouterRoute>
+        <RouterRoute path="/areas" element={<Areas />}></RouterRoute>
+        <RouterRoute path="/areas/:areaId" element={<Area />}></RouterRoute>
+        <RouterRoute
+          path="/sectors/:sectorId"
+          element={<Sector />}
+        ></RouterRoute>
+        <RouterRoute path="/settings" element={<Settings />}></RouterRoute>
+      </RouterRoute>
     </RouterRoutes>
   );
 }

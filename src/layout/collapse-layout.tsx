@@ -3,9 +3,9 @@ import { isActive } from "@/util";
 import { AppShell, Burger, Group, NavLink, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { ArrowUp, Globe, Settings, Zap } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
-export function CollapseLayout({ children }: { children: React.ReactNode }) {
+export function CollapseLayout() {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const location = useLocation();
@@ -73,7 +73,9 @@ export function CollapseLayout({ children }: { children: React.ReactNode }) {
           <Actions location={location.pathname} />
         </AppShell.Section>
       </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Outlet />
+      </AppShell.Main>
     </AppShell>
   );
 }
