@@ -29,8 +29,8 @@ const initialValuesFromRoute = (
 
   return {
     ...safeRoute,
-    comment: "",
-    beta: "",
+    comment: route?.comment || "",
+    beta: route?.beta || "",
     sectorId: safeRoute.sectorId.toString(),
   };
 };
