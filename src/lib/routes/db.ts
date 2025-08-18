@@ -54,27 +54,14 @@ export type RouteTransaction = IDBPTransaction<
 >;
 
 export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
-  const db = await openDB<RoutesDB>("routes", 11, {
-    upgrade(db, _oldVersion, _newVersion, transaction) {
+  const db = await openDB<RoutesDB>("routes", 1, {
+    upgrade(db, _oldVersion, _newVersion) {
       const stores = db.objectStoreNames;
       if (!stores.contains("routes")) {
         db.createObjectStore("routes", {
           keyPath: "id",
           autoIncrement: true,
         });
-      }
-
-      const routesStore = transaction.objectStore("routes");
-      if (!routesStore.indexNames.contains("grade")) {
-        routesStore.createIndex("grade", "grade");
-      }
-
-      if (!routesStore.indexNames.contains("sectorId")) {
-        routesStore.createIndex("sectorId", "sectorId");
-      }
-
-      if (!routesStore.indexNames.contains("kind")) {
-        routesStore.createIndex("kind", ["kind", "grade"]);
       }
 
       if (!stores.contains("ascents")) {
@@ -84,11 +71,6 @@ export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
         });
       }
 
-      const ascentsStore = transaction.objectStore("ascents");
-      if (!ascentsStore.indexNames.contains("routeId")) {
-        ascentsStore.createIndex("routeId", "routeId");
-      }
-
       if (!stores.contains("sectors")) {
         db.createObjectStore("sectors", {
           keyPath: "id",
@@ -96,21 +78,11 @@ export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
         });
       }
 
-      const sectorsStore = transaction.objectStore("sectors");
-      if (!sectorsStore.indexNames.contains("areaId")) {
-        sectorsStore.createIndex("areaId", "areaId");
-      }
-
       if (!stores.contains("areas")) {
         db.createObjectStore("areas", {
           keyPath: "id",
           autoIncrement: true,
         });
-      }
-
-      const areasStore = transaction.objectStore("areas");
-      if (!areasStore.indexNames.contains("name")) {
-        areasStore.createIndex("name", "name");
       }
 
       if (!stores.contains("trips")) {
