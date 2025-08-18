@@ -139,13 +139,6 @@ export async function load(): Promise<StoreData> {
   };
 }
 
-export async function startTransaction(
-  storeNames: ArrayLike<StoreNames<RoutesDB>>,
-): Promise<RouteTransaction> {
-  const db = await getDB();
-  return db.transaction(storeNames, "readonly");
-}
-
 export async function clear(): Promise<void> {
   const db = await getDB();
   db.clear("routes");
