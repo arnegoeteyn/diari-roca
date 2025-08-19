@@ -1,4 +1,4 @@
-import { Pre, Route, RouteKind, ID, SectorOverview } from "@/lib/routes/types";
+import { Pre, Route, RouteKind, ID, SectorOverview } from "@/lib/routes";
 import { Button, Group, Select, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import SelectSector from "./select-sector";

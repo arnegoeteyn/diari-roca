@@ -1,6 +1,6 @@
 import { useForm } from "@mantine/form";
 
-import { Area, Pre } from "@/lib/routes/types";
+import { Area, Pre } from "@/lib/routes";
 import { Button, Group, TextInput } from "@mantine/core";
 
 type Props = {

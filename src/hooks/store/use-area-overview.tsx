@@ -1,25 +1,21 @@
 import { getArea } from "@/lib/routes/areas";
-import { AreaOverview, ID } from "@/lib/routes/types";
+import { AreaOverview, ID } from "@/lib/routes";
 import { useEffect, useState } from "react";
-import { useRoutesStore } from "./use-store";
+import { useRoutesStore } from "@/hooks/store/use-store";
 import { sectorsForArea } from "@/lib/routes/sectors";
 
-export default function useArea(
-  areaId: ID,
-): [AreaOverview | undefined, () => void] {
+export default function useAreaOverview(areaId: ID): AreaOverview | undefined {
   const [area, setArea] = useState<AreaOverview>();
-  const [shouldRefetch, refetch] = useState(0);
   const store = useRoutesStore((store) => store.store);
 
   useEffect(() => {
-    console.log(shouldRefetch);
     if (!store.initialized) {
       return;
     }
     const area = getArea(store.data, areaId);
     const sectors = sectorsForArea(store.data, areaId);
     setArea({ area, sectors });
-  }, [areaId, shouldRefetch, store.data, store.initialized]);
+  }, [areaId, store.data, store.initialized]);
 
-  return [area, () => refetch((n) => n + 1)];
+  return area;
 }

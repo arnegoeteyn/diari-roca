@@ -1,14 +1,6 @@
-import {
-  Area,
-  Ascent,
-  ID,
-  Pre,
-  Route,
-  RouteKind,
-  Sector,
-  StoreData,
-  Trip,
-} from "./types";
+import { Area } from "./areas";
+import { Sector } from "./sectors";
+import { Ascent, ID, Pre, Route, RouteKind, StoreData, Trip } from "./types";
 import {
   DBSchema,
   IDBPDatabase,
@@ -55,7 +47,7 @@ export type RouteTransaction = IDBPTransaction<
 
 export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
   const db = await openDB<RoutesDB>("routes", 1, {
-    upgrade(db, _oldVersion, _newVersion) {
+    upgrade(db) {
       const stores = db.objectStoreNames;
       if (!stores.contains("routes")) {
         db.createObjectStore("routes", {

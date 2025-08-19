@@ -3,9 +3,9 @@ import "@testing-library/jest-dom/vitest";
 import SectorContent from "./sector-content.tsx";
 import { render } from "@testing-library/react";
 import { Loader } from "@mantine/core";
-import { SectorOverview } from "@/lib/routes/types.ts";
+import { SectorOverview } from "@/lib/routes";
 import PageTitle from "@/components/page-title.tsx";
-import useSector from "@/hooks/use-sector.tsx";
+import useSectorOverview from "@/hooks/store/use-sector-overview.tsx";
 import RouteTable from "@/components/routes/routes-table.tsx";
 
 vi.mock("@mantine/core", () => ({
@@ -15,20 +15,17 @@ vi.mock("@mantine/core", () => ({
 vi.mock("@/components/page-title");
 vi.mock("@/components/routes/routes-table");
 
-vi.mock("@/hooks/use-sector");
+vi.mock("@/hooks/store/use-sector-overview");
 
 const MockLoader = vi.mocked(Loader);
 const MockPageTitle = vi.mocked(PageTitle);
-const MockUseSector = vi.mocked(useSector);
+const MockUseSector = vi.mocked(useSectorOverview);
 const MockRouteTable = vi.mocked(RouteTable);
 
-MockUseSector.mockReturnValue([
-  {
-    sector: { name: "testSector" },
-    area: { name: "testArea" },
-  } as SectorOverview,
-  () => {},
-]);
+MockUseSector.mockReturnValue({
+  sector: { name: "testSector" },
+  area: { name: "testArea" },
+} as SectorOverview);
 
 describe("pages/sector-content", () => {
   afterEach(() => {
@@ -36,7 +33,7 @@ describe("pages/sector-content", () => {
   });
 
   test("shows loading spinner when no sector loaded", async () => {
-    MockUseSector.mockReturnValueOnce([undefined, () => {}]);
+    MockUseSector.mockReturnValueOnce(undefined);
 
     render(<SectorContent sectorId={123} />);
     expect(MockLoader).toHaveBeenCalledOnce();

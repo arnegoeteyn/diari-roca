@@ -6,7 +6,7 @@ import RouteForm from "./route-form/route-form.tsx";
 import { useNavigate } from "react-router-dom";
 import AscentForm from "../ascents/ascent-form";
 import { useIsSmall } from "@/hooks/use-small";
-import useSectors from "@/hooks/use-sectors.tsx";
+import useSectors from "@/hooks/store/use-sectors.tsx";
 import { useRouteContext } from "@/contexts/route-context-util.ts";
 
 type Props = {
