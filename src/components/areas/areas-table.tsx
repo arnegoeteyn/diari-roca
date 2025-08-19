@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Area, AreaOverview, ID } from "@/lib/routes/types";
+import { Area, AreaOverview, ID } from "@/lib/routes";
 import { Button, Group, Table } from "@mantine/core";
 import SectorTable from "./sector-table";
 import { IconArrowRight, IconEdit, IconTrash } from "@tabler/icons-react";

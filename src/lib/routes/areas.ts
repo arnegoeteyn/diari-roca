@@ -1,15 +1,17 @@
 import { getDB } from "./db";
-import { Area, ID, Pre, StoreData } from "./types";
+import { SectorWithRouteCount } from "./sectors";
+import { ID, Pre, StoreData } from "./types";
 
-export async function addArea(area: Pre<Area>) {
-  const db = await getDB();
-  db.add("areas", area);
-}
+export type Area = {
+  id: ID;
+  name: string;
+  country: string;
+};
 
-export async function putArea(area: Area) {
-  const db = await getDB();
-  db.put("areas", area);
-}
+export type AreaOverview = {
+  area: Area;
+  sectors: SectorWithRouteCount[];
+};
 
 export function getArea(data: StoreData, id: ID): Area {
   const area = data.areas.get(id);
@@ -23,4 +25,14 @@ export function getArea(data: StoreData, id: ID): Area {
 
 export function getAreas(data: StoreData): Area[] {
   return [...data.areas.keys()].map((id) => getArea(data, id));
+}
+
+export async function addArea(area: Pre<Area>) {
+  const db = await getDB();
+  db.add("areas", area);
+}
+
+export async function putArea(area: Area) {
+  const db = await getDB();
+  db.put("areas", area);
 }

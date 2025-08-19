@@ -1,7 +1,7 @@
 import PageTitle from "@/components/page-title";
 import RouteTable from "@/components/routes/routes-table";
-import useRoutes, { sortByGrade } from "@/hooks/use-routes";
-import useSector from "@/hooks/use-sector";
+import useRoutes, { sortByGrade } from "@/hooks/store/use-routes";
+import useSectorOverview from "@/hooks/store/use-sector-overview";
 import { ID, RouteOverview } from "@/lib/routes/types";
 import { Loader } from "@mantine/core";
 import { useCallback } from "react";
@@ -12,7 +12,7 @@ type Props = {
 export default function SectorContent(props: Props) {
   const { sectorId } = props;
 
-  const [sector] = useSector(sectorId);
+  const sector = useSectorOverview(sectorId);
 
   const routes = useRoutes({
     sortBy: sortByGrade,

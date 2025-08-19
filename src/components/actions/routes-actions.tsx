@@ -1,6 +1,6 @@
 import { Stack } from "@mantine/core";
-import { useRoutesStore } from "@/hooks/use-store";
-import useSectors from "@/hooks/use-sectors";
+import { useRoutesStore } from "@/hooks/store/use-store";
+import useSectors from "@/hooks/store/use-sectors";
 import AddRouteButton from "../routes/add-route-button";
 
 export default function RoutesActions() {

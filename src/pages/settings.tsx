@@ -1,10 +1,10 @@
-import { putArea } from "@/lib/routes/areas";
+import { Area, putArea } from "@/lib/routes/areas";
 import { addAscent } from "@/lib/routes/ascents";
 import { clear } from "@/lib/routes/db";
 import { addRoute } from "@/lib/routes/routes";
 import { addSector } from "@/lib/routes/sectors";
 import { putTrip } from "@/lib/routes/trips";
-import { Area, Ascent, Route, Sector, Trip } from "@/lib/routes/types";
+import { Ascent, Route, Sector, Trip } from "@/lib/routes";
 import { Button } from "@mantine/core";
 import { useState } from "react";
 
