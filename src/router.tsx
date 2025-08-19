@@ -7,7 +7,7 @@ import {
   Routes as RouterRoutes,
 } from "react-router-dom";
 import { lazy, useEffect } from "react";
-import { useRoutesStore } from "./hooks/use-store";
+import { useRoutesStore } from "@/hooks/store/use-store";
 import { load } from "./lib/routes/db";
 import { CollapseLayout } from "./layout/collapse-layout";
 

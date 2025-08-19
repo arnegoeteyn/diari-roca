@@ -1,16 +1,16 @@
 import { AreaForm } from "@/components/areas/area-form";
 import AreasTable from "@/components/areas/areas-table";
 import { SectorForm } from "@/components/areas/sector-form";
-import useAreas from "@/hooks/use-areas";
-import { addArea, putArea } from "@/lib/routes/areas";
-import { addSector } from "@/lib/routes/sectors";
-import { Area, ID, Pre, Sector } from "@/lib/routes/types";
+import useAreas from "@/hooks/store/use-areas";
+import { addArea, Area, putArea } from "@/lib/routes/areas";
+import { addSector, Sector } from "@/lib/routes";
+import { ID, Pre } from "@/lib/routes/types";
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 export default function AreaPage() {
-  const [areas, refetch] = useAreas();
+  const areas = useAreas();
 
   const [modalArea, setModalArea] = useState<{ id?: ID; area?: Pre<Area> }>();
   const [areaModalOpen, { open: openAreaModal, close: closeAreaModal }] =
@@ -31,7 +31,7 @@ export default function AreaPage() {
       await addArea(area);
     }
     closeAreaModal();
-    refetch();
+    // refetch();
   };
 
   const openNewAreaModal = () => {
@@ -51,7 +51,7 @@ export default function AreaPage() {
       await addSector(sector);
     }
     closeSectorModal();
-    refetch();
+    // refetch();
   };
 
   const openNewSectorModal = (areaId: number) => {

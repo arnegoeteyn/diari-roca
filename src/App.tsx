@@ -4,7 +4,7 @@ import { MantineProvider } from "@mantine/core";
 
 import { BrowserRouter } from "react-router-dom";
 import { useEffect } from "react";
-import { useRoutesStore } from "./hooks/use-store";
+import { useRoutesStore } from "@/hooks/store/use-store";
 import { load } from "./lib/routes/db";
 import DiariRocaRouter from "./router";
 

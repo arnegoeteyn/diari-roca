@@ -1,4 +1,4 @@
-import { SectorOverview } from "@/lib/routes/types";
+import { SectorOverview } from "@/lib/routes";
 import { useEffect, useState } from "react";
 import { useRoutesStore } from "./use-store";
 import { getSectors } from "@/lib/routes/sectors";

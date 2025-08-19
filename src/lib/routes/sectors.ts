@@ -1,7 +1,19 @@
-import { getArea } from "./areas";
+import { Area, getArea } from "./areas";
 import { getDB } from "./db";
 import { routesForSector } from "./routes";
-import { ID, Pre, Sector, SectorOverview, StoreData } from "./types";
+import { ID, Pre, Route, StoreData } from "./types";
+
+export type Sector = {
+  id: ID;
+  areaId: ID;
+  name: string;
+};
+
+export type SectorOverview = {
+  routes: Route[];
+  sector: Sector;
+  area: Area;
+};
 
 export async function addSector(sector: Pre<Sector>) {
   const db = await getDB();

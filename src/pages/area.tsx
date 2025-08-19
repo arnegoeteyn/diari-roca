@@ -1,17 +1,18 @@
 import PageTitle from "@/components/page-title";
 import RouteTable from "@/components/routes/routes-table";
-import useArea from "@/hooks/use-area";
-import useRoutes, { sortByGrade } from "@/hooks/use-routes";
+import useAreaOverview from "@/hooks/store/use-area-overview";
+import useRoutes, { sortByGrade } from "@/hooks/store/use-routes";
 import { ID, RouteOverview } from "@/lib/routes/types";
 import { Loader } from "@mantine/core";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 type Props = { areaId: ID };
+
 function AreaContent(props: Props) {
   const { areaId } = props;
 
-  const [area] = useArea(areaId);
+  const area = useAreaOverview(areaId);
 
   const routes = useRoutes({
     sortBy: sortByGrade,

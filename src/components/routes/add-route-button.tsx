@@ -1,8 +1,8 @@
 import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Pre, Route, SectorOverview } from "@/lib/routes/types";
 
 import RouteForm from "@/components/routes/route-form/route-form.tsx";
+import { Pre, Route, SectorOverview } from "@/lib/routes";
 
 type Props = {
   initialRoute?: Route;

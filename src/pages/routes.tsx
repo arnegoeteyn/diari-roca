@@ -1,5 +1,5 @@
 import RouteTable from "@/components/routes/routes-table";
-import useRoutes from "@/hooks/use-routes";
+import useRoutes from "@/hooks/store/use-routes";
 import { RouteKind, RouteOverview } from "@/lib/routes/types";
 import { Group, Tabs } from "@mantine/core";
 

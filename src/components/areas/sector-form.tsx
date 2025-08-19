@@ -1,6 +1,6 @@
 import { isNotEmpty, useForm } from "@mantine/form";
 
-import { Area, ID, Pre, Sector } from "@/lib/routes/types";
+import { Area, ID, Pre, Sector } from "@/lib/routes";
 import { Button, Group, Select, TextInput } from "@mantine/core";
 
 type Props = {

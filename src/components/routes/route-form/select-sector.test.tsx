@@ -5,7 +5,7 @@ import { Select } from "@mantine/core";
 import SelectSector from "./select-sector.tsx";
 import { UseFormReturnType } from "@mantine/form";
 import { FormRoute } from "./route-form.tsx";
-import { SectorOverview } from "@/lib/routes/types";
+import { SectorOverview } from "@/lib/routes";
 
 vi.mock("@mantine/core", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@mantine/core")>();

@@ -1,4 +1,5 @@
-import { SectorWithRouteCount } from "./sectors";
+import { Area } from "./areas";
+import { Sector } from "./sectors";
 
 export type Store = {
   initialized: boolean;
@@ -74,29 +75,6 @@ export type AscentOverview = {
   route: Route;
   sector: Sector;
   area: Area;
-};
-
-export type Sector = {
-  id: ID;
-  areaId: ID;
-  name: string;
-};
-
-export type SectorOverview = {
-  routes: Route[];
-  sector: Sector;
-  area: Area;
-};
-
-export type Area = {
-  id: ID;
-  name: string;
-  country: string;
-};
-
-export type AreaOverview = {
-  area: Area;
-  sectors: SectorWithRouteCount[];
 };
 
 export type Trip = {
