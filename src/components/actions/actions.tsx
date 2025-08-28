@@ -9,7 +9,7 @@ type Props = {
   location: string;
 };
 export default function Actions(props: Props) {
-  const { sectorId } = useParams();
+  const { sectorId, areaId } = useParams();
 
   if (isActive(props.location, "ascents")) {
     return <AscentsActions />;
@@ -25,7 +25,8 @@ export default function Actions(props: Props) {
   }
 
   if (isActive(props.location, "areas")) {
-    return <AreaActions />;
+    const areaIdNumber = Number(areaId);
+    return <AreaActions areaId={areaIdNumber} />;
   }
 
   return <div data-testid="no-actions"></div>;

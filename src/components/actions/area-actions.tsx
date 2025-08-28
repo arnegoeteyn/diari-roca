@@ -1,11 +1,20 @@
-import { Stack } from "@mantine/core";
+import { Loader, Stack } from "@mantine/core";
 import { useRoutesStore } from "@/hooks/store/use-store";
-import useSectors from "@/hooks/store/use-sectors";
 import AddRouteButton from "../routes/add-route-button";
+import useSectorOverviews from "@/hooks/store/use-sector-overviews";
+import { ID } from "@/lib/routes";
 
-export default function AreaActions() {
+type Props = {
+  areaId: ID;
+};
+
+export default function AreaActions(props: Props) {
   const addRoute = useRoutesStore((store) => store.addRoute);
-  const sectors = useSectors();
+  const sectors = useSectorOverviews({ areaId: props.areaId });
+
+  if (!sectors) {
+    return <Loader />;
+  }
   return (
     <Stack p={"16px"}>
       <AddRouteButton

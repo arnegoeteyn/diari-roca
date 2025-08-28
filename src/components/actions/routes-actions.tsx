@@ -1,11 +1,11 @@
 import { Stack } from "@mantine/core";
 import { useRoutesStore } from "@/hooks/store/use-store";
-import useSectors from "@/hooks/store/use-sectors";
+import useSectorOverviews from "@/hooks/store/use-sector-overviews";
 import AddRouteButton from "../routes/add-route-button";
 
 export default function RoutesActions() {
   const addRoute = useRoutesStore((store) => store.addRoute);
-  const sectors = useSectors();
+  const sectors = useSectorOverviews();
   return (
     <Stack p={"16px"}>
       <AddRouteButton

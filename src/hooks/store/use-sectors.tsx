@@ -1,13 +1,15 @@
-import { SectorOverview } from "@/lib/routes";
+import { ID, Sector } from "@/lib/routes";
 import { useEffect, useState } from "react";
 import { useRoutesStore } from "./use-store";
 import { getSectors } from "@/lib/routes/sectors";
 
-export default function useSectors(): SectorOverview[] {
-  const [sectors, setSectors] = useState<SectorOverview[]>([]);
+type Props = {
+  areaId?: ID;
+};
+export default function useSectors(props?: Props): Sector[] | undefined {
+  const [sectors, setSectors] = useState<Sector[]>();
   const store = useRoutesStore((store) => store.store);
 
-  // todo, query can happen here or something?
   useEffect(() => {
     if (!store.initialized) {
       return;
@@ -15,8 +17,17 @@ export default function useSectors(): SectorOverview[] {
 
     const sectors = getSectors(store.data);
 
-    setSectors(sectors);
-  }, [store]);
+    const filtered = filterOnArea(sectors);
+
+    setSectors(filtered);
+  }, [store, props?.areaId]);
 
   return sectors;
+}
+
+function filterOnArea(sectors: Sector[], areaId?: ID): Sector[] {
+  if (!areaId) {
+    return sectors;
+  }
+  return sectors.filter((s) => s.areaId == areaId);
 }

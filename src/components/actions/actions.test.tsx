@@ -69,8 +69,20 @@ describe("<Actions/>", () => {
   });
 
   test("loads area-actions on /areas/123", async () => {
-    render(<Actions location="/areas/123" />);
+    render(
+      <MemoryRouter initialEntries={["/areas/123"]}>
+        <Routes>
+          <Route
+            path="/areas/:areaId"
+            element={<Actions location="/areas/123" />}
+          />
+        </Routes>
+      </MemoryRouter>,
+    );
 
-    expect(MockAreaActions).toHaveBeenCalled();
+    expect(MockAreaActions).toHaveBeenCalledExactlyOnceWith(
+      { areaId: 123 },
+      undefined,
+    );
   });
 });
