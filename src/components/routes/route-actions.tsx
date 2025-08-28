@@ -6,8 +6,8 @@ import RouteForm from "./route-form/route-form.tsx";
 import { useNavigate } from "react-router-dom";
 import AscentForm from "../ascents/ascent-form";
 import { useIsSmall } from "@/hooks/use-small";
-import useSectors from "@/hooks/store/use-sectors.tsx";
 import { useRouteContext } from "@/contexts/route-context-util.ts";
+import useSectorOverviews from "@/hooks/store/use-sector-overviews.tsx";
 
 type Props = {
   hideVisitAction?: boolean;
@@ -25,7 +25,7 @@ type Action = {
 export default function RouteActions(props: Props) {
   const { hideVisitAction, compact } = props;
   const { route, updateRoute, logAscent } = useRouteContext();
-  const sectors = useSectors();
+  const sectors = useSectorOverviews();
 
   const isMobile = useIsSmall();
 

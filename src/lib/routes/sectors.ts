@@ -30,16 +30,26 @@ export function getSectorCached(data: StoreData, id: ID): Sector {
   return sector;
 }
 
-export function getSectors(data: StoreData): SectorOverview[] {
+export function getSectors(data: StoreData): Sector[] {
   return [...data.sectors.keys()].map((id) => getSector(data, id));
 }
 
-export function getSector(data: StoreData, id: ID): SectorOverview {
+export function getSectorOverviews(data: StoreData): SectorOverview[] {
+  return [...data.sectors.keys()].map((id) => getSectorOverview(data, id));
+}
+
+export function getSector(data: StoreData, id: ID): Sector {
   const sector = data.sectors.get(id);
 
   if (!sector) {
     throw new Error("Sector does not exist");
   }
+
+  return sector;
+}
+
+export function getSectorOverview(data: StoreData, id: ID): SectorOverview {
+  const sector = getSector(data, id);
 
   const area = getArea(data, sector.areaId);
   const routes = [...data.routes.values()].filter(
