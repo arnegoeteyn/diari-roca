@@ -6,15 +6,18 @@ import { render } from "@/test-render";
 import RoutesActions from "./routes-actions";
 import AscentsActions from "./ascents-actions";
 import SectorsActions from "@/components/actions/sectors-actions";
+import AreaActions from "@/components/actions/area-actions";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 
 vi.mock("./routes-actions");
 vi.mock("./ascents-actions");
 vi.mock("@/components/actions/sectors-actions");
+vi.mock("@/components/actions/area-actions");
 
 const MockRoutesActions = vi.mocked(RoutesActions);
 const MockSectorsActions = vi.mocked(SectorsActions);
 const MockAscentsActions = vi.mocked(AscentsActions);
+const MockAreaActions = vi.mocked(AreaActions);
 
 describe("<Actions/>", () => {
   afterEach(() => {
@@ -63,5 +66,11 @@ describe("<Actions/>", () => {
 
     expect(MockRoutesActions).toHaveBeenCalledTimes(0);
     expect(MockAscentsActions).toHaveBeenCalled();
+  });
+
+  test("loads area-actions on /areas/123", async () => {
+    render(<Actions location="/areas/123" />);
+
+    expect(MockAreaActions).toHaveBeenCalled();
   });
 });
