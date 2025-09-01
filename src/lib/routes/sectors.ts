@@ -59,14 +59,20 @@ export function getSectorOverview(data: StoreData, id: ID): SectorOverview {
   return { sector, area, routes };
 }
 
-export type SectorWithRouteCount = {
+export function sectorsForArea(data: StoreData, areaID: ID) {
+  return getSectors(data).filter((sector) => sector.areaId == areaID);
+}
+
+export type SectorWithRouteCount = Sector & { routeCount: number };
+
+export type SectorWithRouteCountOld = {
   sector: Sector;
   routeCount: number;
 };
-export function sectorsForArea(
+export function sectorsForAreaWithCount(
   data: StoreData,
   areaId: ID,
-): SectorWithRouteCount[] {
+): SectorWithRouteCountOld[] {
   return [...data.sectors.values()]
     .filter((sector) => sector.areaId == areaId)
     .map((sector) => ({
