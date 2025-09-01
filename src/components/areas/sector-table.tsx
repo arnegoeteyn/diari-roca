@@ -1,8 +1,8 @@
-import { SectorWithRouteCount } from "@/lib/routes/sectors";
+import { SectorWithRouteCountOld } from "@/lib/routes/sectors";
 import { Button, Table } from "@mantine/core";
 
 type Props = {
-  sectors: SectorWithRouteCount[];
+  sectors: SectorWithRouteCountOld[];
   onCreateSector: () => void;
 };
 export default function SectorTable(props: Props) {
