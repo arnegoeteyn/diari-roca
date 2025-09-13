@@ -1,68 +1,33 @@
 import { AreaForm } from "@/components/areas/area-form";
 import AreasTable from "@/components/areas/areas-table";
-import { SectorForm } from "@/components/areas/sector-form";
 import useAreas from "@/hooks/store/use-areas";
-import { addArea, Area, putArea } from "@/lib/routes/areas";
-import { addSector, Sector } from "@/lib/routes";
+import { useRoutesStore } from "@/hooks/store/use-store";
+import { Area } from "@/lib/routes/areas";
 import { ID, Pre } from "@/lib/routes/types";
-import { Button, Modal } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 
 export default function AreaPage() {
   const areas = useAreas();
+  const putArea = useRoutesStore((store) => store.putArea);
 
-  const [modalArea, setModalArea] = useState<{ id?: ID; area?: Pre<Area> }>();
+  const [modalArea, setModalArea] = useState<{ id: ID; area: Pre<Area> }>();
   const [areaModalOpen, { open: openAreaModal, close: closeAreaModal }] =
     useDisclosure(false);
 
-  const [modalSector, setModalSector] = useState<{
-    id?: ID;
-    fixedAreaId?: ID;
-    sector?: Pre<Sector>;
-  }>();
-  const [sectorModalOpen, { open: openSectorModal, close: closeSectorModal }] =
-    useDisclosure(false);
-
   const saveArea = async (area: Pre<Area>) => {
-    if (modalArea?.id) {
-      await putArea({ ...area, id: modalArea.id });
-    } else {
-      await addArea(area);
+    if (!modalArea) {
+      throw new Error("modalArea not defined, could not get id");
     }
+    await putArea({ ...area, id: modalArea.id });
     closeAreaModal();
-    // refetch();
-  };
-
-  const openNewAreaModal = () => {
-    setModalArea({});
-    openAreaModal();
   };
 
   const openEditAreaModal = (area: Area) => {
     setModalArea({ id: area.id, area: area });
     openAreaModal();
   };
-
-  const saveSector = async (sector: Pre<Sector>) => {
-    if (modalSector?.id) {
-      // await putSector({ ...sector, id: modalSector.id });
-    } else {
-      await addSector(sector);
-    }
-    closeSectorModal();
-    // refetch();
-  };
-
-  const openNewSectorModal = (areaId: number) => {
-    setModalSector({ fixedAreaId: areaId });
-    openSectorModal();
-  };
-
-  // const openEditSectorModal = (sector: Sector) => {
-  //   setModalSector({ id: sector.id, sector });
-  //   openAreaModal();
-  // };
 
   return (
     <>
@@ -74,28 +39,7 @@ export default function AreaPage() {
         <AreaForm area={modalArea?.area} onSubmit={saveArea} />
       </Modal>
 
-      <Modal
-        opened={!!sectorModalOpen}
-        onClose={closeSectorModal}
-        title={modalArea?.id ? "Edit sector" : "New sector"}
-      >
-        <SectorForm
-          sector={modalSector?.sector}
-          areas={areas.map((a) => a.area)}
-          onSubmit={saveSector}
-          fixedAreaId={modalSector?.fixedAreaId}
-        />
-      </Modal>
-
-      <div className="flex [&>*]:mx-4">
-        <h2>{areas.length} areas</h2>
-        <Button onClick={openNewAreaModal}>Add new</Button>
-      </div>
-      <AreasTable
-        areas={areas}
-        onAreaUpdate={openEditAreaModal}
-        onCreateSector={openNewSectorModal}
-      />
+      <AreasTable areas={areas} onAreaUpdate={openEditAreaModal} />
     </>
   );
 }
