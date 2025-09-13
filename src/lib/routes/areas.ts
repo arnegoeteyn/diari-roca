@@ -29,7 +29,7 @@ export function getAreas(data: StoreData): Area[] {
 
 export async function addArea(area: Pre<Area>) {
   const db = await getDB();
-  db.add("areas", area);
+  return db.add("areas", area);
 }
 
 export async function putArea(area: Area) {
