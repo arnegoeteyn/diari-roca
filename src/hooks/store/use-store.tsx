@@ -11,10 +11,12 @@ import {
 import { addRoute, putRoute } from "@/lib/routes/routes";
 import { addAscent } from "@/lib/routes/ascents";
 import { addTrip } from "@/lib/routes/trips";
+import { addArea, Area } from "@/lib/routes";
 
 export const useRoutesStore = create<{
   store: Store;
   setStore: (data: StoreData) => void;
+  addArea: (route: Pre<Area>) => Promise<ID>;
   addRoute: (route: Pre<Route>) => Promise<ID>;
   putRoute: (route: Route) => Promise<void>;
   addAscent: (ascent: Pre<Ascent>) => Promise<void>;
@@ -58,6 +60,20 @@ export const useRoutesStore = create<{
       };
     });
     return newRouteId;
+  },
+  addArea: async (area: Pre<Area>) => {
+    const newAreaId = await addArea(area);
+    set((state) => {
+      const updatedAreas = new Map(state.store.data.areas);
+      updatedAreas.set(newAreaId, { ...area, id: newAreaId });
+      return {
+        store: {
+          ...state.store,
+          data: { ...state.store.data, areas: updatedAreas },
+        },
+      };
+    });
+    return newAreaId;
   },
   putRoute: async (route: Route) => {
     set((state) => {
