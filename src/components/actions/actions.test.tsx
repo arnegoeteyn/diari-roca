@@ -1,23 +1,26 @@
 import { cleanup, screen } from "@testing-library/react";
-import { test, expect, describe, afterEach, vi } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
 import "@testing-library/jest-dom/vitest";
 import Actions from "./actions";
 import { render } from "@/test-render";
 import RoutesActions from "./routes-actions";
 import AscentsActions from "./ascents-actions";
 import SectorsActions from "@/components/actions/sectors-actions";
+import AreasActions from "./areas-actions";
 import AreaActions from "@/components/actions/area-actions";
-import { MemoryRouter, Routes, Route } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 vi.mock("./routes-actions");
 vi.mock("./ascents-actions");
 vi.mock("@/components/actions/sectors-actions");
 vi.mock("@/components/actions/area-actions");
+vi.mock("@/components/actions/areas-actions");
 
 const MockRoutesActions = vi.mocked(RoutesActions);
 const MockSectorsActions = vi.mocked(SectorsActions);
 const MockAscentsActions = vi.mocked(AscentsActions);
 const MockAreaActions = vi.mocked(AreaActions);
+const MockAreasActions = vi.mocked(AreasActions);
 
 describe("<Actions/>", () => {
   afterEach(() => {
@@ -84,5 +87,17 @@ describe("<Actions/>", () => {
       { areaId: 123 },
       undefined,
     );
+  });
+
+  test("loads areas-actions on /areas", async () => {
+    render(
+      <MemoryRouter initialEntries={["/areas"]}>
+        <Routes>
+          <Route path="/areas" element={<Actions location="/areas" />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(MockAreasActions).toHaveBeenCalledExactlyOnceWith({}, undefined);
   });
 });

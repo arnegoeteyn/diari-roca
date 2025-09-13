@@ -4,6 +4,7 @@ import AscentsActions from "./ascents-actions";
 import RoutesActions from "./routes-actions";
 import AreaActions from "./area-actions";
 import { useParams } from "react-router-dom";
+import AreasActions from "./areas-actions";
 
 type Props = {
   location: string;
@@ -25,8 +26,12 @@ export default function Actions(props: Props) {
   }
 
   if (isActive(props.location, "areas")) {
-    const areaIdNumber = Number(areaId);
-    return <AreaActions areaId={areaIdNumber} />;
+    if (areaId) {
+      const areaIdNumber = Number(areaId);
+      return <AreaActions areaId={areaIdNumber} />;
+    } else {
+      return <AreasActions />;
+    }
   }
 
   return <div data-testid="no-actions"></div>;
