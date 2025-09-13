@@ -11,7 +11,7 @@ import {
 import { addRoute, putRoute } from "@/lib/routes/routes";
 import { addAscent } from "@/lib/routes/ascents";
 import { addTrip } from "@/lib/routes/trips";
-import { addArea, Area, putArea } from "@/lib/routes";
+import { addArea, addSector, Area, putArea, Sector } from "@/lib/routes";
 
 export const useRoutesStore = create<{
   store: Store;
@@ -19,6 +19,7 @@ export const useRoutesStore = create<{
   addArea: (area: Pre<Area>) => Promise<ID>;
   putArea: (area: Area) => Promise<void>;
   addRoute: (route: Pre<Route>) => Promise<ID>;
+  addSector: (sector: Pre<Sector>) => Promise<ID>;
   putRoute: (route: Route) => Promise<void>;
   addAscent: (ascent: Pre<Ascent>) => Promise<void>;
   addTrip: (trip: Pre<Trip>) => Promise<ID>;
@@ -47,6 +48,20 @@ export const useRoutesStore = create<{
         },
       };
     });
+  },
+  addSector: async (sector: Pre<Sector>) => {
+    const newSectorId = await addSector(sector);
+    set((state) => {
+      const updatedSectors = new Map(state.store.data.sectors);
+      updatedSectors.set(newSectorId, { ...sector, id: newSectorId });
+      return {
+        store: {
+          ...state.store,
+          data: { ...state.store.data, sectors: updatedSectors },
+        },
+      };
+    });
+    return newSectorId;
   },
   addRoute: async (route: Pre<Route>) => {
     const newRouteId = await addRoute(route);
