@@ -2,7 +2,7 @@ import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import { Area, Pre, Sector } from "@/lib/routes";
-import { SectorForm } from "../areas/sector-form";
+import { SectorForm } from "@/components/sectors/sector-form/sector-form.tsx";
 
 type Props = {
   areas: Area[];
