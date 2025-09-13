@@ -1,7 +1,8 @@
 import { isNotEmpty, useForm } from "@mantine/form";
 
 import { Area, ID, Pre, Sector } from "@/lib/routes";
-import { Button, Group, Select, TextInput } from "@mantine/core";
+import { Button, Group, TextInput } from "@mantine/core";
+import SelectArea from "./select-area";
 
 type Props = {
   sector?: Pre<Sector>;
@@ -10,18 +11,31 @@ type Props = {
   onSubmit: (sector: Pre<Sector>) => void;
 };
 
-type FormSector = Omit<Pre<Sector>, "areaId"> & { areaId: string };
+export type FormSector = Required<
+  Omit<Pre<Sector>, "areaId"> & { areaId: string }
+>;
+
+const initialValuesFromSector = (
+  defaultAreaId: ID,
+  sector?: Pre<Sector>,
+): FormSector => {
+  const safeSector: Pre<Sector> = sector
+    ? sector
+    : {
+        name: "",
+        areaId: defaultAreaId,
+      };
+
+  return {
+    ...safeSector,
+    areaId: safeSector.areaId.toString(),
+  };
+};
 
 export function SectorForm(props: Props) {
-  const getInitialValues = (): Partial<FormSector> => {
-    const areaId = props.fixedAreaId ? props.fixedAreaId : props.sector?.areaId;
-    const init = { ...props.sector, areaId: areaId?.toString() };
-    return init;
-  };
-
   const form = useForm({
-    mode: "uncontrolled",
-    initialValues: getInitialValues(),
+    mode: "controlled",
+    initialValues: initialValuesFromSector(props.areas[0].id, props.sector),
     validate: {
       name: isNotEmpty("a sector has to have a name"),
       areaId: (value) => {
@@ -53,18 +67,7 @@ export function SectorForm(props: Props) {
         key={form.key("name")}
         {...form.getInputProps("name")}
       />
-      <Select
-        required
-        label="Area"
-        placeholder="Area"
-        searchable
-        key={form.key("areaId")}
-        data={props.areas.map((area) => ({
-          value: area.id.toString(),
-          label: area.name,
-        }))}
-        {...form.getInputProps("areaId")}
-      />
+      <SelectArea form={form} areas={props.areas} />
       <Group justify="flex-end" mt="md">
         <Button type="submit">Submit</Button>
       </Group>
