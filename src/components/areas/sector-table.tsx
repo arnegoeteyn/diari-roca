@@ -1,14 +1,12 @@
-import { SectorWithRouteCountOld } from "@/lib/routes/sectors";
+import { SectorWithRouteCount } from "@/lib/routes/sectors";
 import { Button, Table } from "@mantine/core";
 
 type Props = {
-  sectors: SectorWithRouteCountOld[];
+  sectors: SectorWithRouteCount[];
   onCreateSector: () => void;
 };
 export default function SectorTable(props: Props) {
-  const sorted = props.sectors.sort((a, b) =>
-    a.sector.name < b.sector.name ? -1 : 1,
-  );
+  const sorted = props.sectors.sort((a, b) => (a.name < b.name ? -1 : 1));
   return (
     <>
       <Button onClick={props.onCreateSector}>New sector</Button>
@@ -22,8 +20,8 @@ export default function SectorTable(props: Props) {
         <Table.Tbody>
           {props.sectors.length > 0 ? (
             sorted.map((sector) => (
-              <Table.Tr key={sector.sector.id}>
-                <Table.Td className="px-4">{sector.sector.name}</Table.Td>
+              <Table.Tr key={sector.id}>
+                <Table.Td className="px-4">{sector.name}</Table.Td>
                 <Table.Td>{sector.routeCount}</Table.Td>
               </Table.Tr>
             ))

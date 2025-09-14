@@ -1,14 +1,14 @@
 import { AreaForm } from "@/components/areas/area-form";
 import AreasTable from "@/components/areas/areas-table";
-import useAreas from "@/hooks/store/use-areas";
 import { useRoutesStore } from "@/hooks/store/use-store";
 import { Area } from "@/lib/routes/areas";
 import { ID, Pre } from "@/lib/routes/types";
 import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
+import useAreas from "./hook";
 
-export default function AreaPage() {
+export default function Areas() {
   const areas = useAreas();
   const putArea = useRoutesStore((store) => store.putArea);
 

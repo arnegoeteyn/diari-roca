@@ -65,18 +65,14 @@ export function sectorsForArea(data: StoreData, areaID: ID) {
 
 export type SectorWithRouteCount = Sector & { routeCount: number };
 
-export type SectorWithRouteCountOld = {
-  sector: Sector;
-  routeCount: number;
-};
 export function sectorsForAreaWithCount(
   data: StoreData,
   areaId: ID,
-): SectorWithRouteCountOld[] {
+): SectorWithRouteCount[] {
   return [...data.sectors.values()]
     .filter((sector) => sector.areaId == areaId)
     .map((sector) => ({
-      sector,
+      ...sector,
       routeCount: routesForSector(data, sector.id).length,
     }));
 }
