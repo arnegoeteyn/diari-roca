@@ -1,6 +1,6 @@
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
-import { MantineProvider } from "@mantine/core";
+import { Loader, MantineProvider } from "@mantine/core";
 
 import { BrowserRouter } from "react-router-dom";
 import { useEffect } from "react";
@@ -10,6 +10,8 @@ import DiariRocaRouter from "./router";
 
 function App() {
   const setState = useRoutesStore((state) => state.setStore);
+
+  const initialized = useRoutesStore((store) => store.store.initialized);
 
   useEffect(() => {
     const loadAndSet = async () => {
@@ -21,9 +23,13 @@ function App() {
 
   return (
     <MantineProvider>
-      <BrowserRouter>
-        <DiariRocaRouter />
-      </BrowserRouter>
+      {initialized ? (
+        <BrowserRouter>
+          <DiariRocaRouter />
+        </BrowserRouter>
+      ) : (
+        <Loader />
+      )}
     </MantineProvider>
   );
 }
