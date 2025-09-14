@@ -13,7 +13,7 @@ export default function AreasTable(props: Props) {
   const [openedAreas, setOpenedArea] = useState<{ [key: ID]: boolean }>({});
 
   const onAreaSelect = (area: AreaOverview) => {
-    const id = area.area.id;
+    const id = area.id;
     const current = openedAreas[id] ?? false;
     setOpenedArea({ ...openedAreas, [id]: !current });
   };
@@ -32,20 +32,20 @@ export default function AreasTable(props: Props) {
         {props.areas.map((overview) => (
           <>
             <Table.Tr onClick={() => onAreaSelect(overview)}>
-              <Table.Td>{overview.area.name}</Table.Td>
-              <Table.Td>{overview.area.country}</Table.Td>
+              <Table.Td>{overview.name}</Table.Td>
+              <Table.Td>{overview.country}</Table.Td>
               <Table.Td>{overview.sectors.length}</Table.Td>
 
               <Table.Td>
                 <div className="space-x-2">
                   <Group gap={"md"}>
-                    <Button onClick={() => props.onAreaUpdate(overview.area)}>
+                    <Button onClick={() => props.onAreaUpdate(overview)}>
                       <IconEdit />
                     </Button>
                     <Button>
                       <IconTrash />
                     </Button>
-                    <Link to={`/areas/${overview.area.id}`}>
+                    <Link to={`/areas/${overview.id}`}>
                       <Button>
                         <IconArrowRight />
                       </Button>

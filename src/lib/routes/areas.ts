@@ -1,5 +1,5 @@
 import { getDB } from "./db";
-import { SectorWithRouteCountOld } from "./sectors";
+import { SectorWithRouteCount } from "./sectors";
 import { ID, Pre, StoreData } from "./types";
 
 export type Area = {
@@ -8,9 +8,8 @@ export type Area = {
   country: string;
 };
 
-export type AreaOverview = {
-  area: Area;
-  sectors: SectorWithRouteCountOld[];
+export type AreaOverview = Area & {
+  sectors: SectorWithRouteCount[];
 };
 
 export function getArea(data: StoreData, id: ID): Area {
