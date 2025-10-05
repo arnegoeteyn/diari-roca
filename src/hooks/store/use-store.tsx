@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { Ascent, ID, Pre, Route, Store, StoreData, Trip } from "@/lib/routes";
 import { addRoute, putRoute } from "@/lib/routes/routes";
-import { addAscent } from "@/lib/routes/ascents";
+import { addAscent, deleteAscent } from "@/lib/routes";
 import { addTrip } from "@/lib/routes/trips";
 import { addArea, addSector, Area, putArea, Sector } from "@/lib/routes";
 
@@ -14,6 +14,7 @@ export const useRoutesStore = create<{
   addSector: (sector: Pre<Sector>) => Promise<ID>;
   putRoute: (route: Route) => Promise<void>;
   addAscent: (ascent: Pre<Ascent>) => Promise<void>;
+  deleteAscent: (ascentId: ID) => Promise<void>;
   addTrip: (trip: Pre<Trip>) => Promise<ID>;
 }>((set) => ({
   store: {
@@ -33,6 +34,19 @@ export const useRoutesStore = create<{
     set((state) => {
       const updatedAscents = new Map(state.store.data.ascents);
       updatedAscents.set(newAscentId, { ...ascent, id: newAscentId });
+      return {
+        store: {
+          ...state.store,
+          data: { ...state.store.data, ascents: updatedAscents },
+        },
+      };
+    });
+  },
+  deleteAscent: async (ascentId: ID) => {
+    await deleteAscent(ascentId);
+    set((state) => {
+      const updatedAscents = new Map(state.store.data.ascents);
+      updatedAscents.delete(ascentId);
       return {
         store: {
           ...state.store,

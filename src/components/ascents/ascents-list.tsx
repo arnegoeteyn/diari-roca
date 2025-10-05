@@ -1,13 +1,15 @@
-import { Ascent } from "@/lib/routes";
+import { Ascent, ID } from "@/lib/routes";
 import { Text, Group, Box, Stack, Button } from "@mantine/core";
 import { Edit, Trash2 } from "lucide-react";
 import AscentBadge from "./ascent-badge";
+import { modals } from "@mantine/modals";
 
 type Props = {
   ascents: Ascent[];
+  onDeleteAscent: (ascentId: ID) => void;
 };
 
-export default function AscentsList({ ascents }: Props) {
+export default function AscentsList({ ascents, onDeleteAscent }: Props) {
   if (ascents.length == 0) {
     return (
       <Box
@@ -22,6 +24,16 @@ export default function AscentsList({ ascents }: Props) {
       </Box>
     );
   }
+
+  const onDeleteRouteConfirmation = (ascent: Ascent) => {
+    modals.openConfirmModal({
+      title: "Delete ascent?",
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onConfirm: () => onDeleteAscent(ascent.id),
+    });
+  };
+
   const sorted = ascents.sort((a, b) => -a.date.localeCompare(b.date));
   return (
     <Stack>
@@ -45,7 +57,7 @@ export default function AscentsList({ ascents }: Props) {
                 variant="subtle"
                 color="red"
                 size="xs"
-                onClick={console.log}
+                onClick={() => onDeleteRouteConfirmation(ascent)}
               >
                 <Trash2 size="1rem" />
               </Button>
