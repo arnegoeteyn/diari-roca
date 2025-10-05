@@ -1,5 +1,9 @@
 import { create } from "zustand";
 import { Ascent, ID, Pre, Route, Store, StoreData, Trip } from "@/lib/routes";
+import {
+  deleteAscent as cacheDeleteAscent,
+  storeAscent as cacheStoreAscent,
+} from "@/lib/cache";
 import { addRoute, putRoute } from "@/lib/routes/routes";
 import { addAscent, deleteAscent } from "@/lib/routes";
 import { addTrip } from "@/lib/routes/trips";
@@ -32,12 +36,15 @@ export const useRoutesStore = create<{
   addAscent: async (ascent: Pre<Ascent>) => {
     const newAscentId = await addAscent(ascent);
     set((state) => {
-      const updatedAscents = new Map(state.store.data.ascents);
-      updatedAscents.set(newAscentId, { ...ascent, id: newAscentId });
+      const updatedStoreData = cacheStoreAscent(
+        state.store.data,
+        newAscentId,
+        ascent,
+      );
       return {
         store: {
           ...state.store,
-          data: { ...state.store.data, ascents: updatedAscents },
+          data: updatedStoreData,
         },
       };
     });
@@ -45,12 +52,11 @@ export const useRoutesStore = create<{
   deleteAscent: async (ascentId: ID) => {
     await deleteAscent(ascentId);
     set((state) => {
-      const updatedAscents = new Map(state.store.data.ascents);
-      updatedAscents.delete(ascentId);
+      const updatedStoreData = cacheDeleteAscent(state.store.data, ascentId);
       return {
         store: {
           ...state.store,
-          data: { ...state.store.data, ascents: updatedAscents },
+          data: updatedStoreData,
         },
       };
     });
