@@ -1,6 +1,7 @@
 import { Area } from "./areas";
+import { Ascent } from "./ascents";
 import { Sector } from "./sectors";
-import { Ascent, ID, Pre, Route, RouteKind, StoreData, Trip } from "./types";
+import { ID, Pre, Route, RouteKind, StoreData, Trip } from "./types";
 import {
   DBSchema,
   IDBPDatabase,
@@ -133,9 +134,12 @@ export async function load(): Promise<StoreData> {
 
 export async function clear(): Promise<void> {
   const db = await getDB();
-  db.clear("routes");
-  db.clear("ascents");
-  db.clear("areas");
-  db.clear("sectors");
-  db.clear("trips");
+  const clears = Promise.all([
+    db.clear("routes"),
+    db.clear("ascents"),
+    db.clear("areas"),
+    db.clear("sectors"),
+    db.clear("trips"),
+  ]);
+  await clears;
 }

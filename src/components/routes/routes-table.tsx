@@ -1,4 +1,4 @@
-import { Ascent, RouteOverview } from "@/lib/routes/types";
+import { Ascent, RouteOverview } from "@/lib/routes";
 import { Group, Pagination, Table, Text } from "@mantine/core";
 import { useState } from "react";
 import RouteActions from "./route-actions";

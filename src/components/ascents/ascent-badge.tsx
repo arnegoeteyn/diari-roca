@@ -1,4 +1,4 @@
-import { AscentBody, AscentKind } from "@/lib/routes/types";
+import { AscentKind, AscentBody } from "@/lib/routes";
 import { Badge } from "@mantine/core";
 import { Eye, Zap, Repeat, CornerRightUp, ArrowUp } from "lucide-react";
 

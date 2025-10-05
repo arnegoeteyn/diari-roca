@@ -1,4 +1,4 @@
-import { Ascent } from "@/lib/routes/types";
+import { Ascent } from "@/lib/routes";
 import { Text, Group, Box, Stack, Button } from "@mantine/core";
 import { Edit, Trash2 } from "lucide-react";
 import AscentBadge from "./ascent-badge";

@@ -1,4 +1,4 @@
-import { Ascent, AscentOverview, Trip } from "@/lib/routes/types";
+import { Ascent, Trip } from "@/lib/routes";
 import {
   Anchor,
   DefaultMantineColor,
@@ -13,6 +13,7 @@ import { useState } from "react";
 import AscentBadge from "../ascents/ascent-badge";
 import RouteBreadcrumbs from "../routes/route-breadcrumbs";
 import { Link } from "react-router-dom";
+import { AscentOverview } from "@/lib/cache";
 
 type Props = {
   ascents: AscentOverview[];
