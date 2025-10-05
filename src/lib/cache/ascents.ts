@@ -3,6 +3,7 @@ import {
   Ascent,
   getRoute,
   ID,
+  Pre,
   Route,
   Sector,
   StoreData,
@@ -14,6 +15,18 @@ export type AscentOverview = {
   sector: Sector;
   area: Area;
 };
+
+export function storeAscent(data: StoreData, id: ID, ascent: Pre<Ascent>) {
+  const updatedAscents = new Map(data.ascents);
+  updatedAscents.set(id, { ...ascent, id: id });
+  return { ...data, ascents: updatedAscents };
+}
+
+export function deleteAscent(data: StoreData, ascentId: ID) {
+  const updatedAscents = new Map(data.ascents);
+  updatedAscents.delete(ascentId);
+  return { ...data, ascents: updatedAscents };
+}
 
 export function getAscents(data: StoreData): Ascent[] {
   return [...data.ascents.keys()].map((id) => getAscent(data, id));
