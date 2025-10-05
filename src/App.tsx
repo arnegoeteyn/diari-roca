@@ -1,6 +1,7 @@
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import { Loader, MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
 
 import { BrowserRouter } from "react-router-dom";
 import { useEffect } from "react";
@@ -23,13 +24,15 @@ function App() {
 
   return (
     <MantineProvider>
-      {initialized ? (
-        <BrowserRouter>
-          <DiariRocaRouter />
-        </BrowserRouter>
-      ) : (
-        <Loader />
-      )}
+      <ModalsProvider>
+        {initialized ? (
+          <BrowserRouter>
+            <DiariRocaRouter />
+          </BrowserRouter>
+        ) : (
+          <Loader />
+        )}
+      </ModalsProvider>
     </MantineProvider>
   );
 }
