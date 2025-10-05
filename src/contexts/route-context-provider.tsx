@@ -1,6 +1,6 @@
 import { useRoute } from "@/hooks/store/use-route";
 import { useRoutesStore } from "@/hooks/store/use-store";
-import { Ascent, AscentBody, Pre, Route } from "@/lib/routes/types";
+import { Ascent, AscentBody, Pre, Route } from "@/lib/routes";
 import { Loader } from "@mantine/core";
 import { RouteContext } from "./route-context";
 

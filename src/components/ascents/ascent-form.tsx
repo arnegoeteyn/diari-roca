@@ -1,4 +1,4 @@
-import { AscentBody, AscentKind } from "@/lib/routes/types";
+import { AscentBody, AscentKind } from "@/lib/routes";
 import { formattedDate } from "@/util";
 import { Button, Group, Select, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";

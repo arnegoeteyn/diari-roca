@@ -1,4 +1,5 @@
 import { Area } from "./areas";
+import { Ascent } from "./ascents";
 import { Sector } from "./sectors";
 
 export type Store = {
@@ -49,32 +50,6 @@ export type RouteOverview = {
 export type Media = {
   label?: string;
   link: string;
-};
-
-export enum AscentKind {
-  Onsight = "onsight",
-  Flash = "flash",
-  Repeat = "repeat",
-  SecondGo = "secondgo",
-  Redpoint = "redpoint",
-}
-
-export type AscentBody = {
-  comment?: string;
-  date: AppDate;
-  kind: AscentKind;
-};
-
-export type Ascent = AscentBody & {
-  id: ID;
-  routeId: ID;
-};
-
-export type AscentOverview = {
-  ascent: Ascent;
-  route: Route;
-  sector: Sector;
-  area: Area;
 };
 
 export type Trip = {

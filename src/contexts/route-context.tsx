@@ -1,4 +1,4 @@
-import { AscentBody, Route, RouteOverview } from "@/lib/routes/types";
+import { AscentBody, Route, RouteOverview } from "@/lib/routes";
 import React from "react";
 
 export type RouteContextType = RouteOverview & {

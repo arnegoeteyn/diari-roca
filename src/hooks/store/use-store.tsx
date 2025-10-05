@@ -1,13 +1,5 @@
 import { create } from "zustand";
-import {
-  Ascent,
-  ID,
-  Pre,
-  Route,
-  Store,
-  StoreData,
-  Trip,
-} from "@/lib/routes/types";
+import { Ascent, ID, Pre, Route, Store, StoreData, Trip } from "@/lib/routes";
 import { addRoute, putRoute } from "@/lib/routes/routes";
 import { addAscent } from "@/lib/routes/ascents";
 import { addTrip } from "@/lib/routes/trips";

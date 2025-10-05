@@ -1,5 +1,5 @@
 import { getArea } from "./areas";
-import { ascentsForRoute } from "./ascents";
+import { ascentsForRoute } from "@/lib/cache";
 import { getDB, RouteTransaction } from "./db";
 import { getSectorCached } from "./sectors";
 import { ID, Pre, Route, RouteOverview, StoreData } from "./types";
