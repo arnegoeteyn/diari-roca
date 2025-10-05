@@ -6,6 +6,7 @@ export async function addAscent(ascent: Pre<Ascent>): Promise<ID> {
   const db = await getDB();
   return db.add("ascents", ascent);
 }
+
 export function getAscents(data: StoreData): AscentOverview[] {
   return [...data.ascents.keys()].map((id) => getAscent(data, id));
 }
