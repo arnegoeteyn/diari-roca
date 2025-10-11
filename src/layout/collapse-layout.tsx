@@ -18,7 +18,7 @@ export function CollapseLayout() {
         breakpoint: "sm",
         collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
       }}
-      padding="md"
+      padding={"sm"}
     >
       <AppShell.Header>
         <Group h="100%" px="md">

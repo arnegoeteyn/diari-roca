@@ -14,6 +14,7 @@ import AscentBadge from "../ascents/ascent-badge";
 import RouteBreadcrumbs from "../routes/route-breadcrumbs";
 import { Link } from "react-router-dom";
 import { AscentOverview } from "@/lib/cache";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type Props = {
   ascents: AscentOverview[];
@@ -78,6 +79,7 @@ type AscentRowProps = {
   trips: Trip[];
   prev?: Ascent;
   next?: Ascent;
+  compact?: boolean;
 };
 function AscentRow(props: AscentRowProps) {
   const { ascent, trips, prev, next } = props;
@@ -95,15 +97,24 @@ function AscentRow(props: AscentRowProps) {
         <Text>{ascent.ascent.date}</Text>
       </Table.Td>
       <Table.Td>
-        <Anchor component={Link} to={`/routes/${ascent.route.id}`}>
-          {`${ascent.route.name} (${ascent.route.grade})`}
-        </Anchor>
+        <Stack gap={0}>
+          <Anchor component={Link} to={`/routes/${ascent.route.id}`}>
+            {`${ascent.route.name} (${ascent.route.grade})`}
+          </Anchor>
+          <Anchor component={Link} to={`/sectors/${ascent.sector.id}`}>
+            {`${ascent.sector.name}`}
+          </Anchor>
+        </Stack>
       </Table.Td>
+
+      {props.compact ? null : (
+        <Table.Td>
+          <RouteBreadcrumbs area={ascent.area} sector={ascent.sector} />
+        </Table.Td>
+      )}
+
       <Table.Td>
-        <RouteBreadcrumbs area={ascent.area} sector={ascent.sector} />
-      </Table.Td>
-      <Table.Td>
-        <AscentBadge ascent={ascent.ascent} />
+        <AscentBadge compact={props.compact} ascent={ascent.ascent} />
       </Table.Td>
     </Table.Tr>
   );
@@ -112,14 +123,14 @@ function AscentRow(props: AscentRowProps) {
 export default function AscentsOverviewTable(props: Props) {
   const [page, setPage] = useState<number>(0);
 
+  const mobile = useIsMobile();
+
   const shownAscents = () => {
     return props.ascents.slice(
       page * ASCENTS_PER_PAGE,
       (page + 1) * ASCENTS_PER_PAGE,
     );
   };
-
-  console.log(shownAscents());
 
   return (
     <Stack>
@@ -129,7 +140,7 @@ export default function AscentsOverviewTable(props: Props) {
             <Table.Th style={{ width: 8 }} />
             <Table.Th>Date</Table.Th>
             <Table.Th>Route</Table.Th>
-            <Table.Th>Area</Table.Th>
+            {mobile ? null : <Table.Th>Area</Table.Th>}
             <Table.Th>Kind</Table.Th>
           </Table.Tr>
         </Table.Thead>
@@ -141,6 +152,7 @@ export default function AscentsOverviewTable(props: Props) {
               trips={props.trips}
               prev={props.ascents[ASCENTS_PER_PAGE * page + i - 1]?.ascent}
               next={props.ascents[ASCENTS_PER_PAGE * page + i + 1]?.ascent}
+              compact={mobile}
             />
           ))}
         </Table.Tbody>
