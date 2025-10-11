@@ -17,7 +17,7 @@ export default function RouteBreadcrumbs(props: Props) {
   }
 
   return (
-    <Breadcrumbs pb={4}>
+    <Breadcrumbs>
       <Anchor component={Link} to={`/areas/${area.id}`}>
         {area.name}
       </Anchor>
