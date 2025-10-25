@@ -29,6 +29,7 @@ export default function useLoadRoutesStore(): UseFileDialogReturnValue {
 
   const fileDialog = useFileDialog({
     multiple: false,
+    accept: "application/json",
     onChange: async (files) => {
       if (files?.length != 1) {
         return;
