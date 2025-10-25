@@ -11,7 +11,7 @@ import {
   Sector,
   Trip,
 } from "@/lib/routes";
-import { clear, load } from "@/lib/routes/db";
+import { load } from "@/lib/routes/db";
 import { putTrip } from "@/lib/routes/trips";
 import { useFileDialog, UseFileDialogReturnValue } from "@mantine/hooks";
 import { useRoutesStore } from "./use-store";
@@ -26,6 +26,7 @@ type Parsed = {
 
 export default function useLoadRoutesStore(): UseFileDialogReturnValue {
   const store = useRoutesStore((store) => store.setStore);
+  const clear = useRoutesStore((store) => store.clear);
 
   const fileDialog = useFileDialog({
     multiple: false,

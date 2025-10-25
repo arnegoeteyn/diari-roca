@@ -22,7 +22,7 @@ import { clear } from "@/lib/routes/db";
 // This should be the only data accessing hook in the whole folder
 export const useRoutesStore = create<{
   store: Store;
-  clear: () => void;
+  clear: () => Promise<void>;
   setStore: (data: StoreData) => void;
   addArea: (area: Pre<Area>) => Promise<ID>;
   putArea: (area: Area) => Promise<void>;
@@ -50,6 +50,7 @@ export const useRoutesStore = create<{
       return {
         store: {
           ...state.store,
+          initialized: false,
           data: {} as StoreData,
         },
       };
