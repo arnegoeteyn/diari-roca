@@ -1,5 +1,14 @@
 import { create } from "zustand";
-import { Ascent, ID, Pre, Route, Store, StoreData, Trip } from "@/lib/routes";
+import {
+  Ascent,
+  ID,
+  Pre,
+  putAscent,
+  Route,
+  Store,
+  StoreData,
+  Trip,
+} from "@/lib/routes";
 import {
   deleteAscent as cacheDeleteAscent,
   storeAscent as cacheStoreAscent,
@@ -8,9 +17,12 @@ import { addRoute, putRoute } from "@/lib/routes/routes";
 import { addAscent, deleteAscent } from "@/lib/routes";
 import { addTrip } from "@/lib/routes/trips";
 import { addArea, addSector, Area, putArea, Sector } from "@/lib/routes";
+import { clear } from "@/lib/routes/db";
 
+// This should be the only data accessing hook in the whole folder
 export const useRoutesStore = create<{
   store: Store;
+  clear: () => void;
   setStore: (data: StoreData) => void;
   addArea: (area: Pre<Area>) => Promise<ID>;
   putArea: (area: Area) => Promise<void>;
@@ -18,6 +30,7 @@ export const useRoutesStore = create<{
   addSector: (sector: Pre<Sector>) => Promise<ID>;
   putRoute: (route: Route) => Promise<void>;
   addAscent: (ascent: Pre<Ascent>) => Promise<void>;
+  putAscent: (ascent: Ascent) => Promise<void>;
   deleteAscent: (ascentId: ID) => Promise<void>;
   addTrip: (trip: Pre<Trip>) => Promise<ID>;
 }>((set) => ({
@@ -30,6 +43,17 @@ export const useRoutesStore = create<{
       ascents: new Map(),
       trips: new Map(),
     },
+  },
+  clear: async () => {
+    await clear();
+    set((state) => {
+      return {
+        store: {
+          ...state.store,
+          data: {} as StoreData,
+        },
+      };
+    });
   },
   setStore: (data: StoreData) =>
     set({ store: { data: data, initialized: true } }),
@@ -48,6 +72,19 @@ export const useRoutesStore = create<{
         },
       };
     });
+  },
+  putAscent: async (ascent: Ascent) => {
+    set((state) => {
+      const updatedAscents = new Map(state.store.data.ascents);
+      updatedAscents.set(ascent.id, ascent);
+      return {
+        store: {
+          ...state.store,
+          data: { ...state.store.data, ascents: updatedAscents },
+        },
+      };
+    });
+    return putAscent(ascent);
   },
   deleteAscent: async (ascentId: ID) => {
     await deleteAscent(ascentId);
