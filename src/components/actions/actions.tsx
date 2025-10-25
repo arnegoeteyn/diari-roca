@@ -5,12 +5,17 @@ import RoutesActions from "./routes-actions";
 import AreaActions from "./area-actions";
 import { useParams } from "react-router-dom";
 import AreasActions from "./areas-actions";
+import SettingsActions from "./settings-actions";
 
 type Props = {
   location: string;
 };
 export default function Actions(props: Props) {
   const { sectorId, areaId } = useParams();
+
+  if (isActive(props.location, "settings")) {
+    return <SettingsActions />;
+  }
 
   if (isActive(props.location, "ascents")) {
     return <AscentsActions />;

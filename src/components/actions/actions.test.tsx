@@ -8,6 +8,7 @@ import AscentsActions from "./ascents-actions";
 import SectorsActions from "@/components/actions/sectors-actions";
 import AreasActions from "./areas-actions";
 import AreaActions from "@/components/actions/area-actions";
+import SettingsActions from "@/components/actions/settings-actions";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 vi.mock("./routes-actions");
@@ -15,12 +16,14 @@ vi.mock("./ascents-actions");
 vi.mock("@/components/actions/sectors-actions");
 vi.mock("@/components/actions/area-actions");
 vi.mock("@/components/actions/areas-actions");
+vi.mock("@/components/actions/settings-actions");
 
 const MockRoutesActions = vi.mocked(RoutesActions);
 const MockSectorsActions = vi.mocked(SectorsActions);
 const MockAscentsActions = vi.mocked(AscentsActions);
 const MockAreaActions = vi.mocked(AreaActions);
 const MockAreasActions = vi.mocked(AreasActions);
+const MockSettingsActions = vi.mocked(SettingsActions);
 
 describe("<Actions/>", () => {
   afterEach(() => {
@@ -99,5 +102,17 @@ describe("<Actions/>", () => {
     );
 
     expect(MockAreasActions).toHaveBeenCalledExactlyOnceWith({}, undefined);
+  });
+
+  test("loads settings-actions on /settings", async () => {
+    render(
+      <MemoryRouter initialEntries={["/settings"]}>
+        <Routes>
+          <Route path="/settings" element={<Actions location="/settings" />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(MockSettingsActions).toHaveBeenCalledExactlyOnceWith({}, undefined);
   });
 });
