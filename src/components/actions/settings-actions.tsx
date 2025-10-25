@@ -1,6 +1,7 @@
 import { Button, Stack } from "@mantine/core";
 import { useRoutesStore } from "@/hooks/store/use-store";
 import { Area, Ascent, Route, Sector, StoreData, Trip } from "@/lib/routes";
+import useLoadRoutesStore from "@/hooks/store/use-load-routes-store";
 
 type Parsed = {
   routes: Route[];
@@ -35,9 +36,11 @@ function saveData(data: StoreData) {
 
 export default function SettingsActions() {
   const data = useRoutesStore((store) => store.store.data);
+  const loadRoutes = useLoadRoutesStore();
   return (
     <Stack p={"16px"}>
       <Button onClick={() => saveData(data)}>Export</Button>
+      <Button onClick={loadRoutes.open}>Import</Button>
     </Stack>
   );
 }
