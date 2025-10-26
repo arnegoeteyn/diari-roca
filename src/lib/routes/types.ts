@@ -1,5 +1,6 @@
 import { Area } from "./areas";
 import { Ascent } from "./ascents";
+import { Route } from "./routes";
 import { Sector } from "./sectors";
 
 export type Store = {
@@ -20,37 +21,6 @@ export type ID = number;
 export type AppDate = string; // custom 'date' type since indexedDB has some difficulties with real date objects
 
 export type Pre<T> = Omit<T, "id">;
-
-export enum RouteKind {
-  Sport = "sport",
-  Boulder = "boulder",
-}
-
-export type RouteBody = {
-  name: string;
-  grade: string;
-  comment?: string;
-  beta?: string;
-  media: Media[];
-  kind: RouteKind;
-};
-
-export type Route = RouteBody & {
-  id: ID;
-  sectorId: ID;
-};
-
-export type RouteOverview = {
-  route: Route;
-  ascents: Ascent[];
-  sector: Sector;
-  area: Area;
-};
-
-export type Media = {
-  label?: string;
-  link: string;
-};
 
 export type Trip = {
   id: ID;

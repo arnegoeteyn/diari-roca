@@ -1,6 +1,7 @@
 import RouteTable from "@/components/routes/routes-table";
 import useRoutes from "@/hooks/store/use-routes";
-import { RouteKind, RouteOverview } from "@/lib/routes/types";
+import { RouteOverview } from "@/lib/cache";
+import { RouteKind } from "@/lib/routes";
 import { Group, Tabs } from "@mantine/core";
 
 const routesParam = {

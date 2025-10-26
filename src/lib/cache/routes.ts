@@ -1,4 +1,7 @@
 import { Area, Ascent, ID, Pre, Route, Sector, StoreData } from "@/lib/routes";
+import { ascentsForRoute } from "./ascents";
+import { getSector } from "./sectors";
+import { getArea } from "./areas";
 
 export type RouteOverview = {
   route: Route;
@@ -14,6 +17,24 @@ export function getRoute(data: StoreData, id: ID): Route {
     throw new Error("Route does not exist");
   }
   return route;
+}
+
+export function getRouteOverview(data: StoreData, id: ID): RouteOverview {
+  const route = data.routes.get(id);
+
+  if (!route) {
+    throw new Error("Route does not exist");
+  }
+
+  const ascents = ascentsForRoute(data, id);
+  const sector = getSector(data, route.sectorId);
+  const area = getArea(data, sector.areaId);
+
+  return { route, ascents, sector, area };
+}
+
+export function getRouteOverviews(data: StoreData): RouteOverview[] {
+  return [...data.routes.keys()].map((id) => getRouteOverview(data, id));
 }
 
 export function addRoute(data: StoreData, id: ID, route: Pre<Route>) {

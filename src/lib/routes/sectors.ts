@@ -1,7 +1,7 @@
 import { Area, getArea } from "./areas";
 import { getDB } from "./db";
-import { routesForSector } from "./routes";
-import { ID, Pre, Route, StoreData } from "./types";
+import { Route, routesForSector } from "./routes";
+import { ID, Pre, StoreData } from "./types";
 
 export type Sector = {
   id: ID;

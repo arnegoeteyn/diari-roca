@@ -1,7 +1,7 @@
-import { getRoutes } from "@/lib/routes/routes";
-import { RouteKind, RouteOverview } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
 import { useRoutesStore } from "./use-store";
+import { getRouteOverviews, RouteOverview } from "@/lib/cache";
+import { RouteKind } from "@/lib/routes";
 
 type Props = {
   sortBy?: (a: RouteOverview, b: RouteOverview) => number;
@@ -25,7 +25,7 @@ export default function useRoutes(props?: Props): RouteOverview[] {
       return;
     }
 
-    const routes = getRoutes(store.data);
+    const routes = getRouteOverviews(store.data);
 
     const filtered = filter ? routes.filter(filter) : routes;
     const sorted = sortBy ? filtered.sort(sortBy) : filtered;

@@ -1,13 +1,5 @@
-import {
-  Area,
-  Ascent,
-  getRoute,
-  ID,
-  Pre,
-  Route,
-  Sector,
-  StoreData,
-} from "@/lib/routes";
+import { Area, Ascent, ID, Pre, Route, Sector, StoreData } from "@/lib/routes";
+import { getRouteOverview } from "./routes";
 
 export type AscentOverview = {
   ascent: Ascent;
@@ -47,7 +39,7 @@ export function getAscent(data: StoreData, id: ID): Ascent {
 
 export function getAscentOverview(data: StoreData, id: ID): AscentOverview {
   const ascent = getAscent(data, id);
-  const routeOverview = getRoute(data, ascent.routeId);
+  const routeOverview = getRouteOverview(data, ascent.routeId);
   return { ascent, ...routeOverview };
 }
 
