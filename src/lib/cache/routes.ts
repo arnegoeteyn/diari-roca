@@ -1,0 +1,29 @@
+import { Area, Ascent, ID, Pre, Route, Sector, StoreData } from "@/lib/routes";
+
+export type RouteOverview = {
+  route: Route;
+  ascents: Ascent[];
+  sector: Sector;
+  area: Area;
+};
+
+export function getRoute(data: StoreData, id: ID): Route {
+  const route = data.routes.get(id);
+
+  if (!route) {
+    throw new Error("Route does not exist");
+  }
+  return route;
+}
+
+export function addRoute(data: StoreData, id: ID, route: Pre<Route>) {
+  const updatedRoutes = new Map(data.routes);
+  updatedRoutes.set(id, { ...route, id: id });
+  return { ...data, routes: updatedRoutes };
+}
+
+export function deleteRoute(data: StoreData, id: ID) {
+  const updatedRoutes = new Map(data.routes);
+  updatedRoutes.delete(id);
+  return { ...data, routes: updatedRoutes };
+}
