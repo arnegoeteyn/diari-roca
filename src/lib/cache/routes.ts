@@ -1,5 +1,5 @@
 import { Area, Ascent, ID, Pre, Route, Sector, StoreData } from "@/lib/routes";
-import { ascentsForRoute } from "./ascents";
+import { ascentsForRoute, deleteAscent } from "./ascents";
 import { getSector } from "./sectors";
 import { getArea } from "./areas";
 
@@ -44,6 +44,13 @@ export function addRoute(data: StoreData, id: ID, route: Pre<Route>) {
 }
 
 export function deleteRoute(data: StoreData, id: ID) {
+  const linkedAscents = ascentsForRoute(data, id);
+  for (const ascent of linkedAscents) {
+    data = deleteAscent(data, ascent.id);
+  }
+
+  linkedAscents.forEach((ascent) => deleteAscent(data, ascent.id));
+
   const updatedRoutes = new Map(data.routes);
   updatedRoutes.delete(id);
   return { ...data, routes: updatedRoutes };
