@@ -17,9 +17,12 @@ export function useRoute(routeId?: ID): RouteOverview | undefined {
       throw new Error(`Invalid routeId requested: ${routeId}`);
     }
 
-    const route = getRouteOverview(store.data, parsed);
-
-    setRoute(route);
+    try {
+      const route = getRouteOverview(store.data, parsed);
+      setRoute(route);
+    } catch {
+      return;
+    }
   }, [store, routeId]);
 
   return route;

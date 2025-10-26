@@ -67,7 +67,6 @@ const _deleteAscent = (set: setAction) => async (ascentId: ID) => {
 };
 
 const _deleteRoute = (set: setAction) => async (routeId: ID) => {
-  await deleteRoute(routeId);
   set((state) => {
     const updatedStoreData = cacheDeleteRoute(state.store.data, routeId);
     return {
@@ -77,6 +76,7 @@ const _deleteRoute = (set: setAction) => async (routeId: ID) => {
       },
     };
   });
+  await deleteRoute(routeId);
 };
 
 // This should be the only data accessing hook in the whole folder
