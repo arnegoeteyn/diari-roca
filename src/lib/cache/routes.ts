@@ -23,7 +23,7 @@ export function getRouteOverview(data: StoreData, id: ID): RouteOverview {
   const route = data.routes.get(id);
 
   if (!route) {
-    throw new Error("Route does not exist");
+    throw new Error(`Route ${id} does not exist`);
   }
 
   const ascents = ascentsForRoute(data, id);
