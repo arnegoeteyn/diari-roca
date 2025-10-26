@@ -8,6 +8,7 @@ import AscentForm from "../ascents/ascent-form";
 import { useIsSmall } from "@/hooks/use-small";
 import { useRouteContext } from "@/contexts/route-context-util.ts";
 import useSectorOverviews from "@/hooks/store/use-sector-overviews.tsx";
+import { modals } from "@mantine/modals";
 
 type Props = {
   hideVisitAction?: boolean;
@@ -24,7 +25,7 @@ type Action = {
 
 export default function RouteActions(props: Props) {
   const { hideVisitAction, compact } = props;
-  const { route, updateRoute, logAscent } = useRouteContext();
+  const { route, updateRoute, logAscent, deleteRoute } = useRouteContext();
   const sectors = useSectorOverviews();
 
   const isMobile = useIsSmall();
@@ -40,10 +41,23 @@ export default function RouteActions(props: Props) {
     [route.id, navigate],
   );
 
+  const onDeleteRouteConfirmation = () => {
+    modals.openConfirmModal({
+      title: "Delete route?",
+      labels: { confirm: "Delete", cancel: "Cancel" },
+      confirmProps: { color: "red" },
+      onConfirm: deleteRoute,
+    });
+  };
   const actions: Record<string, Action> = {
     edit: { icon: <Edit />, title: "Edit", action: routeOpen },
     log: { icon: <PlusCircle />, title: "Log", action: logOpen },
-    delete: { icon: <Trash />, title: "Delete", color: "red" },
+    delete: {
+      icon: <Trash />,
+      title: "Delete",
+      color: "red",
+      action: onDeleteRouteConfirmation,
+    },
     visit: {
       icon: <ArrowRight />,
       title: "Go",

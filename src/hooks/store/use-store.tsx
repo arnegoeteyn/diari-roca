@@ -24,14 +24,20 @@ type actions = {
   store: Store;
   clear: () => Promise<void>;
   setStore: (data: StoreData) => void;
+
   addArea: (area: Pre<Area>) => Promise<ID>;
   putArea: (area: Area) => Promise<void>;
+
   addRoute: (route: Pre<Route>) => Promise<ID>;
-  addSector: (sector: Pre<Sector>) => Promise<ID>;
   putRoute: (route: Route) => Promise<void>;
+  deleteRoute: (routeId: ID) => Promise<void>;
+
+  addSector: (sector: Pre<Sector>) => Promise<ID>;
+
   addAscent: (ascent: Pre<Ascent>) => Promise<void>;
   putAscent: (ascent: Ascent) => Promise<void>;
   deleteAscent: (ascentId: ID) => Promise<void>;
+
   addTrip: (trip: Pre<Trip>) => Promise<ID>;
 };
 
@@ -44,7 +50,7 @@ type setAction = {
     replace?: false,
   ): void;
   (state: actions | ((state: actions) => actions), replace: true): void;
-  (arg0: (state: any) => { store: any }): void;
+  (arg0: (state: any) => { store: any }): void; //eslint-disable-line
 };
 
 const _deleteAscent = (set: setAction) => async (ascentId: ID) => {
@@ -157,6 +163,7 @@ export const useRoutesStore = create<actions>((set) => ({
     });
     return newRouteId;
   },
+  deleteRoute: _deleteRoute(set),
   addArea: async (area: Pre<Area>) => {
     const newAreaId = await addArea(area);
     set((state) => {

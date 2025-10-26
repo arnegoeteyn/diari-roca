@@ -49,7 +49,7 @@ export type RouteTransaction = IDBPTransaction<
 >;
 
 export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
-  const db = await openDB<RoutesDB>("routes", 2, {
+  const db = await openDB<RoutesDB>("routes", 102, {
     upgrade(db, _oldVersion, _newVersion, transaction) {
       const stores = db.objectStoreNames;
       if (!stores.contains("routes")) {

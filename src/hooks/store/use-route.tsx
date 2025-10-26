@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useRoutesStore } from "./use-store";
 import { getRouteOverview, RouteOverview } from "@/lib/cache";
+import { ID } from "@/lib/routes";
 
-export function useRoute(routeId?: string): RouteOverview | undefined {
+export function useRoute(routeId?: ID): RouteOverview | undefined {
   const [route, setRoute] = useState<RouteOverview>();
   const store = useRoutesStore((store) => store.store);
 

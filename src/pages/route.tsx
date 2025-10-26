@@ -38,7 +38,7 @@ export default function Route() {
   }
 
   return (
-    <RouteContextProvider routeId={routeId}>
+    <RouteContextProvider routeId={Number(routeId)}>
       <RouteContent />
     </RouteContextProvider>
   );

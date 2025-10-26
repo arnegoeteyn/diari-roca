@@ -60,7 +60,7 @@ export default function RouteTable(props: Props) {
                 </Group>
               </Table.Td>
               <Table.Td>
-                <RouteContextProvider routeId={route.route.id.toString()}>
+                <RouteContextProvider routeId={route.route.id}>
                   <RouteActions compact />
                 </RouteContextProvider>
               </Table.Td>
