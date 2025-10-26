@@ -25,7 +25,7 @@ export default function AscentsList({ ascents, onDeleteAscent }: Props) {
     );
   }
 
-  const onDeleteRouteConfirmation = (ascent: Ascent) => {
+  const onDeleteAscentConfirmation = (ascent: Ascent) => {
     modals.openConfirmModal({
       title: "Delete ascent?",
       labels: { confirm: "Delete", cancel: "Cancel" },
@@ -57,7 +57,7 @@ export default function AscentsList({ ascents, onDeleteAscent }: Props) {
                 variant="subtle"
                 color="red"
                 size="xs"
-                onClick={() => onDeleteRouteConfirmation(ascent)}
+                onClick={() => onDeleteAscentConfirmation(ascent)}
               >
                 <Trash2 size="1rem" />
               </Button>

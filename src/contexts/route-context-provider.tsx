@@ -1,11 +1,11 @@
 import { useRoute } from "@/hooks/store/use-route";
 import { useRoutesStore } from "@/hooks/store/use-store";
-import { Ascent, AscentBody, Pre, Route } from "@/lib/routes";
+import { Ascent, AscentBody, ID, Pre, Route } from "@/lib/routes";
 import { Loader } from "@mantine/core";
 import { RouteContext } from "./route-context";
 
 type Props = React.PropsWithChildren<{
-  routeId: string;
+  routeId: ID;
 }>;
 
 export function RouteContextProvider(props: Props) {
@@ -13,8 +13,11 @@ export function RouteContextProvider(props: Props) {
   const putRoute = useRoutesStore((store) => store.putRoute);
   const addAscent = useRoutesStore((store) => store.addAscent);
   const deleteAscent = useRoutesStore((store) => store.deleteAscent);
+  const _deleteRoute = useRoutesStore((store) => store.deleteRoute);
 
   const updateRoute = (route: Route) => putRoute(route);
+
+  const deleteRoute = () => _deleteRoute(props.routeId);
 
   const logAscent = (ascent: AscentBody) => {
     if (!route) {
@@ -31,7 +34,7 @@ export function RouteContextProvider(props: Props) {
 
   return (
     <RouteContext.Provider
-      value={{ ...route, updateRoute, logAscent, deleteAscent }}
+      value={{ ...route, updateRoute, logAscent, deleteAscent, deleteRoute }}
     >
       {props.children}
     </RouteContext.Provider>
