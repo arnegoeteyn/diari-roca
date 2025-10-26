@@ -10,17 +10,17 @@ import {
   Trip,
 } from "@/lib/routes";
 import {
+  deleteRoute as cacheDeleteRoute,
   deleteAscent as cacheDeleteAscent,
   storeAscent as cacheStoreAscent,
 } from "@/lib/cache";
-import { addRoute, putRoute } from "@/lib/routes/routes";
+import { addRoute, deleteRoute, putRoute } from "@/lib/routes/routes";
 import { addAscent, deleteAscent } from "@/lib/routes";
 import { addTrip } from "@/lib/routes/trips";
 import { addArea, addSector, Area, putArea, Sector } from "@/lib/routes";
 import { clear } from "@/lib/routes/db";
 
-// This should be the only data accessing hook in the whole folder
-export const useRoutesStore = create<{
+type actions = {
   store: Store;
   clear: () => Promise<void>;
   setStore: (data: StoreData) => void;
@@ -33,7 +33,48 @@ export const useRoutesStore = create<{
   putAscent: (ascent: Ascent) => Promise<void>;
   deleteAscent: (ascentId: ID) => Promise<void>;
   addTrip: (trip: Pre<Trip>) => Promise<ID>;
-}>((set) => ({
+};
+
+type setAction = {
+  (
+    partial:
+      | actions
+      | Partial<actions>
+      | ((state: actions) => actions | Partial<actions>),
+    replace?: false,
+  ): void;
+  (state: actions | ((state: actions) => actions), replace: true): void;
+  (arg0: (state: any) => { store: any }): void;
+};
+
+const _deleteAscent = (set: setAction) => async (ascentId: ID) => {
+  await deleteAscent(ascentId);
+  set((state) => {
+    const updatedStoreData = cacheDeleteAscent(state.store.data, ascentId);
+    return {
+      store: {
+        ...state.store,
+        data: updatedStoreData,
+      },
+    };
+  });
+};
+
+const _deleteRoute = (set: setAction) => async (routeId: ID) => {
+  await deleteRoute(routeId);
+  set((state) => {
+    const updatedStoreData = cacheDeleteRoute(state.store.data, routeId);
+    return {
+      store: {
+        ...state.store,
+        data: updatedStoreData,
+      },
+    };
+  });
+};
+
+// This should be the only data accessing hook in the whole folder
+export const useRoutesStore = create<actions>((set) => ({
   store: {
     initialized: false,
     data: {
@@ -87,18 +128,7 @@ export const useRoutesStore = create<{
     });
     return putAscent(ascent);
   },
-  deleteAscent: async (ascentId: ID) => {
-    await deleteAscent(ascentId);
-    set((state) => {
-      const updatedStoreData = cacheDeleteAscent(state.store.data, ascentId);
-      return {
-        store: {
-          ...state.store,
-          data: updatedStoreData,
-        },
-      };
-    });
-  },
+  deleteAscent: _deleteAscent(set),
   addSector: async (sector: Pre<Sector>) => {
     const newSectorId = await addSector(sector);
     set((state) => {

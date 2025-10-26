@@ -1,6 +1,7 @@
 import { getRouteOverview, RouteOverview } from "../cache/routes";
 import { getDB, RouteTransaction } from "./db";
 import { ID, Pre, StoreData } from "./types";
+import { _deleteAscent } from "./ascents";
 
 export enum RouteKind {
   Sport = "sport",
@@ -34,12 +35,27 @@ export async function putRoute(route: Route) {
   await db.put("routes", route);
 }
 
-/*
- * Deleting a route will not delete ascents that are linked to that route.
- */
 export async function deleteRoute(id: ID): Promise<void> {
   const db = await getDB();
-  return db.delete("routes", id);
+
+  const tx = db.transaction(["routes", "ascents"], "readwrite");
+  await _deleteRoute(tx, id);
+  tx.commit();
+  return tx.done;
+}
+
+async function _deleteRoute(transaction: RouteTransaction, routeId: ID) {
+  const ascentsStore = transaction.objectStore("ascents");
+  const index = ascentsStore.index("routeId");
+
+  const keys = await index.getAllKeys(IDBKeyRange.bound(routeId, routeId));
+
+  for (const key of keys) {
+    await _deleteAscent(transaction, key);
+  }
+
+  const store = transaction.objectStore("routes");
+  return store.delete(routeId);
 }
 
 // todo, where to put this? Need this?
