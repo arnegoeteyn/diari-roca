@@ -34,6 +34,15 @@ export async function putRoute(route: Route) {
   await db.put("routes", route);
 }
 
+/*
+ * Deleting a route will not delete ascents that are linked to that route.
+ */
+export async function deleteRoute(id: ID): Promise<void> {
+  const db = await getDB();
+  return db.delete("routes", id);
+}
+
+// todo, where to put this? Need this?
 export async function routeIdsForSector(
   transcation: RouteTransaction,
   sectorId: ID,
