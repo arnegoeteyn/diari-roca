@@ -1,4 +1,4 @@
-import { getDB } from "./db";
+import { getDB, RouteTransaction } from "./db";
 
 import { AppDate, ID, Pre } from "./types";
 
@@ -34,4 +34,12 @@ export async function putAscent(ascent: Ascent) {
 export async function deleteAscent(id: ID): Promise<void> {
   const db = await getDB();
   return db.delete("ascents", id);
+}
+
+export async function _deleteAscent(
+  transaction: RouteTransaction,
+  ascentId: ID,
+) {
+  const store = transaction.objectStore("ascents");
+  store.delete(ascentId);
 }

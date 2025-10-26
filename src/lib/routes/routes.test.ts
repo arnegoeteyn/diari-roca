@@ -25,7 +25,7 @@ describe("lib/routes/routes", () => {
     expect(secondId).toBeGreaterThan(firstId);
   });
 
-  test("can delete ascents", async () => {
+  test("can delete routes", async () => {
     let data = await load();
     expect(data.routes.size).toBe(0);
 
@@ -39,6 +39,7 @@ describe("lib/routes/routes", () => {
     expect(data.routes.size).toBe(2);
 
     await deleteRoute(firstId);
+
     data = await load();
     expect(data.routes.size).toBe(1);
   });
