@@ -1,7 +1,6 @@
-import { getRoute } from "@/lib/routes/routes";
-import { RouteOverview } from "@/lib/routes/types";
 import { useEffect, useState } from "react";
 import { useRoutesStore } from "./use-store";
+import { getRouteOverview, RouteOverview } from "@/lib/cache";
 
 export function useRoute(routeId?: string): RouteOverview | undefined {
   const [route, setRoute] = useState<RouteOverview>();
@@ -17,7 +16,7 @@ export function useRoute(routeId?: string): RouteOverview | undefined {
       throw new Error(`Invalid routeId requested: ${routeId}`);
     }
 
-    const route = getRoute(store.data, parsed);
+    const route = getRouteOverview(store.data, parsed);
 
     setRoute(route);
   }, [store, routeId]);

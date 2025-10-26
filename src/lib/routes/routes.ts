@@ -1,8 +1,28 @@
-import { getArea } from "./areas";
-import { ascentsForRoute } from "@/lib/cache";
+import { getRouteOverview, RouteOverview } from "../cache/routes";
 import { getDB, RouteTransaction } from "./db";
-import { getSectorCached } from "./sectors";
-import { ID, Pre, Route, RouteOverview, StoreData } from "./types";
+import { ID, Pre, StoreData } from "./types";
+
+export enum RouteKind {
+  Sport = "sport",
+  Boulder = "boulder",
+}
+export type Media = {
+  label?: string;
+  link: string;
+};
+export type RouteBody = {
+  name: string;
+  grade: string;
+  comment?: string;
+  beta?: string;
+  media: Media[];
+  kind: RouteKind;
+};
+
+export type Route = RouteBody & {
+  id: ID;
+  sectorId: ID;
+};
 
 export async function addRoute(route: Pre<Route>) {
   const db = await getDB();
@@ -12,25 +32,6 @@ export async function addRoute(route: Pre<Route>) {
 export async function putRoute(route: Route) {
   const db = await getDB();
   await db.put("routes", route);
-}
-
-export function getRoute(data: StoreData, id: ID): RouteOverview {
-  const route = data.routes.get(id);
-
-  if (!route) {
-    throw new Error("Route does not exist");
-  }
-
-  const ascents = ascentsForRoute(data, id);
-  const sector = getSectorCached(data, route.sectorId);
-  const area = getArea(data, sector.areaId);
-
-  return { route, ascents, sector, area };
-}
-
-// add query or something
-export function getRoutes(data: StoreData): RouteOverview[] {
-  return [...data.routes.keys()].map((id) => getRoute(data, id));
 }
 
 export async function routeIdsForSector(
@@ -45,11 +46,12 @@ export async function routeIdsForSector(
   return keys;
 }
 
+// todo move to cache
 export function routesForSector(
   data: StoreData,
   sectorId: ID,
 ): RouteOverview[] {
   return [...data.routes.values()]
     .filter((route) => route.sectorId == sectorId)
-    .map((route) => getRoute(data, route.id));
+    .map((route) => getRouteOverview(data, route.id));
 }

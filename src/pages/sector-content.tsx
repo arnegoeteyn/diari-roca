@@ -2,7 +2,8 @@ import PageTitle from "@/components/page-title";
 import RouteTable from "@/components/routes/routes-table";
 import useRoutes, { sortByGrade } from "@/hooks/store/use-routes";
 import useSectorOverview from "@/hooks/store/use-sector-overview";
-import { ID, RouteOverview } from "@/lib/routes/types";
+import { RouteOverview } from "@/lib/cache";
+import { ID } from "@/lib/routes/types";
 import { Loader } from "@mantine/core";
 import { useCallback } from "react";
 

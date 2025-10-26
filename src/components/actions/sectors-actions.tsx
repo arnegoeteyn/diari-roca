@@ -1,7 +1,7 @@
 import { Stack } from "@mantine/core";
 import { useRoutesStore } from "@/hooks/store/use-store";
 import AddRouteButton from "../routes/add-route-button";
-import { ID, Route } from "@/lib/routes/types";
+import { ID, Route } from "@/lib/routes";
 import useSector from "@/hooks/store/use-sector-overview";
 import { Loader } from "lucide-react";
 

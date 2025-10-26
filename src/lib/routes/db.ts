@@ -1,7 +1,8 @@
 import { Area } from "./areas";
 import { Ascent } from "./ascents";
+import { Route, RouteKind } from "./routes";
 import { Sector } from "./sectors";
-import { ID, Pre, Route, RouteKind, StoreData, Trip } from "./types";
+import { ID, Pre, StoreData, Trip } from "./types";
 import {
   DBSchema,
   IDBPDatabase,

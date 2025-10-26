@@ -1,4 +1,4 @@
-import { Route } from "@/lib/routes/types";
+import { Route } from "@/lib/routes";
 import { Text } from "@mantine/core";
 
 type Props = {

@@ -2,11 +2,12 @@ import PageTitle from "@/components/page-title";
 import RouteTable from "@/components/routes/routes-table";
 import SectorLinks from "@/components/sectors/sector-links";
 import useRoutes, { sortByGrade } from "@/hooks/store/use-routes";
-import { ID, RouteOverview } from "@/lib/routes/types";
 import { Loader } from "@mantine/core";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAreaContent from "./hook";
+import { ID } from "@/lib/routes";
+import { RouteOverview } from "@/lib/cache";
 
 type Props = { areaId: ID };
 
