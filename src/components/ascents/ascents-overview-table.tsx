@@ -101,9 +101,11 @@ function AscentRow(props: AscentRowProps) {
           <Anchor component={Link} to={`/routes/${ascent.route.id}`}>
             {`${ascent.route.name} (${ascent.route.grade})`}
           </Anchor>
-          <Anchor component={Link} to={`/sectors/${ascent.sector.id}`}>
-            {`${ascent.sector.name}`}
-          </Anchor>
+          {props.compact ? (
+            <Anchor component={Link} to={`/sectors/${ascent.sector.id}`}>
+              {`${ascent.sector.name}`}
+            </Anchor>
+          ) : null}
         </Stack>
       </Table.Td>
 
