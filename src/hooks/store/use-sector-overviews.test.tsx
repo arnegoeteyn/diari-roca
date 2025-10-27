@@ -2,14 +2,10 @@ import { cleanup, renderHook } from "@testing-library/react";
 import { test, expect, describe, afterEach, vi } from "vitest";
 import useSectorOverviews from "./use-sector-overviews";
 import { useRoutesStore } from "./use-store";
-import {
-  getSectorOverviews,
-  Sector,
-  SectorOverview,
-  Store,
-} from "@/lib/routes";
+import { Sector, Store } from "@/lib/routes";
+import { getSectorOverviews, SectorOverview } from "@/lib/cache";
 
-vi.mock("@/lib/routes");
+vi.mock("@/lib/cache");
 vi.mock("@/hooks/store/use-store");
 
 const MockedUseRoutesStore = vi.mocked(useRoutesStore);

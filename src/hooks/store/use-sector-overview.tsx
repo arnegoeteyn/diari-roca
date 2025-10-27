@@ -1,8 +1,8 @@
-import { ID, SectorOverview } from "@/lib/routes";
+import { ID } from "@/lib/routes";
 import { useEffect, useState } from "react";
 import { useRoutesStore } from "./use-store";
-import { getSectorOverview } from "@/lib/routes/sectors";
-import { routesForSector } from "@/lib/routes/routes";
+import { getSectorOverview, SectorOverview } from "@/lib/cache/sectors";
+import { routesOverviewsForSector } from "@/lib/cache";
 
 export default function useSectorOverview(
   sectorId: ID,
@@ -15,7 +15,7 @@ export default function useSectorOverview(
       return;
     }
     const sector = getSectorOverview(store.data, sectorId);
-    const routeOverviews = routesForSector(store.data, sectorId);
+    const routeOverviews = routesOverviewsForSector(store.data, sectorId);
     const routes = routeOverviews.map((overview) => overview.route);
     setSector({ sector: sector.sector, routes, area: sector.area });
   }, [sectorId, store.data, store.initialized]);

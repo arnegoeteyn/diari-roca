@@ -59,6 +59,11 @@ export async function getDB(): Promise<IDBPDatabase<RoutesDB>> {
         });
       }
 
+      const routesStore = transaction.objectStore("routes");
+      if (!routesStore.indexNames.contains("sectorId")) {
+        routesStore.createIndex("sectorId", "sectorId");
+      }
+
       if (!stores.contains("ascents")) {
         db.createObjectStore("ascents", {
           keyPath: "id",

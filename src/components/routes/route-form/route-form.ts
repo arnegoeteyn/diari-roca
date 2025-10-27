@@ -1,4 +1,5 @@
-import { ID, SectorOverview } from "@/lib/routes";
+import { SectorOverview } from "@/lib/cache";
+import { ID } from "@/lib/routes";
 
 export const sectorGroups = (sectors: SectorOverview[]) => {
   const groups = new Map<ID, SectorOverview[]>();

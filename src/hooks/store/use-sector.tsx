@@ -1,7 +1,7 @@
 import { ID, Sector } from "@/lib/routes";
 import { useEffect, useState } from "react";
 import { useRoutesStore } from "./use-store";
-import { getSector } from "@/lib/routes/sectors";
+import { getSector } from "@/lib/cache/sectors";
 
 type Props = {
   sectorId: ID;
