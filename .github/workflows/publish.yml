@@ -1,0 +1,12 @@
+name: publish
+on:
+  push:
+    tags: -"v\d.\d.\d"
+
+jobs:
+  deploy-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Render webhook
+        run: |
+          curl ${{ secrets.RENDER_WEBHOOK }}
