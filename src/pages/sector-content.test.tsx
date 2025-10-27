@@ -3,7 +3,7 @@ import "@testing-library/jest-dom/vitest";
 import SectorContent from "./sector-content.tsx";
 import { render } from "@testing-library/react";
 import { Loader } from "@mantine/core";
-import { SectorOverview } from "@/lib/routes";
+import { SectorOverview } from "@/lib/cache";
 import PageTitle from "@/components/page-title.tsx";
 import useSectorOverview from "@/hooks/store/use-sector-overview.tsx";
 import RouteTable from "@/components/routes/routes-table.tsx";

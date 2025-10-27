@@ -1,14 +1,9 @@
 import { useRoutesStore } from "@/hooks/store/use-store";
-import {
-  Area,
-  getArea,
-  ID,
-  routesForSector,
-  Sector,
-  sectorsForArea,
-} from "@/lib/routes";
+import { Area, getArea, ID, Sector } from "@/lib/routes";
 import { useEffect, useState } from "react";
 import SectorContent from "../sector-content";
+import { routesForSector } from "@/lib/cache";
+import { sectorsForArea } from "@/lib/cache/sectors";
 
 type AreaContent = {
   area: Area;

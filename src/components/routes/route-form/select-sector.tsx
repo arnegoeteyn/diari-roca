@@ -1,4 +1,4 @@
-import { SectorOverview } from "@/lib/routes";
+import { SectorOverview } from "@/lib/cache";
 import { sectorGroups } from "./route-form";
 import { Select } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";

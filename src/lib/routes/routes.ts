@@ -43,7 +43,7 @@ export async function deleteRoute(id: ID): Promise<void> {
   return tx.done;
 }
 
-async function _deleteRoute(transaction: RouteTransaction, routeId: ID) {
+export async function _deleteRoute(transaction: RouteTransaction, routeId: ID) {
   const ascentsStore = transaction.objectStore("ascents");
   const index = ascentsStore.index("routeId");
 

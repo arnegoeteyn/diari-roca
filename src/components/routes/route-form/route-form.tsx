@@ -1,7 +1,8 @@
-import { Pre, Route, RouteKind, ID, SectorOverview } from "@/lib/routes";
+import { Pre, Route, RouteKind, ID } from "@/lib/routes";
 import { Button, Group, Select, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import SelectSector from "./select-sector";
+import { SectorOverview } from "@/lib/cache";
 
 type Props = {
   route?: Pre<Route>;

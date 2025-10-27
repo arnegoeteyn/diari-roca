@@ -2,7 +2,8 @@ import { test, describe, vi, expect } from "vitest";
 import { render } from "@/test-render";
 import { screen } from "@testing-library/react";
 import RouteForm from "./route-form.tsx";
-import { RouteKind, SectorOverview } from "@/lib/routes";
+import { RouteKind } from "@/lib/routes";
+import { SectorOverview } from "@/lib/cache";
 
 vi.mock("@mantine/core", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@mantine/core")>();

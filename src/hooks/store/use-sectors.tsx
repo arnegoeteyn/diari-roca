@@ -1,7 +1,7 @@
 import { ID, Sector } from "@/lib/routes";
 import { useEffect, useState } from "react";
 import { useRoutesStore } from "./use-store";
-import { getSectors } from "@/lib/routes/sectors";
+import { getSectors } from "@/lib/cache/sectors";
 
 type Props = {
   areaId?: ID;

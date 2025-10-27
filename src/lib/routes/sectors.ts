@@ -1,7 +1,6 @@
 import { routesOverviewsForSector } from "../cache";
-import { Area, getArea } from "./areas";
-import { getDB } from "./db";
-import { Route } from "./routes";
+import { getDB, RouteTransaction } from "./db";
+import { _deleteRoute } from "./routes";
 import { ID, Pre, StoreData } from "./types";
 
 export type Sector = {
@@ -10,62 +9,43 @@ export type Sector = {
   name: string;
 };
 
-export type SectorOverview = {
-  routes: Route[];
-  sector: Sector;
-  area: Area;
-};
-
 export async function addSector(sector: Pre<Sector>) {
   const db = await getDB();
   return db.add("sectors", sector);
 }
 
-export function getSectorCached(data: StoreData, id: ID): Sector {
-  const sector = data.sectors.get(id);
+export async function putSector(sector: Sector) {
+  const db = await getDB();
+  await db.put("sectors", sector);
+}
 
-  if (!sector) {
-    throw new Error("Sector does not exist");
+export async function deleteSector(id: ID): Promise<void> {
+  const db = await getDB();
+
+  const tx = db.transaction(["routes", "ascents", "sectors"], "readwrite");
+  await _deleteSector(tx, id);
+  tx.commit();
+  return tx.done;
+}
+
+export async function _deleteSector(
+  transaction: RouteTransaction,
+  sectorId: ID,
+) {
+  const routesStore = transaction.objectStore("routes");
+  const index = routesStore.index("sectorId");
+
+  const keys = await index.getAllKeys(IDBKeyRange.bound(sectorId, sectorId));
+
+  for (const key of keys) {
+    await _deleteRoute(transaction, key);
   }
 
-  return sector;
+  const store = transaction.objectStore("sectors");
+  return store.delete(sectorId);
 }
 
-export function getSectors(data: StoreData): Sector[] {
-  return [...data.sectors.keys()].map((id) => getSector(data, id));
-}
-
-export function getSectorOverviews(data: StoreData): SectorOverview[] {
-  return [...data.sectors.keys()].map((id) => getSectorOverview(data, id));
-}
-
-export function getSector(data: StoreData, id: ID): Sector {
-  const sector = data.sectors.get(id);
-
-  if (!sector) {
-    throw new Error("Sector does not exist");
-  }
-
-  return sector;
-}
-
-export function getSectorOverview(data: StoreData, id: ID): SectorOverview {
-  const sector = getSector(data, id);
-
-  const area = getArea(data, sector.areaId);
-  const routes = [...data.routes.values()].filter(
-    (route) => route.sectorId == id,
-  );
-
-  return { sector, area, routes };
-}
-
-export function sectorsForArea(data: StoreData, areaID: ID) {
-  return getSectors(data).filter((sector) => sector.areaId == areaID);
-}
-
-// todo: where to put this
-
+// todo: where to put this, do we even want this?
 export type SectorWithRouteCount = Sector & { routeCount: number };
 
 export function sectorsForAreaWithCount(
