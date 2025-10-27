@@ -1,6 +1,5 @@
-import { getRouteOverview, RouteOverview } from "../cache/routes";
 import { getDB, RouteTransaction } from "./db";
-import { ID, Pre, StoreData } from "./types";
+import { ID, Pre } from "./types";
 import { _deleteAscent } from "./ascents";
 
 export enum RouteKind {
@@ -69,14 +68,4 @@ export async function routeIdsForSector(
   const keys = await index.getAllKeys(IDBKeyRange.bound(sectorId, sectorId));
 
   return keys;
-}
-
-// todo move to cache
-export function routesForSector(
-  data: StoreData,
-  sectorId: ID,
-): RouteOverview[] {
-  return [...data.routes.values()]
-    .filter((route) => route.sectorId == sectorId)
-    .map((route) => getRouteOverview(data, route.id));
 }
