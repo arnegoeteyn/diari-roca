@@ -19,6 +19,7 @@ import { addAscent, deleteAscent } from "@/lib/routes";
 import { addTrip } from "@/lib/routes/trips";
 import { addArea, addSector, Area, putArea, Sector } from "@/lib/routes";
 import { clear } from "@/lib/routes/db";
+import { deleteSector } from "./area";
 
 type actions = {
   store: Store;
@@ -33,6 +34,7 @@ type actions = {
   deleteRoute: (routeId: ID) => Promise<void>;
 
   addSector: (sector: Pre<Sector>) => Promise<ID>;
+  deleteSector: (sectorId: ID) => Promise<void>;
 
   addAscent: (ascent: Pre<Ascent>) => Promise<void>;
   putAscent: (ascent: Ascent) => Promise<void>;
@@ -41,7 +43,7 @@ type actions = {
   addTrip: (trip: Pre<Trip>) => Promise<ID>;
 };
 
-type setAction = {
+export type setAction = {
   (
     partial:
       | actions
@@ -149,6 +151,7 @@ export const useRoutesStore = create<actions>((set) => ({
     });
     return newSectorId;
   },
+  deleteSector: deleteSector(set),
   addRoute: async (route: Pre<Route>) => {
     const newRouteId = await addRoute(route);
     set((state) => {

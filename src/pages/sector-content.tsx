@@ -1,10 +1,11 @@
 import PageTitle from "@/components/page-title";
 import RouteTable from "@/components/routes/routes-table";
+import DeleteSectorButton from "@/components/sectors/delete-sector-button";
 import useRoutes, { sortByGrade } from "@/hooks/store/use-routes";
 import useSectorOverview from "@/hooks/store/use-sector-overview";
 import { RouteOverview } from "@/lib/cache";
 import { ID } from "@/lib/routes/types";
-import { Loader } from "@mantine/core";
+import { Group, Loader } from "@mantine/core";
 import { useCallback } from "react";
 
 type Props = {
@@ -29,10 +30,10 @@ export default function SectorContent(props: Props) {
 
   return (
     <>
-      <PageTitle
-        title={sector.sector.name}
-        subtitle={sector.area.name}
-      ></PageTitle>
+      <Group>
+        <PageTitle title={sector.sector.name} subtitle={sector.area.name} />
+        <DeleteSectorButton sectorId={sectorId} />
+      </Group>
       <RouteTable routes={routes} />
     </>
   );
