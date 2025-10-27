@@ -1,0 +1,13 @@
+name: publish
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  deploy-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Render webhook
+        run: |
+          curl ${{ secrets.RENDER_WEBHOOK }}
