@@ -1,6 +1,7 @@
+import { routesOverviewsForSector } from "../cache";
 import { Area, getArea } from "./areas";
 import { getDB } from "./db";
-import { Route, routesForSector } from "./routes";
+import { Route } from "./routes";
 import { ID, Pre, StoreData } from "./types";
 
 export type Sector = {
@@ -63,6 +64,8 @@ export function sectorsForArea(data: StoreData, areaID: ID) {
   return getSectors(data).filter((sector) => sector.areaId == areaID);
 }
 
+// todo: where to put this
+
 export type SectorWithRouteCount = Sector & { routeCount: number };
 
 export function sectorsForAreaWithCount(
@@ -73,6 +76,6 @@ export function sectorsForAreaWithCount(
     .filter((sector) => sector.areaId == areaId)
     .map((sector) => ({
       ...sector,
-      routeCount: routesForSector(data, sector.id).length,
+      routeCount: routesOverviewsForSector(data, sector.id).length,
     }));
 }

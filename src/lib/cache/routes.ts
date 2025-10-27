@@ -49,9 +49,22 @@ export function deleteRoute(data: StoreData, id: ID) {
     data = deleteAscent(data, ascent.id);
   }
 
-  linkedAscents.forEach((ascent) => deleteAscent(data, ascent.id));
-
   const updatedRoutes = new Map(data.routes);
   updatedRoutes.delete(id);
   return { ...data, routes: updatedRoutes };
+}
+
+export function routesForSector(data: StoreData, sectorId: ID): Route[] {
+  return [...data.routes.values()].filter(
+    (route) => route.sectorId == sectorId,
+  );
+}
+//todo: delete this
+export function routesOverviewsForSector(
+  data: StoreData,
+  sectorId: ID,
+): RouteOverview[] {
+  return [...data.routes.values()]
+    .filter((route) => route.sectorId == sectorId)
+    .map((route) => getRouteOverview(data, route.id));
 }
