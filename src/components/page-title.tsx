@@ -6,7 +6,7 @@ type Props = {
 };
 export default function PageTitle(props: Props) {
   return (
-    <Group justify={"start"} align={"center"} mb={32}>
+    <Group>
       <Title>{props.title}</Title>
       <Title c={"gray"} order={2}>
         [{props.subtitle}]

@@ -1,16 +1,20 @@
 import { test, describe, vi, expect, afterEach } from "vitest";
 import "@testing-library/jest-dom/vitest";
 import SectorContent from "./sector-content.tsx";
-import { render } from "@testing-library/react";
+import { render } from "@/test-render.tsx";
 import { Loader } from "@mantine/core";
 import { SectorOverview } from "@/lib/cache";
 import PageTitle from "@/components/page-title.tsx";
 import useSectorOverview from "@/hooks/store/use-sector-overview.tsx";
 import RouteTable from "@/components/routes/routes-table.tsx";
 
-vi.mock("@mantine/core", () => ({
-  Loader: vi.fn(),
-}));
+vi.mock("@mantine/core", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@mantine/core")>();
+  return {
+    ...actual,
+    Loader: vi.fn(),
+  };
+});
 
 vi.mock("@/components/page-title");
 vi.mock("@/components/routes/routes-table");
