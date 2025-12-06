@@ -1,3 +1,7 @@
+import TextOverview from "@/components/stats/text-overview";
+import useStats from "./hook";
+
 export default function Stats() {
-  return <p>stats</p>;
+  const stats = useStats();
+  return <TextOverview overview={stats} />;
 }
