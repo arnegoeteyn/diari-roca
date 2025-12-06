@@ -1,4 +1,4 @@
-import { Area, ID, StoreData } from "@/lib/routes";
+import { Area, ID, Pre, StoreData } from "@/lib/routes";
 
 export function getArea(data: StoreData, id: ID): Area {
   const area = data.areas.get(id);
@@ -8,4 +8,10 @@ export function getArea(data: StoreData, id: ID): Area {
   }
 
   return area;
+}
+
+export function storeArea(data: StoreData, id: ID, area: Pre<Area>) {
+  const updatedAreas = new Map(data.areas);
+  updatedAreas.set(id, { ...area, id: id });
+  return { ...data, areas: updatedAreas };
 }
