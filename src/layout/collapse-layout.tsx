@@ -2,7 +2,13 @@ import Actions from "@/components/actions/actions";
 import { isActive } from "@/util";
 import { AppShell, Burger, Group, NavLink, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { ArrowUp, Globe, Settings, Zap } from "lucide-react";
+import {
+  ArrowUp,
+  ChartNoAxesCombined,
+  Globe,
+  Settings,
+  Zap,
+} from "lucide-react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 export function CollapseLayout() {
@@ -59,6 +65,13 @@ export function CollapseLayout() {
             label="Areas"
             leftSection={<Globe />}
             active={isActive(location.pathname, "areas")}
+          />
+          <NavLink
+            component={Link}
+            to="stats"
+            label="Stats"
+            leftSection={<ChartNoAxesCombined />}
+            active={isActive(location.pathname, "stats")}
           />
           <NavLink
             component={Link}
