@@ -18,6 +18,7 @@ const Area = lazy(() => import("./pages/area"));
 const Sector = lazy(() => import("./pages/sector"));
 const Settings = lazy(() => import("./pages/settings"));
 const Ascents = lazy(() => import("./pages/ascents"));
+const Stats = lazy(() => import("./pages/stats"));
 
 function DiariRocaRouter() {
   const setState = useRoutesStore((state) => state.setStore);
@@ -44,6 +45,7 @@ function DiariRocaRouter() {
           element={<Sector />}
         ></RouterRoute>
         <RouterRoute path="/settings" element={<Settings />}></RouterRoute>
+        <RouterRoute path="/stats" element={<Stats />}></RouterRoute>
       </RouterRoute>
     </RouterRoutes>
   );
