@@ -1,6 +1,13 @@
 import Actions from "@/components/actions/actions";
 import { isActive } from "@/util";
-import { AppShell, Burger, Group, NavLink, Title } from "@mantine/core";
+import {
+  AppShell,
+  Burger,
+  Group,
+  NavLink,
+  ScrollArea,
+  Title,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   ArrowUp,
@@ -87,7 +94,9 @@ export function CollapseLayout() {
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
-        <Outlet />
+        <ScrollArea>
+          <Outlet />
+        </ScrollArea>
       </AppShell.Main>
     </AppShell>
   );
