@@ -23,7 +23,7 @@ function App() {
   }, [setState]);
 
   return (
-    <MantineProvider>
+    <MantineProvider defaultColorScheme="auto">
       <ModalsProvider>
         {initialized ? (
           <BrowserRouter>
