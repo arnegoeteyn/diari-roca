@@ -1,5 +1,5 @@
 import { Ascent } from "@/lib/routes";
-import { Flex, Group, Pagination, Table, Text } from "@mantine/core";
+import { Group, Pagination, ScrollArea, Table, Text } from "@mantine/core";
 import { useState } from "react";
 import RouteActions from "./route-actions";
 import AscentBadge from "../ascents/ascent-badge";
@@ -12,7 +12,7 @@ type Props = {
   showKind?: boolean;
 };
 
-const ROUTES_PER_PAGE = 25;
+const ROUTES_PER_PAGE = 50;
 
 export default function RouteTable(props: Props) {
   const [page, setPage] = useState<number>(0);
@@ -34,46 +34,55 @@ export default function RouteTable(props: Props) {
   };
 
   return (
-    <Flex direction={"column"} style={{ height: "100%" }}>
-      <Table stickyHeader stickyHeaderOffset={60} striped>
-        <Table.Thead>
-          <Table.Tr>
-            <Table.Th>Grade</Table.Th>
-            <Table.Th>Name</Table.Th>
-            {props.showKind && <Table.Th>Kind</Table.Th>}
-            <Table.Th>Ascents</Table.Th>
-            <Table.Th>Actions</Table.Th>
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {shownRoutes().map((route) => (
-            <Table.Tr key={route.route.id}>
-              <Table.Td align="left" className="font-medium">
-                <Text>{route.route.grade}</Text>
-              </Table.Td>
-              <Table.Td>{route.route.name}</Table.Td>
-              {props.showKind && <Table.Td>{route.route.kind}</Table.Td>}
-              <Table.Td>
-                <Group wrap="nowrap">
-                  <Text>{route.ascents.length}</Text>
-                  {ascentBadge(route.ascents)}
-                </Group>
-              </Table.Td>
-              <Table.Td>
-                <RouteContextProvider routeId={route.route.id}>
-                  <RouteActions compact />
-                </RouteContextProvider>
-              </Table.Td>
+    <div
+      style={{
+        display: "flex",
+        flex: 1,
+        flexDirection: "column",
+        height: "100%",
+      }}
+    >
+      <ScrollArea style={{ flex: "1" }}>
+        <Table stickyHeader striped>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th>Grade</Table.Th>
+              <Table.Th>Name</Table.Th>
+              {props.showKind && <Table.Th>Kind</Table.Th>}
+              <Table.Th>Ascents</Table.Th>
+              <Table.Th>Actions</Table.Th>
             </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
-      <div style={{ flexGrow: 1 }} />
+          </Table.Thead>
+          <Table.Tbody>
+            {shownRoutes().map((route) => (
+              <Table.Tr key={route.route.id}>
+                <Table.Td align="left" className="font-medium">
+                  <Text>{route.route.grade}</Text>
+                </Table.Td>
+                <Table.Td>{route.route.name}</Table.Td>
+                {props.showKind && <Table.Td>{route.route.kind}</Table.Td>}
+                <Table.Td>
+                  <Group wrap="nowrap">
+                    <Text>{route.ascents.length}</Text>
+                    {ascentBadge(route.ascents)}
+                  </Group>
+                </Table.Td>
+                <Table.Td>
+                  <RouteContextProvider routeId={route.route.id}>
+                    <RouteActions compact />
+                  </RouteContextProvider>
+                </Table.Td>
+              </Table.Tr>
+            ))}
+          </Table.Tbody>
+        </Table>
+      </ScrollArea>
+
       <Pagination
         value={page + 1}
         onChange={(p) => setPage(p - 1)}
         total={Math.ceil(props.routes.length / ROUTES_PER_PAGE)}
       />
-    </Flex>
+    </div>
   );
 }

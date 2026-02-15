@@ -87,7 +87,13 @@ export function CollapseLayout() {
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main style={{ display: "flex" }}>
-        <div style={{ flexGrow: 1 }}>
+        <div
+          style={{
+            height:
+              "calc(100vh - var(--app-shell-header-height, 0px) - var(--app-shell-footer-height, 0px) - var(--app-shell-padding) * 2)",
+            width: "calc(100vw - var(--app-shell-padding) * 2)",
+          }}
+        >
           <Outlet />
         </div>
       </AppShell.Main>
