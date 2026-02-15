@@ -1,5 +1,5 @@
 import { Ascent } from "@/lib/routes";
-import { Group, Pagination, Table, Text } from "@mantine/core";
+import { Flex, Group, Pagination, Table, Text } from "@mantine/core";
 import { useState } from "react";
 import RouteActions from "./route-actions";
 import AscentBadge from "../ascents/ascent-badge";
@@ -34,7 +34,7 @@ export default function RouteTable(props: Props) {
   };
 
   return (
-    <>
+    <Flex direction={"column"} style={{ height: "100%" }}>
       <Table stickyHeader stickyHeaderOffset={60} striped>
         <Table.Thead>
           <Table.Tr>
@@ -68,11 +68,12 @@ export default function RouteTable(props: Props) {
           ))}
         </Table.Tbody>
       </Table>
+      <div style={{ flexGrow: 1 }} />
       <Pagination
         value={page + 1}
         onChange={(p) => setPage(p - 1)}
         total={Math.ceil(props.routes.length / ROUTES_PER_PAGE)}
       />
-    </>
+    </Flex>
   );
 }

@@ -19,17 +19,25 @@ export default function Routes() {
   const routes = useRoutes(routesParam);
   const boulders = useRoutes(boulderParams);
   return (
-    <Tabs defaultValue="sport">
-      <Group justify="space-between" pr={128}>
+    <Tabs
+      defaultValue="sport"
+      style={{
+        height: "100%",
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Group justify="space-between">
         <Tabs.List>
           <Tabs.Tab value="sport">Routes</Tabs.Tab>
           <Tabs.Tab value="boulder">Boulders</Tabs.Tab>
         </Tabs.List>
       </Group>
-      <Tabs.Panel value="sport">
+      <Tabs.Panel value="sport" style={{ flex: 1 }}>
         <RouteTable routes={routes} />
       </Tabs.Panel>
-      <Tabs.Panel value="boulder">
+      <Tabs.Panel value="boulder" style={{ flex: 1 }}>
         <RouteTable routes={boulders} />
       </Tabs.Panel>
     </Tabs>
