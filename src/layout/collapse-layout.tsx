@@ -1,13 +1,6 @@
 import Actions from "@/components/actions/actions";
 import { isActive } from "@/util";
-import {
-  AppShell,
-  Burger,
-  Group,
-  NavLink,
-  ScrollArea,
-  Title,
-} from "@mantine/core";
+import { AppShell, Burger, Group, NavLink, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
   ArrowUp,
@@ -93,10 +86,10 @@ export function CollapseLayout() {
           <Actions location={location.pathname} />
         </AppShell.Section>
       </AppShell.Navbar>
-      <AppShell.Main>
-        <ScrollArea>
+      <AppShell.Main style={{ display: "flex" }}>
+        <div style={{ flexGrow: 1 }}>
           <Outlet />
-        </ScrollArea>
+        </div>
       </AppShell.Main>
     </AppShell>
   );
