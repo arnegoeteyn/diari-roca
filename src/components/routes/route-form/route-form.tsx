@@ -1,4 +1,4 @@
-import { Pre, Route, RouteKind, ID } from "@/lib/routes";
+import { Pre, Route, RouteKind, ID, AscentKind } from "@/lib/routes";
 import { Button, Group, Select, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import SelectSector from "./select-sector";
@@ -7,12 +7,17 @@ import { SectorOverview } from "@/lib/cache";
 type Props = {
   route?: Pre<Route>;
   sectors: SectorOverview[];
-  onSubmit: (route: Pre<Route>) => void;
+  onSubmit: (route: Pre<Route>, withAscent?: AscentKind) => void;
+  disableAscent?: boolean;
 };
 
 export type FormRoute = Required<
-  Omit<Pre<Route>, "sectorId"> & { sectorId: string }
->;
+  Omit<Pre<Route>, "sectorId"> & {
+    sectorId: string;
+  }
+> & {
+  ascentKind?: AscentKind;
+};
 
 const initialValuesFromRoute = (
   defaultSectorId: ID,
@@ -37,7 +42,7 @@ const initialValuesFromRoute = (
 };
 
 export default function RouteForm(props: Props) {
-  const { route, sectors } = props;
+  const { route, sectors, disableAscent } = props;
 
   const form = useForm({
     mode: "controlled",
@@ -53,11 +58,15 @@ export default function RouteForm(props: Props) {
     label: kind.charAt(0).toUpperCase() + kind.slice(1), // Capitalize the first letter
   }));
 
-  const onSubmit = (
-    route: Omit<Pre<Route>, "sectorId"> & { sectorId: string },
-  ) => {
+  const ascentKindOptions = Object.values(AscentKind).map((kind) => ({
+    value: kind,
+    label: kind.charAt(0).toUpperCase() + kind.slice(1),
+  }));
+
+  const onSubmit = (route: FormRoute) => {
     const parsedId = Number(route.sectorId);
-    props.onSubmit({ ...route, sectorId: parsedId });
+    const { ascentKind, ...onlyRoute } = route;
+    props.onSubmit({ ...onlyRoute, sectorId: parsedId }, ascentKind);
   };
 
   return (
@@ -97,6 +106,17 @@ export default function RouteForm(props: Props) {
         {...form.getInputProps("beta")}
       />
       <SelectSector sectors={sectors} form={form} />
+
+      {disableAscent || (
+        <Select
+          label="Ascent"
+          placeholder="Pick one"
+          allowDeselect
+          data={ascentKindOptions}
+          {...form.getInputProps("ascentKind")}
+        />
+      )}
+
       <Group justify="flex-end" mt="md">
         <Button type="submit">Submit</Button>
       </Group>
