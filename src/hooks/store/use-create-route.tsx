@@ -1,4 +1,4 @@
-import { AscentBody, Ascent, Pre, Route } from "@/lib/routes";
+import { Ascent, Pre, Route, AscentKind } from "@/lib/routes";
 import { useRoutesStore } from "./use-store";
 
 export function useCreateRoute() {
@@ -7,11 +7,12 @@ export function useCreateRoute() {
 
   const createRoute = async (
     route: Pre<Route>,
-    ascent?: AscentBody,
+    ascent?: AscentKind,
   ): Promise<void> => {
     const routeId = await addRoute(route);
     if (ascent) {
-      const newAscent: Pre<Ascent> = { ...ascent, routeId };
+      const today = new Date().toISOString().split("T")[0];
+      const newAscent: Pre<Ascent> = { date: today, kind: ascent, routeId };
       await addAscent(newAscent);
     }
   };

@@ -26,7 +26,7 @@ export default function SectorsActions(props: Props) {
       <AddRouteButton
         initialRoute={initialRoute}
         sectors={[sector]}
-        onRouteCreated={(r) => createRoute(r).then()}
+        onRouteCreated={(r, a) => createRoute(r, a).then()}
       />
     </Stack>
   );

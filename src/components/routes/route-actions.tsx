@@ -81,6 +81,7 @@ export default function RouteActions(props: Props) {
           onSubmit={(update) => {
             updateRoute({ ...update, id: route.id }).then(routeClose);
           }}
+          disableAscent={true}
         />
       </Modal>
       <Modal

@@ -7,13 +7,17 @@ import { SectorOverview } from "@/lib/cache";
 type Props = {
   route?: Pre<Route>;
   sectors: SectorOverview[];
-  onSubmit: (route: Pre<Route>) => void;
-  disableAscent: boolean;
+  onSubmit: (route: Pre<Route>, withAscent?: AscentKind) => void;
+  disableAscent?: boolean;
 };
 
 export type FormRoute = Required<
-  Omit<Pre<Route>, "sectorId"> & { sectorId: string; ascentKind: string }
->;
+  Omit<Pre<Route>, "sectorId"> & {
+    sectorId: string;
+  }
+> & {
+  ascentKind?: AscentKind;
+};
 
 const initialValuesFromRoute = (
   defaultSectorId: ID,
@@ -34,7 +38,6 @@ const initialValuesFromRoute = (
     comment: route?.comment || "",
     beta: route?.beta || "",
     sectorId: safeRoute.sectorId.toString(),
-    ascentKind: "",
   };
 };
 
@@ -60,11 +63,9 @@ export default function RouteForm(props: Props) {
     label: kind.charAt(0).toUpperCase() + kind.slice(1),
   }));
 
-  const onSubmit = (
-    route: Omit<Pre<Route>, "sectorId"> & { sectorId: string },
-  ) => {
+  const onSubmit = (route: FormRoute) => {
     const parsedId = Number(route.sectorId);
-    props.onSubmit({ ...route, sectorId: parsedId });
+    props.onSubmit({ ...route, sectorId: parsedId }, route.ascentKind);
   };
 
   return (
@@ -105,7 +106,7 @@ export default function RouteForm(props: Props) {
       />
       <SelectSector sectors={sectors} form={form} />
 
-      {disableAscent && (
+      {disableAscent || (
         <Select
           label="Ascent"
           placeholder="Pick one"

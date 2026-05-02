@@ -2,13 +2,13 @@ import { Button, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 import RouteForm from "@/components/routes/route-form/route-form.tsx";
-import { Pre, Route } from "@/lib/routes";
+import { AscentKind, Pre, Route } from "@/lib/routes";
 import { SectorOverview } from "@/lib/cache";
 
 type Props = {
   initialRoute?: Route;
   sectors: SectorOverview[];
-  onRouteCreated: (route: Pre<Route>) => Promise<void>;
+  onRouteCreated: (route: Pre<Route>, ascent?: AscentKind) => Promise<void>;
 };
 
 export default function AddRouteButton(props: Props) {
@@ -26,7 +26,7 @@ export default function AddRouteButton(props: Props) {
       >
         <RouteForm
           sectors={sectors}
-          onSubmit={(r) => onRouteCreated(r).then(routeClose)}
+          onSubmit={(r, a) => onRouteCreated(r, a).then(routeClose)}
         />
       </Modal>
       <Button onClick={routeOpen}>New route</Button>

@@ -44,7 +44,7 @@ export default function AreaActions(props: Props) {
       />
       <AddRouteButton
         sectors={sectors}
-        onRouteCreated={(r) => createRoute(r).then()}
+        onRouteCreated={(r, a) => createRoute(r, a).then()}
       />
     </Stack>
   );

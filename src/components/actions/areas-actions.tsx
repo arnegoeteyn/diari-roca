@@ -15,7 +15,7 @@ export default function AreasActions() {
       <AddAreaButton onAreaCreated={(a) => addArea(a).then()} />
       <AddRouteButton
         sectors={sectors}
-        onRouteCreated={(r) => createRoute(r).then()}
+        onRouteCreated={(r, a) => createRoute(r, a).then()}
       />
     </Stack>
   );

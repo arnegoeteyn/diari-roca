@@ -10,7 +10,7 @@ export default function RoutesActions() {
     <Stack p={"16px"}>
       <AddRouteButton
         sectors={sectors}
-        onRouteCreated={(r) => createRoute(r).then()}
+        onRouteCreated={(r, a) => createRoute(r, a).then()}
       />
     </Stack>
   );
