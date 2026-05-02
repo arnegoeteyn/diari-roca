@@ -1,16 +1,16 @@
 import { Stack } from "@mantine/core";
-import { useRoutesStore } from "@/hooks/store/use-store";
 import AddRouteButton from "../routes/add-route-button";
 import { ID, Route } from "@/lib/routes";
 import useSector from "@/hooks/store/use-sector-overview";
 import { Loader } from "lucide-react";
+import { useCreateRoute } from "@/hooks/store/use-create-route";
 
 type Props = {
   sectorId: ID;
 };
 
 export default function SectorsActions(props: Props) {
-  const addRoute = useRoutesStore((store) => store.addRoute);
+  const { createRoute } = useCreateRoute();
   const sector = useSector(props.sectorId);
 
   if (!sector) {
@@ -26,7 +26,7 @@ export default function SectorsActions(props: Props) {
       <AddRouteButton
         initialRoute={initialRoute}
         sectors={[sector]}
-        onRouteCreated={(r) => addRoute(r).then()}
+        onRouteCreated={(r) => createRoute(r).then()}
       />
     </Stack>
   );

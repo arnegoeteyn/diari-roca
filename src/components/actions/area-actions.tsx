@@ -9,6 +9,7 @@ import {
   sectorsForAreaWithCount,
 } from "@/lib/routes";
 import AddSectorButton from "../sectors/add-sector-button";
+import { useCreateRoute } from "@/hooks/store/use-create-route";
 
 type Props = {
   areaId: ID;
@@ -27,7 +28,7 @@ function useArea(areaId: ID): AreaContent {
 }
 
 export default function AreaActions(props: Props) {
-  const addRoute = useRoutesStore((store) => store.addRoute);
+  const { createRoute } = useCreateRoute();
   const addSector = useRoutesStore((store) => store.addSector);
   const sectors = useSectorOverviews({ areaId: props.areaId });
   const area = useArea(props.areaId);
@@ -43,7 +44,7 @@ export default function AreaActions(props: Props) {
       />
       <AddRouteButton
         sectors={sectors}
-        onRouteCreated={(r) => addRoute(r).then()}
+        onRouteCreated={(r) => createRoute(r).then()}
       />
     </Stack>
   );
