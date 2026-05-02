@@ -1,4 +1,4 @@
-import { Pre, Route, RouteKind, ID } from "@/lib/routes";
+import { Pre, Route, RouteKind, ID, AscentKind } from "@/lib/routes";
 import { Button, Group, Select, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import SelectSector from "./select-sector";
@@ -8,10 +8,11 @@ type Props = {
   route?: Pre<Route>;
   sectors: SectorOverview[];
   onSubmit: (route: Pre<Route>) => void;
+  disableAscent: boolean;
 };
 
 export type FormRoute = Required<
-  Omit<Pre<Route>, "sectorId"> & { sectorId: string }
+  Omit<Pre<Route>, "sectorId"> & { sectorId: string; ascentKind: string }
 >;
 
 const initialValuesFromRoute = (
@@ -33,11 +34,12 @@ const initialValuesFromRoute = (
     comment: route?.comment || "",
     beta: route?.beta || "",
     sectorId: safeRoute.sectorId.toString(),
+    ascentKind: "",
   };
 };
 
 export default function RouteForm(props: Props) {
-  const { route, sectors } = props;
+  const { route, sectors, disableAscent } = props;
 
   const form = useForm({
     mode: "controlled",
@@ -51,6 +53,11 @@ export default function RouteForm(props: Props) {
   const routeKindOptions = Object.values(RouteKind).map((kind) => ({
     value: kind,
     label: kind.charAt(0).toUpperCase() + kind.slice(1), // Capitalize the first letter
+  }));
+
+  const ascentKindOptions = Object.values(AscentKind).map((kind) => ({
+    value: kind,
+    label: kind.charAt(0).toUpperCase() + kind.slice(1),
   }));
 
   const onSubmit = (
@@ -97,6 +104,17 @@ export default function RouteForm(props: Props) {
         {...form.getInputProps("beta")}
       />
       <SelectSector sectors={sectors} form={form} />
+
+      {disableAscent && (
+        <Select
+          label="Ascent"
+          placeholder="Pick one"
+          allowDeselect
+          data={ascentKindOptions}
+          {...form.getInputProps("ascentKind")}
+        />
+      )}
+
       <Group justify="flex-end" mt="md">
         <Button type="submit">Submit</Button>
       </Group>
