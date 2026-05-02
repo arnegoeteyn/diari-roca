@@ -65,7 +65,8 @@ export default function RouteForm(props: Props) {
 
   const onSubmit = (route: FormRoute) => {
     const parsedId = Number(route.sectorId);
-    props.onSubmit({ ...route, sectorId: parsedId }, route.ascentKind);
+    const { ascentKind, ...onlyRoute } = route;
+    props.onSubmit({ ...onlyRoute, sectorId: parsedId }, ascentKind);
   };
 
   return (
