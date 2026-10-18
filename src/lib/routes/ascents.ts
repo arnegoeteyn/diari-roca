@@ -28,7 +28,7 @@ export async function addAscent(ascent: Pre<Ascent>): Promise<ID> {
 
 export async function putAscent(ascent: Ascent) {
   const db = await getDB();
-  db.add("ascents", ascent);
+  db.put("ascents", ascent);
 }
 
 export async function deleteAscent(id: ID): Promise<void> {

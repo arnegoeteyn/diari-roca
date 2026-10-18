@@ -13,6 +13,7 @@ export function RouteContextProvider(props: Props) {
   const store = useRoutesStore((store) => store.store);
   const putRoute = useRoutesStore((store) => store.putRoute);
   const addAscent = useRoutesStore((store) => store.addAscent);
+  const putAscent = useRoutesStore((store) => store.putAscent);
   const deleteAscent = useRoutesStore((store) => store.deleteAscent);
   const _deleteRoute = useRoutesStore((store) => store.deleteRoute);
 
@@ -51,7 +52,14 @@ export function RouteContextProvider(props: Props) {
 
   return (
     <RouteContext.Provider
-      value={{ ...route, updateRoute, logAscent, deleteAscent, deleteRoute }}
+      value={{
+        ...route,
+        updateRoute,
+        logAscent,
+        deleteAscent,
+        deleteRoute,
+        updateAscent: putAscent,
+      }}
     >
       {props.children}
     </RouteContext.Provider>

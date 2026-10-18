@@ -10,7 +10,7 @@ import { useRouteContext } from "@/contexts/route-context-util";
 import { RouteContextProvider } from "@/contexts/route-context-provider";
 
 export function RouteContent() {
-  const { route, ascents, deleteAscent } = useRouteContext();
+  const { route, ascents, deleteAscent, updateAscent } = useRouteContext();
   return (
     <div>
       <RouteBreadcrumbs />
@@ -23,7 +23,11 @@ export function RouteContent() {
           <RouteMedia />
         </Stack>
         <div>
-          <AscentsList ascents={ascents} onDeleteAscent={deleteAscent} />
+          <AscentsList
+            ascents={ascents}
+            onDeleteAscent={deleteAscent}
+            onUpdateAscent={updateAscent}
+          />
         </div>
       </SimpleGrid>
     </div>
