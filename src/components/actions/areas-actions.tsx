@@ -1,21 +1,24 @@
 import { Stack } from "@mantine/core";
+import { useMemo } from "react";
 import { useRoutesStore } from "@/hooks/store/use-store";
 import AddRouteButton from "../routes/add-route-button";
-import useSectorOverviews from "@/hooks/store/use-sector-overviews";
+import { getSectorOverviews } from "@/lib/cache";
 import AddAreaButton from "../areas/add-area-button";
-import { useCreateRoute } from "@/hooks/store/use-create-route";
 
 export default function AreasActions() {
-  const { createRoute } = useCreateRoute();
+  const createRouteWithAscent = useRoutesStore(
+    (store) => store.createRouteWithAscent,
+  );
   const addArea = useRoutesStore((store) => store.addArea);
-  const sectors = useSectorOverviews();
+  const store = useRoutesStore((store) => store.store);
+  const sectors = useMemo(() => getSectorOverviews(store.data), [store.data]);
 
   return (
     <Stack p={"16px"}>
       <AddAreaButton onAreaCreated={(a) => addArea(a).then()} />
       <AddRouteButton
         sectors={sectors}
-        onRouteCreated={(r, a) => createRoute(r, a).then()}
+        onRouteCreated={(r, a) => createRouteWithAscent(r, a).then()}
       />
     </Stack>
   );

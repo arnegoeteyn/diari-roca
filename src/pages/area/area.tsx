@@ -1,13 +1,13 @@
 import PageTitle from "@/components/page-title";
 import RouteTable from "@/components/routes/routes-table";
 import SectorLinks from "@/components/sectors/sector-links";
-import useRoutes, { sortByGrade } from "@/hooks/store/use-routes";
+import { useRoutesStore } from "@/hooks/store/use-store";
+import { getRouteOverviews, sortByGrade } from "@/lib/cache";
 import { Loader } from "@mantine/core";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAreaContent from "./hook";
 import { ID } from "@/lib/routes";
-import { RouteOverview } from "@/lib/cache";
 
 type Props = { areaId: ID };
 
@@ -15,14 +15,15 @@ function AreaContent(props: Props) {
   const { areaId } = props;
 
   const area = useAreaContent(areaId);
+  const store = useRoutesStore((store) => store.store);
 
-  const routes = useRoutes({
-    sortBy: sortByGrade,
-    filter: useCallback(
-      (route: RouteOverview) => route.area.id == areaId,
-      [areaId],
-    ),
-  });
+  const routes = useMemo(
+    () =>
+      getRouteOverviews(store.data)
+        .filter((route) => route.area.id == areaId)
+        .sort(sortByGrade),
+    [areaId, store.data],
+  );
 
   if (!area) {
     return <Loader />;

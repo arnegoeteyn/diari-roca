@@ -1,13 +1,14 @@
 import { Button, ButtonProps, Group, Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { ArrowRight, Edit, PlusCircle, Trash } from "lucide-react";
-import { ReactElement, useCallback } from "react";
+import { ReactElement, useCallback, useMemo } from "react";
 import RouteForm from "./route-form/route-form.tsx";
 import { useNavigate } from "react-router-dom";
 import AscentForm from "../ascents/ascent-form";
 import { useIsSmall } from "@/hooks/use-small";
 import { useRouteContext } from "@/contexts/route-context-util.ts";
-import useSectorOverviews from "@/hooks/store/use-sector-overviews.tsx";
+import { useRoutesStore } from "@/hooks/store/use-store";
+import { getSectorOverviews } from "@/lib/cache";
 import { modals } from "@mantine/modals";
 
 type Props = {
@@ -26,7 +27,8 @@ type Action = {
 export default function RouteActions(props: Props) {
   const { hideVisitAction, compact } = props;
   const { route, updateRoute, logAscent, deleteRoute } = useRouteContext();
-  const sectors = useSectorOverviews();
+  const store = useRoutesStore((store) => store.store);
+  const sectors = useMemo(() => getSectorOverviews(store.data), [store.data]);
 
   const isMobile = useIsSmall();
 

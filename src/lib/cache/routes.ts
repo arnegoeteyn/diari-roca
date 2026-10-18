@@ -54,6 +54,10 @@ export function deleteRoute(data: StoreData, id: ID) {
   return { ...data, routes: updatedRoutes };
 }
 
+// Sort functions by comparing the grades. Sorts descending.
+export const sortByGrade = (a: RouteOverview, b: RouteOverview) =>
+  -a.route.grade.localeCompare(b.route.grade);
+
 export function routesForSector(data: StoreData, sectorId: ID): Route[] {
   return [...data.routes.values()].filter(
     (route) => route.sectorId == sectorId,

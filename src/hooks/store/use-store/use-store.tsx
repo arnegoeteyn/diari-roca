@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import {
   Ascent,
+  AscentKind,
   ID,
   Pre,
   putAscent,
@@ -16,15 +17,25 @@ import {
 } from "@/lib/cache";
 import { addRoute, deleteRoute, putRoute } from "@/lib/routes/routes";
 import { addAscent, deleteAscent } from "@/lib/routes";
-import { addTrip } from "@/lib/routes/trips";
+import { addTrip, putTrip } from "@/lib/routes/trips";
 import { addArea, addSector, Area, putArea, Sector } from "@/lib/routes";
-import { clear } from "@/lib/routes/db";
-import { deleteSector } from "./area";
+import { clear, load } from "@/lib/routes/db";
+import { deleteSector } from "./sector";
+
+// Shape of a store backup as exported by the settings page
+export type ParsedData = {
+  routes: Route[];
+  ascents: Ascent[];
+  areas: Area[];
+  sectors: Sector[];
+  trips: Trip[];
+};
 
 type actions = {
   store: Store;
   clear: () => Promise<void>;
   setStore: (data: StoreData) => void;
+  importStoreData: (parsed: ParsedData) => Promise<void>;
 
   addArea: (area: Pre<Area>) => Promise<ID>;
   putArea: (area: Area) => Promise<void>;
@@ -32,6 +43,10 @@ type actions = {
   addRoute: (route: Pre<Route>) => Promise<ID>;
   putRoute: (route: Route) => Promise<void>;
   deleteRoute: (routeId: ID) => Promise<void>;
+  createRouteWithAscent: (
+    route: Pre<Route>,
+    ascent?: AscentKind,
+  ) => Promise<void>;
 
   addSector: (sector: Pre<Sector>) => Promise<ID>;
   deleteSector: (sectorId: ID) => Promise<void>;
@@ -81,7 +96,9 @@ const _deleteRoute = (set: setAction) => async (routeId: ID) => {
   await deleteRoute(routeId);
 };
 
-// This should be the only data accessing hook in the whole folder
+// The single data-access hook of the app. State lives here (zustand) and every
+// action writes through to IndexedDB. Derived data is read with pure selectors
+// from @/lib/cache, never with another hook.
 export const useRoutesStore = create<actions>((set) => ({
   store: {
     initialized: false,
@@ -107,6 +124,40 @@ export const useRoutesStore = create<actions>((set) => ({
   },
   setStore: (data: StoreData) =>
     set({ store: { data: data, initialized: true } }),
+  importStoreData: async (parsed: ParsedData) => {
+    await clear();
+
+    const routes = parsed.routes.map((route) =>
+      addRoute(route).catch(() =>
+        console.error("could not import route", route.name),
+      ),
+    );
+    const ascents = parsed.ascents.map((ascent) => {
+      addAscent(ascent).catch(() =>
+        console.error("could not import ascent", ascent),
+      );
+    });
+
+    const sectors = parsed.sectors.map((sector) => {
+      addSector(sector).catch(() =>
+        console.error("could not import sector", sector),
+      );
+    });
+
+    const areas = parsed.areas.map((area) => {
+      putArea(area).catch(() => console.error("could not import area", area));
+    });
+
+    const trips = parsed.trips.map((trip) => {
+      putTrip(trip).catch(() => console.error("could not import trip", trip));
+    });
+
+    const actions = [...routes, ...ascents, ...sectors, ...areas, ...trips];
+    await Promise.all(actions);
+
+    const content = await load();
+    set({ store: { data: content, initialized: true } });
+  },
   addAscent: async (ascent: Pre<Ascent>) => {
     const newAscentId = await addAscent(ascent);
     set((state) => {
@@ -165,6 +216,14 @@ export const useRoutesStore = create<actions>((set) => ({
       };
     });
     return newRouteId;
+  },
+  createRouteWithAscent: async (route: Pre<Route>, ascent?: AscentKind) => {
+    const routeId = await addRoute(route);
+    if (ascent) {
+      const today = new Date().toISOString().split("T")[0];
+      const newAscent: Pre<Ascent> = { date: today, kind: ascent, routeId };
+      await addAscent(newAscent);
+    }
   },
   deleteRoute: _deleteRoute(set),
   addArea: async (area: Pre<Area>) => {
