@@ -1,23 +1,29 @@
 import RouteTable from "@/components/routes/routes-table";
-import useRoutes from "@/hooks/store/use-routes";
-import { RouteOverview } from "@/lib/cache";
+import { useRoutesStore } from "@/hooks/store/use-store";
+import { getRouteOverviews, RouteOverview, sortByGrade } from "@/lib/cache";
 import { RouteKind } from "@/lib/routes";
 import { Tabs } from "@mantine/core";
+import { useMemo } from "react";
 
-const routesParam = {
-  filter: (route: RouteOverview) => route.route.kind == RouteKind.Sport,
-  sortBy: (a: RouteOverview, b: RouteOverview) =>
-    -a.route.grade.localeCompare(b.route.grade),
-};
-const boulderParams = {
-  filter: (route: RouteOverview) => route.route.kind == RouteKind.Boulder,
-  sortBy: (a: RouteOverview, b: RouteOverview) =>
-    -a.route.grade.localeCompare(b.route.grade),
-};
+const isSport = (route: RouteOverview) => route.route.kind == RouteKind.Sport;
+const isBoulder = (route: RouteOverview) =>
+  route.route.kind == RouteKind.Boulder;
 
 export default function Routes() {
-  const routes = useRoutes(routesParam);
-  const boulders = useRoutes(boulderParams);
+  const store = useRoutesStore((store) => store.store);
+  const routeOverviews = useMemo(
+    () => getRouteOverviews(store.data),
+    [store.data],
+  );
+
+  const routes = useMemo(
+    () => routeOverviews.filter(isSport).sort(sortByGrade),
+    [routeOverviews],
+  );
+  const boulders = useMemo(
+    () => routeOverviews.filter(isBoulder).sort(sortByGrade),
+    [routeOverviews],
+  );
 
   return (
     <div style={{ height: "100%", paddingRight: 10 }}>

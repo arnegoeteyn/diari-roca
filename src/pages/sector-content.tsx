@@ -1,28 +1,34 @@
 import PageTitle from "@/components/page-title";
 import RouteTable from "@/components/routes/routes-table";
 import DeleteSectorButton from "@/components/sectors/delete-sector-button";
-import useRoutes, { sortByGrade } from "@/hooks/store/use-routes";
-import useSectorOverview from "@/hooks/store/use-sector-overview";
-import { RouteOverview } from "@/lib/cache";
+import { useRoutesStore } from "@/hooks/store/use-store";
+import { getRouteOverviews, getSectorOverview, sortByGrade } from "@/lib/cache";
 import { ID } from "@/lib/routes/types";
 import { Group, Loader } from "@mantine/core";
-import { useCallback } from "react";
+import { useMemo } from "react";
 
 type Props = {
   sectorId: ID;
 };
 export default function SectorContent(props: Props) {
   const { sectorId } = props;
+  const store = useRoutesStore((store) => store.store);
 
-  const sector = useSectorOverview(sectorId);
+  const sector = useMemo(
+    () =>
+      store.initialized ? getSectorOverview(store.data, sectorId) : undefined,
+    [sectorId, store.data, store.initialized],
+  );
 
-  const routes = useRoutes({
-    sortBy: sortByGrade,
-    filter: useCallback(
-      (route: RouteOverview) => route.sector.id == sectorId,
-      [sectorId],
-    ),
-  });
+  const routes = useMemo(
+    () =>
+      store.initialized
+        ? getRouteOverviews(store.data)
+            .filter((route) => route.sector.id == sectorId)
+            .sort(sortByGrade)
+        : [],
+    [sectorId, store.data, store.initialized],
+  );
 
   if (!sector) {
     return <Loader />;

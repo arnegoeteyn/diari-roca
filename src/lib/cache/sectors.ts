@@ -56,3 +56,12 @@ export function deleteSector(data: StoreData, id: ID) {
 export function sectorsForArea(data: StoreData, areaID: ID) {
   return getSectors(data).filter((sector) => sector.areaId == areaID);
 }
+
+export function sectorOverviewsForArea(
+  data: StoreData,
+  areaID: ID,
+): SectorOverview[] {
+  return getSectorOverviews(data).filter(
+    (overview) => overview.sector.areaId == areaID,
+  );
+}

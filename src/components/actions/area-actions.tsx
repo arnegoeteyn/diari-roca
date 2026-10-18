@@ -1,39 +1,40 @@
 import { Loader, Stack } from "@mantine/core";
+import { useMemo } from "react";
 import { useRoutesStore } from "@/hooks/store/use-store";
 import AddRouteButton from "../routes/add-route-button";
-import useSectorOverviews from "@/hooks/store/use-sector-overviews";
 import {
   AreaOverview,
   getArea,
   ID,
   sectorsForAreaWithCount,
 } from "@/lib/routes";
+import { sectorOverviewsForArea } from "@/lib/cache";
 import AddSectorButton from "../sectors/add-sector-button";
-import { useCreateRoute } from "@/hooks/store/use-create-route";
 
 type Props = {
   areaId: ID;
 };
 
-type AreaContent = AreaOverview;
-
-function useArea(areaId: ID): AreaContent {
-  const store = useRoutesStore((store) => store.store);
-  const area: AreaContent = {
-    ...getArea(store.data, areaId),
-    sectors: sectorsForAreaWithCount(store.data, areaId),
-  };
-
-  return area;
-}
-
 export default function AreaActions(props: Props) {
-  const { createRoute } = useCreateRoute();
+  const createRouteWithAscent = useRoutesStore(
+    (store) => store.createRouteWithAscent,
+  );
   const addSector = useRoutesStore((store) => store.addSector);
-  const sectors = useSectorOverviews({ areaId: props.areaId });
-  const area = useArea(props.areaId);
+  const store = useRoutesStore((store) => store.store);
 
-  if (!sectors || !area) {
+  const sectors = useMemo(
+    () => sectorOverviewsForArea(store.data, props.areaId),
+    [store.data, props.areaId],
+  );
+  const area: AreaOverview = useMemo(
+    () => ({
+      ...getArea(store.data, props.areaId),
+      sectors: sectorsForAreaWithCount(store.data, props.areaId),
+    }),
+    [store.data, props.areaId],
+  );
+
+  if (!area) {
     return <Loader />;
   }
   return (
@@ -44,7 +45,7 @@ export default function AreaActions(props: Props) {
       />
       <AddRouteButton
         sectors={sectors}
-        onRouteCreated={(r, a) => createRoute(r, a).then()}
+        onRouteCreated={(r, a) => createRouteWithAscent(r, a).then()}
       />
     </Stack>
   );
