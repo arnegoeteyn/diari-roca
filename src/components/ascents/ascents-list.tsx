@@ -17,6 +17,8 @@ export default function AscentsList({
   onDeleteAscent,
   onUpdateAscent,
 }: Props) {
+  const [selectedAscent, setSelectedAscent] = useState<ID>();
+
   if (ascents.length == 0) {
     return (
       <Box
@@ -31,8 +33,6 @@ export default function AscentsList({
       </Box>
     );
   }
-
-  const [selectedAscent, setSelectedAscent] = useState<ID>();
 
   const onDeleteAscentConfirmation = (ascent: Ascent) => {
     modals.openConfirmModal({
